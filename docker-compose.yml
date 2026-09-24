@@ -1,0 +1,25 @@
+# Entorno de DESARROLLO del FRONTEND. Es un proyecto independiente del backend:
+# solo se comunican por HTTP, a través de BACKEND_INTERNAL_URL.
+# Uso:  docker compose up --build        (el backend debe estar levantado en su propio repositorio)
+
+name: front-crm
+
+services:
+  frontend:
+    build:
+      context: .
+      target: dev
+    restart: unless-stopped
+    environment:
+      # Dirección del backend vista DESDE el contenedor. Por defecto, el puerto que el
+      # Compose del backend publica en el equipo anfitrión.
+      BACKEND_INTERNAL_URL: ${BACKEND_INTERNAL_URL:-http://host.docker.internal:8000}
+      WATCHPACK_POLLING: "true" # recarga en caliente con carpetas montadas desde Windows
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # en Docker Desktop ya existe; esto lo habilita en Linux
+    volumes:
+      - .:/app
+      - /app/node_modules # los módulos del contenedor (Linux) no se mezclan con los de Windows
+      - /app/.next
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3000}:3000"
