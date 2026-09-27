@@ -40,7 +40,7 @@ export default function AdminPromptsPage() {
       <PageHeader
         title="Prompts globales"
         help="prompts"
-        description="Versiones inmutables: para cambiar un prompt se crea una versión nueva y se activa. Aún no los usa el bot de las cuentas."
+        description="Versiones inmutables: para cambiar un prompt se crea una versión nueva y se activa. El prompt activo «lead_qualification» lo usan las organizaciones sin instrucciones propias; las demás no cambian."
         actions={
           <Button onClick={() => setCreating({ name: "", content: "" })}>
             Nuevo prompt

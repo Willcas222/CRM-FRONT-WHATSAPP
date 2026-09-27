@@ -437,11 +437,16 @@ export const ADMIN_GUIDE: HelpGuide = {
       points: [
         "Una sola versión activa por nombre.",
         "Compara versiones con un diff.",
-        "Aún no los usa el bot de las organizaciones.",
+        "El prompt activo llamado «lead_qualification» lo usan las organizaciones que NO tienen instrucciones propias.",
+        "Las organizaciones con instrucciones propias en Configuración → Bot no se ven afectadas.",
       ],
       purpose:
         "Cada cambio a un prompt crea una versión nueva; las anteriores no se pueden editar, para poder auditar y volver atrás. " +
-        "Solo una versión por nombre puede estar activa. Importante: hoy el bot de las organizaciones usa sus propias instrucciones (Configuración → Bot); estos prompts globales quedan guardados y versionados para conectarlos más adelante.",
+        "Solo una versión por nombre puede estar activa. " +
+        "El prompt llamado «lead_qualification» es la plantilla base del bot: si está activo, lo usan las organizaciones que todavía no escribieron instrucciones propias en Configuración → Bot; " +
+        "las que sí las escribieron siguen exactamente igual, sin cambios. El cambio se aplica desde el siguiente mensaje que reciba el bot. " +
+        "Marcadores permitidos: {{company_name}}, {{company_instructions}}, {{welcome_message}}, {{fields_to_collect}}, {{fields_missing}} y {{current_stage}}; cualquier otro se rechaza al guardar. " +
+        "Si por algún motivo una versión activa fallara, el bot vuelve solo a la plantilla base incluida en el sistema: nunca se queda sin responder.",
       howTo: [
         {
           title: "Cómo publicar una versión nueva",
@@ -457,7 +462,8 @@ export const ADMIN_GUIDE: HelpGuide = {
         "Escribe siempre el motivo del cambio: será tu historial de decisiones.",
       ],
       cautions: [
-        "Aún no cambian el comportamiento del bot de las organizaciones.",
+        "Activar una versión de «lead_qualification» cambia el comportamiento del bot de todas las organizaciones sin instrucciones propias, desde el siguiente mensaje. Revisa el diff y escribe un motivo claro.",
+        "Para volver atrás, desactiva la versión (o activa la anterior): el bot usará de nuevo la plantilla base.",
       ],
       related: ["global-config", "audit"],
     },
