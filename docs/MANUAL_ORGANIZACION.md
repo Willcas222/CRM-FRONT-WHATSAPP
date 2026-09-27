@@ -26,6 +26,8 @@ También encuentras esta misma información dentro de la aplicación: en el men�
 - [Configuración · Bot](#configuración--bot)
 - [Campaña](#campaña)
 - [Solicitudes ciudadanas](#solicitudes-ciudadanas)
+- [Menú](#menú)
+- [Pedidos](#pedidos)
 - [Glosario](#glosario)
 - [Preguntas frecuentes](#preguntas-frecuentes)
 
@@ -611,6 +613,66 @@ Cuando un ciudadano expresa con claridad una queja, un reclamo, una idea, una pe
 - El motivo del cambio de estado queda visible en el historial: escribe algo útil para quien lo revise después.
 
 **Relacionado:** [Campaña](#campaña) · [Bandeja](#bandeja)
+
+### Menú
+
+*Pantalla: `/menu`*
+
+> Solo aparece si tu organización es de tipo «Restaurante»: categorías, productos, variantes (tamaños) y modificadores (adiciones).
+
+Aquí armas el catálogo que el bot usa para responder qué hay para pedir y cuánto cuesta, y que tu equipo usa para registrar pedidos a mano. Un producto pertenece a una categoría y tiene un precio base; puede tener variantes (que reemplazan ese precio, como un tamaño) y modificadores (grupos de adiciones opcionales u obligatorias, como «Adiciones» con un mínimo y un máximo de opciones a elegir). El precio final de un pedido siempre lo calcula el sistema a partir de este catálogo, nunca lo escribe el bot ni el cliente.
+
+**En resumen, aquí puedes:**
+
+- El bot solo ofrece productos «Disponibles»: nunca inventa productos ni precios.
+- Una variante reemplaza el precio base (por ejemplo, un tamaño grande); un modificador se suma (por ejemplo, una adición).
+- Un producto no se borra: se marca «No disponible» para retirarlo del menú.
+
+#### Cómo armar el menú
+
+1. Crea una categoría (por ejemplo «Bebidas»).
+2. Crea un producto dentro de esa categoría, con su precio.
+3. Entra al producto para agregarle variantes (tamaños) o modificadores (adiciones) si los necesita.
+
+#### Cómo sacarle el mejor provecho
+
+- Si un producto se agota, márcalo «No disponible» en vez de borrarlo: así conservas el historial de los pedidos que ya lo tenían.
+- Un modificador con mínimo 1 es obligatorio: el bot no deja pedir el producto sin elegir una opción.
+
+**Relacionado:** [Pedidos](#pedidos) · [Configuración · Bot](#configuración--bot)
+
+### Pedidos
+
+*Pantalla: `/orders`*
+
+> Solo aparece si tu organización es de tipo «Restaurante»: los pedidos que registra el bot o tu equipo, con su estado, pagos y domicilio.
+
+Cuando un cliente confirma qué quiere pedir, el bot lo registra aquí automáticamente. A diferencia de una queja o una solicitud, un pedido no necesita que una persona tome la conversación: es un flujo de autoservicio normal, y tu equipo hace seguimiento de la cocina o el mostrador desde esta lista, no desde la Bandeja. También puedes registrar un pedido a mano, por ejemplo si el cliente llamó por teléfono.
+
+**En resumen, aquí puedes:**
+
+- El precio de cada pedido lo calcula el sistema a partir del menú, nunca el bot.
+- Un pedido del bot no pasa a una persona solo por crearse: tu equipo lo sigue desde aquí.
+- Cambia el estado (Pendiente, Confirmado, En preparación, Listo, Entregado, Cancelado) a medida que avanza.
+
+#### Cómo registrar un pedido a mano
+
+1. Pulsa «Nuevo pedido» y busca el contacto.
+2. Agrega cada producto, con su variante y adiciones si aplica, y la cantidad.
+3. Registra: el total lo calcula el sistema solo.
+
+#### Cómo hacer seguimiento a un pedido
+
+1. Ábrelo desde la lista (puedes filtrar por estado).
+2. Cambia el estado a medida que avanza en cocina o camino al cliente.
+3. Registra el pago cuando lo recibas, y el domicilio si aplica.
+
+#### Cómo sacarle el mejor provecho
+
+- Filtra por «Pendiente» para ver primero lo que falta atender.
+- Un pedido puede tener varios pagos (por ejemplo, si el cliente paga una parte).
+
+**Relacionado:** [Menú](#menú) · [Bandeja](#bandeja)
 
 ## Glosario
 

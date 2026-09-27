@@ -660,6 +660,73 @@ export const ORGANIZATION_GUIDE: HelpGuide = {
       ],
       related: ["campaign", "inbox"],
     },
+    {
+      id: "menu",
+      title: "Menú",
+      route: "/menu",
+      summary:
+        "Solo aparece si tu organización es de tipo «Restaurante»: categorías, productos, variantes (tamaños) y modificadores (adiciones).",
+      points: [
+        "El bot solo ofrece productos «Disponibles»: nunca inventa productos ni precios.",
+        "Una variante reemplaza el precio base (por ejemplo, un tamaño grande); un modificador se suma (por ejemplo, una adición).",
+        "Un producto no se borra: se marca «No disponible» para retirarlo del menú.",
+      ],
+      purpose:
+        "Aquí armas el catálogo que el bot usa para responder qué hay para pedir y cuánto cuesta, y que tu equipo usa para registrar pedidos a mano. Un producto pertenece a una categoría y tiene un precio base; puede tener variantes (que reemplazan ese precio, como un tamaño) y modificadores " +
+        "(grupos de adiciones opcionales u obligatorias, como «Adiciones» con un mínimo y un máximo de opciones a elegir). El precio final de un pedido siempre lo calcula el sistema a partir de este catálogo, nunca lo escribe el bot ni el cliente.",
+      howTo: [
+        {
+          title: "Cómo armar el menú",
+          steps: [
+            "Crea una categoría (por ejemplo «Bebidas»).",
+            "Crea un producto dentro de esa categoría, con su precio.",
+            "Entra al producto para agregarle variantes (tamaños) o modificadores (adiciones) si los necesita.",
+          ],
+        },
+      ],
+      tips: [
+        "Si un producto se agota, márcalo «No disponible» en vez de borrarlo: así conservas el historial de los pedidos que ya lo tenían.",
+        "Un modificador con mínimo 1 es obligatorio: el bot no deja pedir el producto sin elegir una opción.",
+      ],
+      related: ["orders", "settings-bot"],
+    },
+    {
+      id: "orders",
+      title: "Pedidos",
+      route: "/orders",
+      summary:
+        "Solo aparece si tu organización es de tipo «Restaurante»: los pedidos que registra el bot o tu equipo, con su estado, pagos y domicilio.",
+      points: [
+        "El precio de cada pedido lo calcula el sistema a partir del menú, nunca el bot.",
+        "Un pedido del bot no pasa a una persona solo por crearse: tu equipo lo sigue desde aquí.",
+        "Cambia el estado (Pendiente, Confirmado, En preparación, Listo, Entregado, Cancelado) a medida que avanza.",
+      ],
+      purpose:
+        "Cuando un cliente confirma qué quiere pedir, el bot lo registra aquí automáticamente. A diferencia de una queja o una solicitud, un pedido no necesita que una persona tome la conversación: es un flujo de autoservicio normal, y tu equipo hace seguimiento de la cocina o el mostrador desde esta lista, no desde la Bandeja. También puedes registrar un pedido a mano, por ejemplo si el cliente llamó por teléfono.",
+      howTo: [
+        {
+          title: "Cómo registrar un pedido a mano",
+          steps: [
+            "Pulsa «Nuevo pedido» y busca el contacto.",
+            "Agrega cada producto, con su variante y adiciones si aplica, y la cantidad.",
+            "Registra: el total lo calcula el sistema solo.",
+          ],
+        },
+        {
+          title: "Cómo hacer seguimiento a un pedido",
+          steps: [
+            "Ábrelo desde la lista (puedes filtrar por estado).",
+            "Cambia el estado a medida que avanza en cocina o camino al cliente.",
+            "Registra el pago cuando lo recibas, y el domicilio si aplica.",
+          ],
+        },
+      ],
+      tips: [
+        "Filtra por «Pendiente» para ver primero lo que falta atender.",
+        "Un pedido puede tener varios pagos (por ejemplo, si el cliente paga una parte).",
+      ],
+      related: ["menu", "inbox"],
+    },
   ],
   glossary: [
     {

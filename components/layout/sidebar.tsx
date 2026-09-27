@@ -44,6 +44,21 @@ const NAV = [
     requiresManage: false,
     requiresVertical: "POLITICAL_CAMPAIGN",
   },
+  // Vertical Restaurante (Fase 12): solo visible para ese tipo de negocio.
+  {
+    href: "/menu",
+    label: "Menú",
+    icon: IconMenu,
+    requiresManage: false,
+    requiresVertical: "RESTAURANT",
+  },
+  {
+    href: "/orders",
+    label: "Pedidos",
+    icon: IconBag,
+    requiresManage: false,
+    requiresVertical: "RESTAURANT",
+  },
   {
     href: "/settings",
     label: "Configuración",
@@ -230,6 +245,26 @@ function IconInbox({ className }: { className?: string }): ReactNode {
     <svg {...iconProps(className)}>
       <path d="M3 12.5h4.5l1.5 3h6l1.5-3H21" />
       <rect x="3" y="6" width="18" height="14" rx="2" />
+    </svg>
+  );
+}
+
+function IconMenu({ className }: { className?: string }): ReactNode {
+  return (
+    <svg {...iconProps(className)}>
+      <path d="M6 3v18" />
+      <path d="M6 3c-1.5 0-2.5 1.5-2.5 4S4.5 11 6 11" />
+      <path d="M18 3v7a2.5 2.5 0 0 1-5 0V3" />
+      <path d="M18 12v9" />
+    </svg>
+  );
+}
+
+function IconBag({ className }: { className?: string }): ReactNode {
+  return (
+    <svg {...iconProps(className)}>
+      <path d="M6 8h12l1 12.5a1.5 1.5 0 0 1-1.5 1.5H6.5A1.5 1.5 0 0 1 5 20.5Z" />
+      <path d="M9 8V6a3 3 0 0 1 6 0v2" />
     </svg>
   );
 }
