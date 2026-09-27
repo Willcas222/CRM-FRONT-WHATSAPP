@@ -18,6 +18,12 @@ export const metadata: Metadata = {
   description: "CRM multi-tenant de automatización comercial con WhatsApp e IA",
 };
 
+// La CSP con nonce (middleware.ts) exige que la página se renderice en cada petición: un nonce es
+// de un solo uso, y una página estática se generaría UNA vez en la compilación sin ninguno real.
+// Como toda la aplicación vive detrás de inicio de sesión y ya trae sus datos por la API (no hay
+// nada que valga la pena servir desde caché), el costo de renderizar cada vez es aceptable.
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
