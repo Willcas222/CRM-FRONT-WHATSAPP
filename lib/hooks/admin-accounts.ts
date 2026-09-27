@@ -11,6 +11,7 @@ import type { components } from "@/lib/api-schema";
 import { callPlatformApi, platformClient } from "@/lib/platform-client";
 
 type AccountStatus = components["schemas"]["AccountStatus"];
+type Vertical = components["schemas"]["Vertical"];
 type UpdateLimits = components["schemas"]["UpdateAccountLimitsRequest"];
 
 export function useAdminAccounts(
@@ -101,6 +102,26 @@ export function useChangeAccountStatus(accountId: string) {
       callPlatformApi(() =>
         platformClient.PATCH(
           "/api/v1/superadmin/accounts/{account_id}/status",
+          {
+            params: { path: { account_id: accountId } },
+            body,
+          },
+        ),
+      ),
+    onSuccess: invalidate,
+  });
+}
+
+/** Único lugar que cambia el tipo de negocio de una organización (ARCHITECTURE.md 11.5/11.6): la
+ * propia organización nunca puede — ni al registrarse ni después (`PATCH /account` lo rechaza). */
+export function useChangeAccountVertical(accountId: string) {
+  const invalidate = useInvalidateAccount(accountId);
+  return useMutation({
+    meta: { success: "Tipo de negocio actualizado." },
+    mutationFn: (body: { vertical: Vertical; reason: string }) =>
+      callPlatformApi(() =>
+        platformClient.PATCH(
+          "/api/v1/superadmin/accounts/{account_id}/vertical",
           {
             params: { path: { account_id: accountId } },
             body,

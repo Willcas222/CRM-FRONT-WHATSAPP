@@ -29,6 +29,21 @@ const NAV = [
     icon: IconBolt,
     requiresManage: true,
   },
+  // Vertical Campaña política (Fase 11): solo visible para ese tipo de negocio.
+  {
+    href: "/campaign",
+    label: "Campaña",
+    icon: IconFlag,
+    requiresManage: false,
+    requiresVertical: "POLITICAL_CAMPAIGN",
+  },
+  {
+    href: "/citizen-requests",
+    label: "Solicitudes",
+    icon: IconInbox,
+    requiresManage: false,
+    requiresVertical: "POLITICAL_CAMPAIGN",
+  },
   {
     href: "/settings",
     label: "Configuración",
@@ -46,9 +61,14 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, account } = useAuth();
   const canManage = user?.role === "OWNER" || user?.role === "ADMIN";
-  const items = NAV.filter((item) => !item.requiresManage || canManage);
+  const items = NAV.filter(
+    (item) =>
+      (!item.requiresManage || canManage) &&
+      (!("requiresVertical" in item) ||
+        account?.vertical === item.requiresVertical),
+  );
 
   return (
     <>
@@ -192,6 +212,24 @@ function IconHelp({ className }: { className?: string }): ReactNode {
       <circle cx="12" cy="12" r="9" />
       <path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.2-2.5 3.9" />
       <path d="M12 17.2h.01" />
+    </svg>
+  );
+}
+
+function IconFlag({ className }: { className?: string }): ReactNode {
+  return (
+    <svg {...iconProps(className)}>
+      <path d="M5 3v18" />
+      <path d="M5 4.5c2-1.3 4-1.3 6 0s4 1.3 6 0V14c-2 1.3-4 1.3-6 0s-4-1.3-6 0Z" />
+    </svg>
+  );
+}
+
+function IconInbox({ className }: { className?: string }): ReactNode {
+  return (
+    <svg {...iconProps(className)}>
+      <path d="M3 12.5h4.5l1.5 3h6l1.5-3H21" />
+      <rect x="3" y="6" width="18" height="14" rx="2" />
     </svg>
   );
 }

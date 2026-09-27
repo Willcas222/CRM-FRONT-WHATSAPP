@@ -24,6 +24,8 @@ También encuentras esta misma información dentro de la aplicación: en el men�
 - [Configuración · Canales](#configuración--canales)
 - [Configuración · Pipeline](#configuración--pipeline)
 - [Configuración · Bot](#configuración--bot)
+- [Campaña](#campaña)
+- [Solicitudes ciudadanas](#solicitudes-ciudadanas)
 - [Glosario](#glosario)
 - [Preguntas frecuentes](#preguntas-frecuentes)
 
@@ -537,6 +539,78 @@ El bot es un asistente de inteligencia artificial que responde los mensajes de W
 - Si el bot no responde, revisa que esté activo, que el canal esté activo y que tu organización no haya alcanzado los límites de su plan.
 
 **Relacionado:** [Ficha del cliente](#ficha-del-cliente) · [Configuración · Canales](#configuración--canales) · [Bandeja](#bandeja)
+
+### Campaña
+
+*Pantalla: `/campaign`*
+
+> Solo aparece si tu organización es de tipo «Campaña política»: el perfil del candidato, las propuestas o preguntas frecuentes que quieres publicar y los próximos eventos.
+
+Esta sección es la fuente oficial y autorizada de información que el bot usa para responder a los ciudadanos por WhatsApp. Tiene tres partes: el perfil (nombre, cargo o aspiración y una biografía corta), la información oficial (propuestas, ejes programáticos o preguntas frecuentes, cada una como un documento con título y contenido) y los próximos eventos (título, fecha, lugar y si es público). Un documento nace SIN publicar: mientras no lo publiques, el bot no lo ve ni lo puede citar. Esto te deja preparar contenido con calma antes de que llegue a los ciudadanos.
+
+**En resumen, aquí puedes:**
+
+- El bot solo responde con lo que publiques aquí: nunca inventa propuestas ni cifras.
+- Un documento no se ve hasta que lo publiques.
+- Solo la Propietaria y los Administradores pueden editar; el resto puede ver.
+
+#### Cómo publicar una propuesta
+
+1. Entra a Campaña → Información y pulsa «Nuevo documento».
+2. Escribe un título y el contenido completo.
+3. Guarda como borrador si quieres revisarlo después, o marca «Publicado» cuando esté listo.
+
+#### Cómo anunciar un evento
+
+1. Entra a Campaña → Eventos y pulsa «Nuevo evento».
+2. Escribe el título, la fecha y hora, y el lugar (opcional).
+3. La fecha debe ser futura: no se pueden crear eventos ya pasados.
+
+#### Cómo sacarle el mejor provecho
+
+- Escribe el contenido de cada documento como si el ciudadano fuera a leerlo tal cual: el bot lo recorta si es muy largo.
+- Actualiza el perfil del candidato con la información que más preguntan los ciudadanos (nombre, cargo, propuestas clave).
+- Los eventos pasados dejan de aparecer solos en «Próximos»: no hace falta borrarlos.
+
+#### Ten en cuenta
+
+- Un documento sin publicar es invisible para el bot, aunque exista y lo veas en esta lista.
+- El bot nunca completa con información que no esté aquí: si algo falta, le dice al ciudadano que una persona se lo confirmará.
+
+**Relacionado:** [Solicitudes ciudadanas](#solicitudes-ciudadanas) · [Configuración · Bot](#configuración--bot)
+
+### Solicitudes ciudadanas
+
+*Pantalla: `/citizen-requests`*
+
+> Solo aparece si tu organización es de tipo «Campaña política»: quejas, reclamos, ideas, peticiones, ayuda o solicitudes de reunión que dejan los ciudadanos, cada una con su radicado.
+
+Cuando un ciudadano expresa con claridad una queja, un reclamo, una idea, una petición, una solicitud de ayuda o de reunión, el bot la registra aquí automáticamente y pasa la conversación a una persona del equipo — nunca se cierra sola. El radicado es el número que le das al ciudadano para que haga seguimiento. El historial de estado (quién cambió qué, cuándo y por qué) queda guardado sin poder editarse, para que el seguimiento sea trazable.
+
+**En resumen, aquí puedes:**
+
+- Cada solicitud recibe un radicado único (por ejemplo REQUEST-2026-000001) al crearse.
+- El bot las registra solo y pasa la conversación a una persona; también puedes registrar una a mano.
+- Cambia el estado (Abierta, En trámite, Resuelta, Cerrada) y deja un motivo: queda en el historial.
+
+#### Cómo hacer seguimiento a una solicitud
+
+1. Ábrela desde la lista (puedes filtrar por estado o por tipo).
+2. Revisa el radicado, el contacto y la descripción.
+3. Cambia el estado cuando avances (por ejemplo a «En trámite») y escribe un motivo breve.
+
+#### Cómo registrar una solicitud a mano
+
+1. Pulsa «Nueva solicitud».
+2. Busca y selecciona el contacto, elige el tipo y escribe el asunto.
+3. Guarda: el radicado se genera solo.
+
+#### Cómo sacarle el mejor provecho
+
+- Usa el filtro por estado para ver primero lo que sigue «Abierta».
+- El motivo del cambio de estado queda visible en el historial: escribe algo útil para quien lo revise después.
+
+**Relacionado:** [Campaña](#campaña) · [Bandeja](#bandeja)
 
 ## Glosario
 

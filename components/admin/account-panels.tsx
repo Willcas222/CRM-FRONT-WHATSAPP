@@ -17,13 +17,17 @@ import {
   BLOCKING_WARNING,
   STATUS_LABEL,
   STATUS_TONE,
+  VERTICAL_LABEL,
+  VERTICALS,
   type AccountStatus,
+  type Vertical,
 } from "@/lib/admin-labels";
 import { ApiError } from "@/lib/api-client";
 import type { components } from "@/lib/api-schema";
 import {
   useAssignAccountPlan,
   useChangeAccountStatus,
+  useChangeAccountVertical,
   useUpdateAccountLimits,
 } from "@/lib/hooks/admin-accounts";
 import { useAdminAiModels, useAdminPlans } from "@/lib/hooks/admin-catalog";
@@ -103,6 +107,65 @@ export function StatusPanel({ account }: { account: Account }) {
           danger={target !== "ACTIVE"}
           onConfirm={async (reason) => {
             await mutation.mutateAsync({ status: target, reason });
+            setTarget("");
+          }}
+        />
+      )}
+    </Card>
+  );
+}
+
+// ------------------------------------------------------------------ tipo de negocio (vertical)
+
+export function VerticalPanel({ account }: { account: Account }) {
+  const mutation = useChangeAccountVertical(account.id);
+  const [target, setTarget] = useState<Vertical | "">("");
+  const [confirming, setConfirming] = useState(false);
+
+  return (
+    <Card className="space-y-4 p-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          Tipo de negocio
+        </h2>
+        <Badge tone={account.vertical === "GENERIC" ? "neutral" : "green"}>
+          {VERTICAL_LABEL[account.vertical]}
+        </Badge>
+      </div>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        Configuración estándar por tipo de negocio: la organización nunca puede
+        cambiarla por su cuenta, solo este panel.
+      </p>
+      <div className="flex items-end gap-2">
+        <div className="flex-1">
+          <Label htmlFor="new-vertical">Cambiar a</Label>
+          <Select
+            id="new-vertical"
+            value={target}
+            onChange={(event) => setTarget(event.target.value as Vertical | "")}
+          >
+            <option value="">Selecciona un tipo…</option>
+            {VERTICALS.filter((v) => v !== account.vertical).map((v) => (
+              <option key={v} value={v}>
+                {VERTICAL_LABEL[v]}
+              </option>
+            ))}
+          </Select>
+        </div>
+        <Button disabled={!target} onClick={() => setConfirming(true)}>
+          Cambiar
+        </Button>
+      </div>
+
+      {target && (
+        <ConfirmReasonModal
+          open={confirming}
+          onClose={() => setConfirming(false)}
+          title={`Cambiar a «${VERTICAL_LABEL[target]}»`}
+          warning={`«${account.name}» pasará a ver los módulos y herramientas de «${VERTICAL_LABEL[target]}» desde su próxima operación.`}
+          confirmLabel="Confirmar cambio"
+          onConfirm={async (reason) => {
+            await mutation.mutateAsync({ vertical: target, reason });
             setTarget("");
           }}
         />

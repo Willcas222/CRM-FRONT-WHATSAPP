@@ -41,3 +41,23 @@ export const STATUS_TONE: Record<
 /** Cualquier estado distinto de ACTIVE bloquea a la organización (el backend falla cerrado). */
 export const BLOCKING_WARNING =
   "La organización perderá el acceso operativo: sus usuarios no podrán operar mientras el estado no sea Activa.";
+
+export type Vertical = components["schemas"]["Vertical"];
+
+export const VERTICALS: Vertical[] = [
+  "GENERIC",
+  "RESTAURANT",
+  "RETAIL",
+  "SERVICES",
+  "POLITICAL_CAMPAIGN",
+];
+
+/** Configuraciones ESTÁNDAR por tipo de negocio (CRM_VERTICAL_PROJECT_ANALYSIS.md): la misma
+ * definición sirve para cualquier organización de ese tipo, nunca a la medida de una en concreto. */
+export const VERTICAL_LABEL: Record<Vertical, string> = {
+  GENERIC: "Genérico (sin módulos extra)",
+  RESTAURANT: "Restaurante",
+  RETAIL: "Comercio",
+  SERVICES: "Servicios",
+  POLITICAL_CAMPAIGN: "Campaña política",
+};

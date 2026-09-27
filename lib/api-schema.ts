@@ -907,6 +907,167 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/campaign/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Candidate Profile */
+        get: operations["get_candidate_profile_api_v1_campaign_profile_get"];
+        /** Update Candidate Profile */
+        put: operations["update_candidate_profile_api_v1_campaign_profile_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/campaign/knowledge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Knowledge Documents */
+        get: operations["list_knowledge_documents_api_v1_campaign_knowledge_get"];
+        put?: never;
+        /** Create Knowledge Document */
+        post: operations["create_knowledge_document_api_v1_campaign_knowledge_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/campaign/knowledge/{document_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Knowledge Document */
+        get: operations["get_knowledge_document_api_v1_campaign_knowledge__document_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete Knowledge Document */
+        delete: operations["delete_knowledge_document_api_v1_campaign_knowledge__document_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Knowledge Document */
+        patch: operations["update_knowledge_document_api_v1_campaign_knowledge__document_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/campaign/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Campaign Events */
+        get: operations["list_campaign_events_api_v1_campaign_events_get"];
+        put?: never;
+        /** Create Campaign Event */
+        post: operations["create_campaign_event_api_v1_campaign_events_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/campaign/events/{event_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Campaign Event */
+        get: operations["get_campaign_event_api_v1_campaign_events__event_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete Campaign Event */
+        delete: operations["delete_campaign_event_api_v1_campaign_events__event_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Campaign Event */
+        patch: operations["update_campaign_event_api_v1_campaign_events__event_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/citizen-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Citizen Requests */
+        get: operations["list_citizen_requests_api_v1_citizen_requests_get"];
+        put?: never;
+        /** Create Citizen Request */
+        post: operations["create_citizen_request_api_v1_citizen_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/citizen-requests/{request_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Citizen Request */
+        get: operations["get_citizen_request_api_v1_citizen_requests__request_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/citizen-requests/{request_id}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Citizen Request History */
+        get: operations["get_citizen_request_history_api_v1_citizen_requests__request_id__history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/citizen-requests/{request_id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Change Citizen Request Status */
+        post: operations["change_citizen_request_status_api_v1_citizen_requests__request_id__status_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/superadmin/auth/login": {
         parameters: {
             query?: never;
@@ -1227,6 +1388,23 @@ export interface paths {
         head?: never;
         /** Change Status */
         patch: operations["change_status_api_v1_superadmin_accounts__account_id__status_patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/accounts/{account_id}/vertical": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change Vertical */
+        patch: operations["change_vertical_api_v1_superadmin_accounts__account_id__vertical_patch"];
         trace?: never;
     };
     "/api/v1/superadmin/accounts/{account_id}/plan": {
@@ -2107,11 +2285,73 @@ export interface components {
              */
             updated_at: string;
         };
+        /** CampaignEventListResponse */
+        CampaignEventListResponse: {
+            /** Items */
+            items: components["schemas"]["CampaignEventOut"][];
+        };
+        /** CampaignEventOut */
+        CampaignEventOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Title */
+            title: string;
+            /** Description */
+            description: string | null;
+            /** Location */
+            location: string | null;
+            /**
+             * Starts At
+             * Format: date-time
+             */
+            starts_at: string;
+            /** Is Public */
+            is_public: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** CandidateProfileOut */
+        CandidateProfileOut: {
+            /** Name */
+            name: string;
+            /** Role */
+            role: string | null;
+            /** Bio */
+            bio: string | null;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
         /** ChangeAccountStatusRequest */
         ChangeAccountStatusRequest: {
             status: components["schemas"]["AccountStatus"];
             /** Reason */
             reason: string;
+        };
+        /** ChangeAccountVerticalRequest */
+        ChangeAccountVerticalRequest: {
+            vertical: components["schemas"]["Vertical"];
+            /** Reason */
+            reason: string;
+        };
+        /** ChangeCitizenRequestStatusRequest */
+        ChangeCitizenRequestStatusRequest: {
+            status: components["schemas"]["CitizenRequestStatus"];
+            /** Reason */
+            reason?: string | null;
         };
         /** ChangePasswordRequest */
         ChangePasswordRequest: {
@@ -2120,6 +2360,55 @@ export interface components {
             /** New Password */
             new_password: string;
         };
+        /** CitizenRequestListResponse */
+        CitizenRequestListResponse: {
+            /** Items */
+            items: components["schemas"]["CitizenRequestOut"][];
+        };
+        /** CitizenRequestOut */
+        CitizenRequestOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Contact Id
+             * Format: uuid
+             */
+            contact_id: string;
+            /** Conversation Id */
+            conversation_id: string | null;
+            type: components["schemas"]["CitizenRequestType"];
+            /** Radicado */
+            radicado: string;
+            /** Subject */
+            subject: string;
+            /** Description */
+            description: string | null;
+            status: components["schemas"]["CitizenRequestStatus"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /**
+         * CitizenRequestStatus
+         * @enum {string}
+         */
+        CitizenRequestStatus: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
+        /**
+         * CitizenRequestType
+         * @description Tipo de solicitud ciudadana (vertical Campaña política, master prompt §9).
+         * @enum {string}
+         */
+        CitizenRequestType: "COMPLAINT" | "CLAIM" | "IDEA" | "REQUEST" | "HELP" | "MEETING_REQUEST" | "OTHER";
         /** CloseLeadRequest */
         CloseLeadRequest: {
             /**
@@ -2459,6 +2748,38 @@ export interface components {
              */
             is_active: boolean;
         };
+        /** CreateCampaignEventRequest */
+        CreateCampaignEventRequest: {
+            /** Title */
+            title: string;
+            /**
+             * Starts At
+             * Format: date-time
+             */
+            starts_at: string;
+            /** Description */
+            description?: string | null;
+            /** Location */
+            location?: string | null;
+            /**
+             * Is Public
+             * @default true
+             */
+            is_public: boolean;
+        };
+        /** CreateCitizenRequestRequest */
+        CreateCitizenRequestRequest: {
+            /**
+             * Contact Id
+             * Format: uuid
+             */
+            contact_id: string;
+            type: components["schemas"]["CitizenRequestType"];
+            /** Subject */
+            subject: string;
+            /** Description */
+            description?: string | null;
+        };
         /** CreateContactRequest */
         CreateContactRequest: {
             /** Phone */
@@ -2501,6 +2822,18 @@ export interface components {
             waba_id?: string | null;
             /** Access Token */
             access_token: string;
+        };
+        /** CreateKnowledgeDocumentRequest */
+        CreateKnowledgeDocumentRequest: {
+            /** Title */
+            title: string;
+            /** Content */
+            content: string;
+            /**
+             * Is Published
+             * @default false
+             */
+            is_published: boolean;
         };
         /** CreateLeadRequest */
         CreateLeadRequest: {
@@ -2742,6 +3075,35 @@ export interface components {
          * @enum {string}
          */
         InboxStatus: "ACTIVE" | "INACTIVE";
+        /** KnowledgeDocumentListResponse */
+        KnowledgeDocumentListResponse: {
+            /** Items */
+            items: components["schemas"]["KnowledgeDocumentOut"][];
+        };
+        /** KnowledgeDocumentOut */
+        KnowledgeDocumentOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Title */
+            title: string;
+            /** Content */
+            content: string;
+            /** Is Published */
+            is_published: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
         /** LastMessageOut */
         LastMessageOut: {
             direction: components["schemas"]["Direction"];
@@ -2960,7 +3322,7 @@ export interface components {
          * MessageType
          * @enum {string}
          */
-        MessageType: "TEXT" | "IMAGE" | "AUDIO" | "VIDEO" | "DOCUMENT" | "LOCATION" | "STICKER" | "REACTION" | "TEMPLATE" | "UNSUPPORTED";
+        MessageType: "TEXT" | "IMAGE" | "AUDIO" | "VIDEO" | "DOCUMENT" | "LOCATION" | "STICKER" | "REACTION" | "TEMPLATE" | "INTERACTIVE" | "UNSUPPORTED";
         /** MfaChallengeRequest */
         MfaChallengeRequest: {
             /** Challenge Token */
@@ -3028,6 +3390,14 @@ export interface components {
             /** Code */
             code: string;
         };
+        /**
+         * ModuleKey
+         * @description Catálogo cerrado de módulos que un vertical puede activar.
+         *
+         *     Un módulo nuevo es un valor nuevo aquí.
+         * @enum {string}
+         */
+        ModuleKey: "MENU" | "ORDERS" | "DELIVERY" | "PROMOTIONS" | "CATALOG" | "INVENTORY" | "QUOTES" | "SERVICES" | "APPOINTMENTS" | "CASES" | "PROPOSALS" | "EVENTS" | "CITIZEN_REQUESTS";
         /** MoveLeadRequest */
         MoveLeadRequest: {
             /**
@@ -3324,6 +3694,26 @@ export interface components {
             /** Stage Ids */
             stage_ids: string[];
         };
+        /** RequestStatusHistoryListResponse */
+        RequestStatusHistoryListResponse: {
+            /** Items */
+            items: components["schemas"]["RequestStatusHistoryOut"][];
+        };
+        /** RequestStatusHistoryOut */
+        RequestStatusHistoryOut: {
+            previous_status: components["schemas"]["CitizenRequestStatus"] | null;
+            new_status: components["schemas"]["CitizenRequestStatus"];
+            actor_type: components["schemas"]["ActorType"];
+            /** Actor Id */
+            actor_id: string | null;
+            /** Reason */
+            reason: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
         /** ResetMfaRequest */
         ResetMfaRequest: {
             /** Reason */
@@ -3341,14 +3731,16 @@ export interface components {
         Role: "OWNER" | "ADMIN" | "AGENT";
         /**
          * SendMessageRequest
-         * @description `TEXT` con `text`, o `TEMPLATE` con `template_name` e `language` (y `params` opcionales).
+         * @description `TEXT` con `text`, `TEMPLATE` con `template_name` e `language` (y `params` opcionales), o
+         *     `INTERACTIVE` con `interactive` (botones o lista; forma en `parse_interactive_content`,
+         *     `domain/services/whatsapp_interactive.py`).
          */
         SendMessageRequest: {
             /**
              * Type
              * @enum {string}
              */
-            type: "TEXT" | "TEMPLATE";
+            type: "TEXT" | "TEMPLATE" | "INTERACTIVE";
             /** Text */
             text?: string | null;
             /** Template Name */
@@ -3357,6 +3749,10 @@ export interface components {
             language?: string | null;
             /** Params */
             params?: string[];
+            /** Interactive */
+            interactive?: {
+                [key: string]: unknown;
+            } | null;
         };
         /**
          * SenderType
@@ -3480,6 +3876,28 @@ export interface components {
             /** Non Text Message */
             non_text_message?: string | null;
         };
+        /** UpdateCampaignEventRequest */
+        UpdateCampaignEventRequest: {
+            /** Title */
+            title?: string | null;
+            /** Starts At */
+            starts_at?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Location */
+            location?: string | null;
+            /** Is Public */
+            is_public?: boolean | null;
+        };
+        /** UpdateCandidateProfileRequest */
+        UpdateCandidateProfileRequest: {
+            /** Name */
+            name: string;
+            /** Role */
+            role?: string | null;
+            /** Bio */
+            bio?: string | null;
+        };
         /**
          * UpdateContactRequest
          * @description El teléfono NO se modifica: es la identidad del contacto (`extra="forbid"` lo rechaza).
@@ -3527,6 +3945,15 @@ export interface components {
             status?: components["schemas"]["InboxStatus"] | null;
             /** Access Token */
             access_token?: string | null;
+        };
+        /** UpdateKnowledgeDocumentRequest */
+        UpdateKnowledgeDocumentRequest: {
+            /** Title */
+            title?: string | null;
+            /** Content */
+            content?: string | null;
+            /** Is Published */
+            is_published?: boolean | null;
         };
         /**
          * UpdateLeadRequest
@@ -3657,6 +4084,15 @@ export interface components {
             /** Context */
             ctx?: Record<string, never>;
         };
+        /**
+         * Vertical
+         * @description Tipo de negocio de una cuenta (CRM_VERTICAL_PROJECT_ANALYSIS.md, Fase 1). Determina qué
+         *     módulos puede tener activos (`domain/services/verticals.py`). `GENERIC` es el de toda cuenta
+         *     existente antes de esta fase y el que trae por defecto un registro nuevo: no activa ningún
+         *     módulo, así que el comportamiento no cambia para nadie hasta que alguien elija otro vertical.
+         * @enum {string}
+         */
+        Vertical: "GENERIC" | "RESTAURANT" | "RETAIL" | "SERVICES" | "POLITICAL_CAMPAIGN";
         /** WhatsAppTypeBreakdownOut */
         WhatsAppTypeBreakdownOut: {
             /** Direction */
@@ -3706,6 +4142,9 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            vertical: components["schemas"]["Vertical"];
+            /** Active Modules */
+            active_modules: components["schemas"]["ModuleKey"][];
         };
         /** AccountOut */
         app__infrastructure__web__schemas__superadmin_accounts__AccountOut: {
@@ -3723,6 +4162,7 @@ export interface components {
             status_changed_at: string | null;
             /** Plan Id */
             plan_id: string | null;
+            vertical: components["schemas"]["Vertical"];
             /**
              * Created At
              * Format: date-time
@@ -5915,6 +6355,528 @@ export interface operations {
             };
         };
     };
+    get_candidate_profile_api_v1_campaign_profile_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CandidateProfileOut"] | null;
+                };
+            };
+        };
+    };
+    update_candidate_profile_api_v1_campaign_profile_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateCandidateProfileRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CandidateProfileOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_knowledge_documents_api_v1_campaign_knowledge_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KnowledgeDocumentListResponse"];
+                };
+            };
+        };
+    };
+    create_knowledge_document_api_v1_campaign_knowledge_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateKnowledgeDocumentRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KnowledgeDocumentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_knowledge_document_api_v1_campaign_knowledge__document_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KnowledgeDocumentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_knowledge_document_api_v1_campaign_knowledge__document_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_knowledge_document_api_v1_campaign_knowledge__document_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateKnowledgeDocumentRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KnowledgeDocumentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_campaign_events_api_v1_campaign_events_get: {
+        parameters: {
+            query?: {
+                upcoming_only?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CampaignEventListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_campaign_event_api_v1_campaign_events_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateCampaignEventRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CampaignEventOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_campaign_event_api_v1_campaign_events__event_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                event_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CampaignEventOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_campaign_event_api_v1_campaign_events__event_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                event_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_campaign_event_api_v1_campaign_events__event_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                event_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateCampaignEventRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CampaignEventOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_citizen_requests_api_v1_citizen_requests_get: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["CitizenRequestStatus"] | null;
+                type?: components["schemas"]["CitizenRequestType"] | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CitizenRequestListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_citizen_request_api_v1_citizen_requests_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateCitizenRequestRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CitizenRequestOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_citizen_request_api_v1_citizen_requests__request_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                request_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CitizenRequestOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_citizen_request_history_api_v1_citizen_requests__request_id__history_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                request_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RequestStatusHistoryListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    change_citizen_request_status_api_v1_citizen_requests__request_id__status_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                request_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeCitizenRequestStatusRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CitizenRequestOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     login_api_v1_superadmin_auth_login_post: {
         parameters: {
             query?: never;
@@ -6467,6 +7429,41 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["ChangeAccountStatusRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["app__infrastructure__web__schemas__superadmin_accounts__AccountOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    change_vertical_api_v1_superadmin_accounts__account_id__vertical_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeAccountVerticalRequest"];
             };
         };
         responses: {

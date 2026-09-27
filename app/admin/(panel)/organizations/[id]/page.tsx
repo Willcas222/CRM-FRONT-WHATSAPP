@@ -7,6 +7,7 @@ import {
   LimitsPanel,
   PlanPanel,
   StatusPanel,
+  VerticalPanel,
 } from "@/components/admin/account-panels";
 import { PageHeader, StatCard } from "@/components/admin/page-header";
 import { ErrorBanner, FullPageSpinner } from "@/components/ui/misc";
@@ -82,6 +83,7 @@ export default function AdminOrganizationDetailPage() {
       <div className="grid gap-6 xl:grid-cols-2">
         <StatusPanel account={account.data} />
         <PlanPanel account={account.data} />
+        <VerticalPanel account={account.data} />
       </div>
 
       <div className="mt-6">
