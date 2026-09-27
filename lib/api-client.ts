@@ -43,7 +43,7 @@ export class ApiError extends Error {
 }
 
 /** Ve si `raw` tiene la forma real de un error del backend; si no, arma un mensaje genérico. */
-function asApiError(status: number, raw: unknown): ApiError {
+export function asApiError(status: number, raw: unknown): ApiError {
   const body = raw as { error?: Partial<ApiErrorBody> } | undefined;
   if (body?.error?.code && body.error.message) {
     return new ApiError(status, {
@@ -75,7 +75,9 @@ export function setAccessToken(token: string | null): void {
   for (const listener of listeners) listener(token);
 }
 
-export function onAccessTokenChange(listener: (token: string | null) => void): () => void {
+export function onAccessTokenChange(
+  listener: (token: string | null) => void,
+): () => void {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
@@ -113,7 +115,8 @@ export async function refreshSession(): Promise<string | null> {
 
 const authMiddleware: Middleware = {
   onRequest({ request }) {
-    if (accessToken) request.headers.set("Authorization", `Bearer ${accessToken}`);
+    if (accessToken)
+      request.headers.set("Authorization", `Bearer ${accessToken}`);
     return request;
   },
 };
@@ -121,7 +124,11 @@ const authMiddleware: Middleware = {
 export const client = createClient<paths>({ baseUrl: "/" });
 client.use(authMiddleware);
 
-type ApiCall<T> = () => Promise<{ data?: T; error?: unknown; response: Response }>;
+type ApiCall<T> = () => Promise<{
+  data?: T;
+  error?: unknown;
+  response: Response;
+}>;
 
 /** Envuelve una llamada de `client.GET/POST/...`: si el access token expiró (401
  * `TOKEN_EXPIRED`), intenta un refresh silencioso UNA vez y reintenta la petición original. */

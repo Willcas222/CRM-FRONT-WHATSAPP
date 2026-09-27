@@ -18,7 +18,11 @@ import { Button } from "@/components/ui/button";
 import { Input, Label, Select, Textarea } from "@/components/ui/input";
 import { Card, ErrorBanner } from "@/components/ui/misc";
 import { ApiError } from "@/lib/auth-context";
-import { useCreateAutomation, useReplaceAutomation, type CreateAutomationRequest } from "@/lib/hooks/automations";
+import {
+  useCreateAutomation,
+  useReplaceAutomation,
+  type CreateAutomationRequest,
+} from "@/lib/hooks/automations";
 import { usePipelines } from "@/lib/hooks/pipelines";
 import { useUsers } from "@/lib/hooks/users";
 import type { components } from "@/lib/api-schema";
@@ -44,10 +48,11 @@ const TRIGGER_LABELS: Record<(typeof TRIGGER_TYPES)[number], string> = {
 };
 
 const TIME_REFERENCES = ["LAST_INBOUND", "STAGE_ENTERED"] as const;
-const TIME_REFERENCE_LABELS: Record<(typeof TIME_REFERENCES)[number], string> = {
-  LAST_INBOUND: "Desde el último mensaje del cliente",
-  STAGE_ENTERED: "Desde que el lead entró a la etapa actual",
-};
+const TIME_REFERENCE_LABELS: Record<(typeof TIME_REFERENCES)[number], string> =
+  {
+    LAST_INBOUND: "Desde el último mensaje del cliente",
+    STAGE_ENTERED: "Desde que el lead entró a la etapa actual",
+  };
 
 const TIME_UNITS = ["minutes", "hours", "days"] as const;
 const TIME_UNIT_SECONDS: Record<(typeof TIME_UNITS)[number], number> = {
@@ -70,7 +75,10 @@ const CONDITION_FIELDS = [
   "lead.source",
   "lead.metadata",
 ] as const;
-const CONDITION_FIELD_LABELS: Record<(typeof CONDITION_FIELDS)[number], string> = {
+const CONDITION_FIELD_LABELS: Record<
+  (typeof CONDITION_FIELDS)[number],
+  string
+> = {
   "contact.name": "Nombre del contacto",
   "contact.email": "Email del contacto",
   "contact.phone": "Teléfono del contacto",
@@ -80,10 +88,25 @@ const CONDITION_FIELD_LABELS: Record<(typeof CONDITION_FIELDS)[number], string> 
   "lead.metadata": "Dato del lead (personalizado)",
 };
 
-const LEAD_STATUSES = ["BOT_ACTIVE", "HUMAN_PENDING", "HUMAN_ASSIGNED", "CLOSED_WON", "CLOSED_LOST"] as const;
+const LEAD_STATUSES = [
+  "BOT_ACTIVE",
+  "HUMAN_PENDING",
+  "HUMAN_ASSIGNED",
+  "CLOSED_WON",
+  "CLOSED_LOST",
+] as const;
 const LEAD_SOURCES = ["WHATSAPP", "MANUAL", "AUTOMATION", "API"] as const;
 
-const CONDITION_OPS = ["eq", "neq", "in", "gt", "lt", "contains", "exists", "not_exists"] as const;
+const CONDITION_OPS = [
+  "eq",
+  "neq",
+  "in",
+  "gt",
+  "lt",
+  "contains",
+  "exists",
+  "not_exists",
+] as const;
 const CONDITION_OP_LABELS: Record<(typeof CONDITION_OPS)[number], string> = {
   eq: "es igual a",
   neq: "es distinto de",
@@ -94,7 +117,10 @@ const CONDITION_OP_LABELS: Record<(typeof CONDITION_OPS)[number], string> = {
   exists: "tiene un valor",
   not_exists: "no tiene valor",
 };
-const NO_VALUE_OPS = new Set<(typeof CONDITION_OPS)[number]>(["exists", "not_exists"]);
+const NO_VALUE_OPS = new Set<(typeof CONDITION_OPS)[number]>([
+  "exists",
+  "not_exists",
+]);
 
 const ACTION_TYPES = [
   "SEND_WHATSAPP",
@@ -124,10 +150,18 @@ const conditionSchema = z
   })
   .superRefine((c, ctx) => {
     if (c.fieldGroup === "lead.metadata" && !c.metadataKey?.trim()) {
-      ctx.addIssue({ code: "custom", path: ["metadataKey"], message: "Escribe la clave del dato del lead." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["metadataKey"],
+        message: "Escribe la clave del dato del lead.",
+      });
     }
     if (!NO_VALUE_OPS.has(c.op) && !c.value?.trim()) {
-      ctx.addIssue({ code: "custom", path: ["value"], message: "Obligatorio para este operador." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["value"],
+        message: "Obligatorio para este operador.",
+      });
     }
   });
 
@@ -146,19 +180,43 @@ const stepSchema = z
   })
   .superRefine((s, ctx) => {
     if (s.action_type === "SEND_WHATSAPP" && !s.text?.trim()) {
-      ctx.addIssue({ code: "custom", path: ["text"], message: "Escribe el mensaje a enviar." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["text"],
+        message: "Escribe el mensaje a enviar.",
+      });
     }
     if (s.action_type === "CHANGE_STAGE" && !s.stage_id) {
-      ctx.addIssue({ code: "custom", path: ["stage_id"], message: "Selecciona una etapa." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["stage_id"],
+        message: "Selecciona una etapa.",
+      });
     }
     if (s.action_type === "CREATE_TASK" && !s.title?.trim()) {
-      ctx.addIssue({ code: "custom", path: ["title"], message: "Escribe un título." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["title"],
+        message: "Escribe un título.",
+      });
     }
-    if (s.action_type === "CREATE_TASK" && s.due_in_hours && !/^\d+$/.test(s.due_in_hours)) {
-      ctx.addIssue({ code: "custom", path: ["due_in_hours"], message: "Debe ser un número entero de horas." });
+    if (
+      s.action_type === "CREATE_TASK" &&
+      s.due_in_hours &&
+      !/^\d+$/.test(s.due_in_hours)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["due_in_hours"],
+        message: "Debe ser un número entero de horas.",
+      });
     }
     if (s.action_type === "WEBHOOK" && !s.url?.trim().startsWith("https://")) {
-      ctx.addIssue({ code: "custom", path: ["url"], message: "Debe ser una URL https:// válida." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["url"],
+        message: "Debe ser una URL https:// válida.",
+      });
     }
   });
 
@@ -172,11 +230,17 @@ const automationFormSchema = z
     time_value: z.coerce.number().optional(),
     time_unit: z.enum(TIME_UNITS).optional(),
     conditions: z.array(conditionSchema).max(10, "Máximo 10 condiciones."),
-    steps: z.array(stepSchema).min(1, "Debe tener al menos un paso.").max(10, "Máximo 10 pasos."),
+    steps: z
+      .array(stepSchema)
+      .min(1, "Debe tener al menos un paso.")
+      .max(10, "Máximo 10 pasos."),
   })
   .superRefine((values, ctx) => {
     if (values.trigger_type === "TIME_ELAPSED") {
-      const seconds = Math.round((values.time_value ?? 0) * TIME_UNIT_SECONDS[values.time_unit ?? "minutes"]);
+      const seconds = Math.round(
+        (values.time_value ?? 0) *
+          TIME_UNIT_SECONDS[values.time_unit ?? "minutes"],
+      );
       if (!values.time_value || seconds < 60 || seconds > 60 * 60 * 24 * 30) {
         ctx.addIssue({
           code: "custom",
@@ -216,7 +280,10 @@ function emptyAutomation(): AutomationFormValues {
   };
 }
 
-function secondsToValueUnit(seconds: number): { value: number; unit: (typeof TIME_UNITS)[number] } {
+function secondsToValueUnit(seconds: number): {
+  value: number;
+  unit: (typeof TIME_UNITS)[number];
+} {
   if (seconds % 86400 === 0) return { value: seconds / 86400, unit: "days" };
   if (seconds % 3600 === 0) return { value: seconds / 3600, unit: "hours" };
   return { value: Math.round(seconds / 60), unit: "minutes" };
@@ -225,15 +292,20 @@ function secondsToValueUnit(seconds: number): { value: number; unit: (typeof TIM
 function fromAutomation(a: AutomationOut): AutomationFormValues {
   const cfg = a.trigger_config as Record<string, unknown>;
   const timing =
-    typeof cfg.after_seconds === "number" ? secondsToValueUnit(cfg.after_seconds) : { value: 30, unit: "minutes" as const };
+    typeof cfg.after_seconds === "number"
+      ? secondsToValueUnit(cfg.after_seconds)
+      : { value: 30, unit: "minutes" as const };
   return {
     name: a.name,
     description: a.description ?? "",
     trigger_type: (TRIGGER_TYPES as readonly string[]).includes(a.trigger_type)
       ? (a.trigger_type as (typeof TRIGGER_TYPES)[number])
       : "NEW_CONTACT",
-    stage_changed_to_stage_id: typeof cfg.to_stage_id === "string" ? cfg.to_stage_id : "",
-    time_reference: (TIME_REFERENCES as readonly string[]).includes(cfg.reference as string)
+    stage_changed_to_stage_id:
+      typeof cfg.to_stage_id === "string" ? cfg.to_stage_id : "",
+    time_reference: (TIME_REFERENCES as readonly string[]).includes(
+      cfg.reference as string,
+    )
       ? (cfg.reference as (typeof TIME_REFERENCES)[number])
       : "LAST_INBOUND",
     time_value: timing.value,
@@ -248,8 +320,14 @@ function fromAutomation(a: AutomationOut): AutomationFormValues {
       return {
         fieldGroup,
         metadataKey: isMetadata ? c.field.slice("lead.metadata.".length) : "",
-        op: (CONDITION_OPS as readonly string[]).includes(c.op) ? (c.op as (typeof CONDITION_OPS)[number]) : "eq",
-        value: Array.isArray(c.value) ? c.value.join(", ") : c.value != null ? String(c.value) : "",
+        op: (CONDITION_OPS as readonly string[]).includes(c.op)
+          ? (c.op as (typeof CONDITION_OPS)[number])
+          : "eq",
+        value: Array.isArray(c.value)
+          ? c.value.join(", ")
+          : c.value != null
+            ? String(c.value)
+            : "",
       };
     }),
     steps: a.steps.map((s) => {
@@ -262,8 +340,12 @@ function fromAutomation(a: AutomationOut): AutomationFormValues {
         stage_id: typeof config.stage_id === "string" ? config.stage_id : "",
         agent_id: typeof config.agent_id === "string" ? config.agent_id : "",
         title: typeof config.title === "string" ? config.title : "",
-        description: typeof config.description === "string" ? config.description : "",
-        due_in_hours: typeof config.due_in_hours === "number" ? String(config.due_in_hours) : "",
+        description:
+          typeof config.description === "string" ? config.description : "",
+        due_in_hours:
+          typeof config.due_in_hours === "number"
+            ? String(config.due_in_hours)
+            : "",
         reason: typeof config.reason === "string" ? config.reason : "",
         url: typeof config.url === "string" ? config.url : "",
         secret: typeof config.secret === "string" ? config.secret : "",
@@ -281,17 +363,26 @@ function splitList(value: string | undefined): string[] {
 
 function toRequest(values: AutomationFormValues): CreateAutomationRequest {
   let trigger_config: Record<string, unknown> = {};
-  if (values.trigger_type === "STAGE_CHANGED" && values.stage_changed_to_stage_id) {
+  if (
+    values.trigger_type === "STAGE_CHANGED" &&
+    values.stage_changed_to_stage_id
+  ) {
     trigger_config = { to_stage_id: values.stage_changed_to_stage_id };
   } else if (values.trigger_type === "TIME_ELAPSED") {
     trigger_config = {
       reference: values.time_reference,
-      after_seconds: Math.round((values.time_value ?? 0) * TIME_UNIT_SECONDS[values.time_unit ?? "minutes"]),
+      after_seconds: Math.round(
+        (values.time_value ?? 0) *
+          TIME_UNIT_SECONDS[values.time_unit ?? "minutes"],
+      ),
     };
   }
 
   const conditions = values.conditions.map((c) => {
-    const field = c.fieldGroup === "lead.metadata" ? `lead.metadata.${c.metadataKey!.trim()}` : c.fieldGroup;
+    const field =
+      c.fieldGroup === "lead.metadata"
+        ? `lead.metadata.${c.metadataKey!.trim()}`
+        : c.fieldGroup;
     if (NO_VALUE_OPS.has(c.op)) return { field, op: c.op };
     if (c.op === "in") return { field, op: c.op, value: splitList(c.value) };
     return { field, op: c.op, value: c.value };
@@ -304,22 +395,33 @@ function toRequest(values: AutomationFormValues): CreateAutomationRequest {
       case "CHANGE_STAGE":
         return { action_type: s.action_type, config: { stage_id: s.stage_id } };
       case "ASSIGN_AGENT":
-        return { action_type: s.action_type, config: s.agent_id ? { agent_id: s.agent_id } : {} };
+        return {
+          action_type: s.action_type,
+          config: s.agent_id ? { agent_id: s.agent_id } : {},
+        };
       case "CREATE_TASK":
         return {
           action_type: s.action_type,
           config: {
             title: s.title,
-            ...(s.description?.trim() ? { description: s.description.trim() } : {}),
+            ...(s.description?.trim()
+              ? { description: s.description.trim() }
+              : {}),
             ...(s.due_in_hours ? { due_in_hours: Number(s.due_in_hours) } : {}),
           },
         };
       case "HANDOFF":
-        return { action_type: s.action_type, config: s.reason?.trim() ? { reason: s.reason.trim() } : {} };
+        return {
+          action_type: s.action_type,
+          config: s.reason?.trim() ? { reason: s.reason.trim() } : {},
+        };
       case "WEBHOOK":
         return {
           action_type: s.action_type,
-          config: { url: s.url, ...(s.secret?.trim() ? { secret: s.secret.trim() } : {}) },
+          config: {
+            url: s.url,
+            ...(s.secret?.trim() ? { secret: s.secret.trim() } : {}),
+          },
         };
       case "RUN_AI":
         return { action_type: s.action_type, config: {} };
@@ -347,7 +449,10 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
   const { data: users } = useUsers();
   const [error, setError] = useState<string | null>(null);
 
-  const stages = pipelines?.items.flatMap((p) => p.stages.map((s) => ({ ...s, pipelineName: p.name }))) ?? [];
+  const stages =
+    pipelines?.items.flatMap((p) =>
+      p.stages.map((s) => ({ ...s, pipelineName: p.name })),
+    ) ?? [];
 
   const {
     register,
@@ -357,7 +462,9 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
   } = useForm<AutomationFormValues>({
     // El esquema combina arreglos con `superRefine` por elemento y otro a nivel de formulario;
     // TypeScript no logra unificar el tipo `Resolver<T>` resultante sin esta anotación explícita.
-    resolver: zodResolver(automationFormSchema) as Resolver<AutomationFormValues>,
+    resolver: zodResolver(
+      automationFormSchema,
+    ) as Resolver<AutomationFormValues>,
     defaultValues: automation ? fromAutomation(automation) : emptyAutomation(),
   });
   const triggerType = useWatch({ control, name: "trigger_type" });
@@ -366,7 +473,11 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
     append: appendCondition,
     remove: removeCondition,
   } = useFieldArray({ control, name: "conditions" });
-  const { fields: stepFields, append: appendStep, remove: removeStep } = useFieldArray({ control, name: "steps" });
+  const {
+    fields: stepFields,
+    append: appendStep,
+    remove: removeStep,
+  } = useFieldArray({ control, name: "steps" });
 
   async function onSubmit(values: AutomationFormValues) {
     setError(null);
@@ -379,7 +490,11 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
       }
       router.push("/automations");
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "No se pudo guardar la automatización.");
+      setError(
+        e instanceof ApiError
+          ? e.message
+          : "No se pudo guardar la automatización.",
+      );
     }
   }
 
@@ -394,12 +509,19 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
         </div>
         <div>
           <Label htmlFor="description">Descripción (opcional)</Label>
-          <Textarea id="description" rows={2} error={errors.description?.message} {...register("description")} />
+          <Textarea
+            id="description"
+            rows={2}
+            error={errors.description?.message}
+            {...register("description")}
+          />
         </div>
       </Card>
 
       <Card className="space-y-4 p-4">
-        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">Disparador</p>
+        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+          Disparador
+        </p>
         <div>
           <Label htmlFor="trigger_type">Cuándo se ejecuta</Label>
           <Select id="trigger_type" {...register("trigger_type")}>
@@ -412,8 +534,13 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
         </div>
         {triggerType === "STAGE_CHANGED" && (
           <div>
-            <Label htmlFor="stage_changed_to_stage_id">Solo al entrar a esta etapa (opcional)</Label>
-            <Select id="stage_changed_to_stage_id" {...register("stage_changed_to_stage_id")}>
+            <Label htmlFor="stage_changed_to_stage_id">
+              Solo al entrar a esta etapa (opcional)
+            </Label>
+            <Select
+              id="stage_changed_to_stage_id"
+              {...register("stage_changed_to_stage_id")}
+            >
               <option value="">Cualquier etapa</option>
               {stages.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -462,14 +589,22 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
       <Card className="space-y-3 p-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-            Condiciones <span className="font-normal text-zinc-500 dark:text-zinc-400">(todas deben cumplirse)</span>
+            Condiciones{" "}
+            <span className="font-normal text-zinc-500 dark:text-zinc-400">
+              (todas deben cumplirse)
+            </span>
           </p>
           <Button
             type="button"
             size="sm"
             variant="secondary"
             onClick={() =>
-              appendCondition({ fieldGroup: "lead.status", metadataKey: "", op: "eq", value: "" })
+              appendCondition({
+                fieldGroup: "lead.status",
+                metadataKey: "",
+                op: "eq",
+                value: "",
+              })
             }
           >
             Añadir condición
@@ -477,7 +612,8 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
         </div>
         {conditionFields.length === 0 ? (
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Sin condiciones: la automatización se ejecuta siempre que ocurra el disparador.
+            Sin condiciones: la automatización se ejecuta siempre que ocurra el
+            disparador.
           </p>
         ) : (
           <div className="space-y-3">
@@ -497,7 +633,9 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
 
       <Card className="space-y-3 p-4">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">Pasos</p>
+          <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+            Pasos
+          </p>
           <Button
             type="button"
             size="sm"
@@ -521,7 +659,9 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
           </Button>
         </div>
         {errors.steps?.root?.message && (
-          <p className="text-xs text-red-600 dark:text-red-400">{errors.steps.root.message}</p>
+          <p className="text-xs text-red-600 dark:text-red-400">
+            {errors.steps.root.message}
+          </p>
         )}
         <div className="space-y-3">
           {stepFields.map((field, index) => (
@@ -541,7 +681,11 @@ export function AutomationForm({ automation }: { automation?: AutomationOut }) {
       </Card>
 
       <div className="flex justify-end gap-2">
-        <Button type="button" variant="secondary" onClick={() => router.push("/automations")}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => router.push("/automations")}
+        >
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
@@ -565,7 +709,10 @@ function ConditionRow({
   errors: FieldErrors<AutomationFormValues>;
   onRemove: () => void;
 }) {
-  const fieldGroup = useWatch({ control, name: `conditions.${index}.fieldGroup` });
+  const fieldGroup = useWatch({
+    control,
+    name: `conditions.${index}.fieldGroup`,
+  });
   const op = useWatch({ control, name: `conditions.${index}.op` });
   const fieldErrors = errors.conditions?.[index];
 
@@ -590,7 +737,13 @@ function ConditionRow({
           />
         </div>
       )}
-      <div className={fieldGroup === "lead.status" ? "col-span-2 sm:col-span-1" : "col-span-1"}>
+      <div
+        className={
+          fieldGroup === "lead.status"
+            ? "col-span-2 sm:col-span-1"
+            : "col-span-1"
+        }
+      >
         <Label className="text-xs">Operador</Label>
         <Select {...register(`conditions.${index}.op`)}>
           {CONDITION_OPS.map((o) => (
@@ -604,7 +757,10 @@ function ConditionRow({
         (fieldGroup === "lead.status" ? (
           <div className="col-span-2 sm:col-span-1">
             <Label className="text-xs">Valor</Label>
-            <Select error={fieldErrors?.value?.message} {...register(`conditions.${index}.value`)}>
+            <Select
+              error={fieldErrors?.value?.message}
+              {...register(`conditions.${index}.value`)}
+            >
               <option value="">—</option>
               {LEAD_STATUSES.map((s) => (
                 <option key={s} value={s}>
@@ -616,7 +772,10 @@ function ConditionRow({
         ) : fieldGroup === "lead.source" ? (
           <div className="col-span-2 sm:col-span-1">
             <Label className="text-xs">Valor</Label>
-            <Select error={fieldErrors?.value?.message} {...register(`conditions.${index}.value`)}>
+            <Select
+              error={fieldErrors?.value?.message}
+              {...register(`conditions.${index}.value`)}
+            >
               <option value="">—</option>
               {LEAD_SOURCES.map((s) => (
                 <option key={s} value={s}>
@@ -627,8 +786,13 @@ function ConditionRow({
           </div>
         ) : (
           <div className="col-span-2 sm:col-span-1">
-            <Label className="text-xs">{op === "in" ? "Valores (coma)" : "Valor"}</Label>
-            <Input error={fieldErrors?.value?.message} {...register(`conditions.${index}.value`)} />
+            <Label className="text-xs">
+              {op === "in" ? "Valores (coma)" : "Valor"}
+            </Label>
+            <Input
+              error={fieldErrors?.value?.message}
+              {...register(`conditions.${index}.value`)}
+            />
           </div>
         ))}
       <div className="col-span-2 flex items-end justify-end sm:col-span-1">
@@ -676,7 +840,13 @@ function StepRow({
           </Select>
         </div>
         {removable && (
-          <Button type="button" size="sm" variant="ghost" onClick={onRemove} className="mt-5">
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={onRemove}
+            className="mt-5"
+          >
             Quitar
           </Button>
         )}
@@ -685,14 +855,21 @@ function StepRow({
       {actionType === "SEND_WHATSAPP" && (
         <div>
           <Label className="text-xs">Mensaje</Label>
-          <Textarea rows={3} error={fieldErrors?.text?.message} {...register(`steps.${index}.text`)} />
+          <Textarea
+            rows={3}
+            error={fieldErrors?.text?.message}
+            {...register(`steps.${index}.text`)}
+          />
         </div>
       )}
 
       {actionType === "CHANGE_STAGE" && (
         <div>
           <Label className="text-xs">Nueva etapa</Label>
-          <Select error={fieldErrors?.stage_id?.message} {...register(`steps.${index}.stage_id`)}>
+          <Select
+            error={fieldErrors?.stage_id?.message}
+            {...register(`steps.${index}.stage_id`)}
+          >
             <option value="">Selecciona una etapa…</option>
             {stages.map((s) => (
               <option key={s.id} value={s.id}>
@@ -721,7 +898,10 @@ function StepRow({
         <div className="space-y-3">
           <div>
             <Label className="text-xs">Título</Label>
-            <Input error={fieldErrors?.title?.message} {...register(`steps.${index}.title`)} />
+            <Input
+              error={fieldErrors?.title?.message}
+              {...register(`steps.${index}.title`)}
+            />
           </div>
           <div>
             <Label className="text-xs">Descripción (opcional)</Label>
@@ -729,7 +909,10 @@ function StepRow({
           </div>
           <div>
             <Label className="text-xs">Vence en (horas, opcional)</Label>
-            <Input error={fieldErrors?.due_in_hours?.message} {...register(`steps.${index}.due_in_hours`)} />
+            <Input
+              error={fieldErrors?.due_in_hours?.message}
+              {...register(`steps.${index}.due_in_hours`)}
+            />
           </div>
         </div>
       )}
@@ -745,10 +928,15 @@ function StepRow({
         <div className="space-y-3">
           <div>
             <Label className="text-xs">URL (https://)</Label>
-            <Input error={fieldErrors?.url?.message} {...register(`steps.${index}.url`)} />
+            <Input
+              error={fieldErrors?.url?.message}
+              {...register(`steps.${index}.url`)}
+            />
           </div>
           <div>
-            <Label className="text-xs">Secreto para firmar la petición (opcional)</Label>
+            <Label className="text-xs">
+              Secreto para firmar la petición (opcional)
+            </Label>
             <Input {...register(`steps.${index}.secret`)} />
           </div>
         </div>
@@ -756,7 +944,8 @@ function StepRow({
 
       {actionType === "RUN_AI" && (
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Ejecuta la IA del bot del canal para que continúe la conversación con el lead.
+          Ejecuta la IA del bot del canal para que continúe la conversación con
+          el lead.
         </p>
       )}
     </div>

@@ -2,13 +2,27 @@
 
 /** Sesión del usuario (Fase 13). El token de acceso vive en memoria (`api-client.ts`); al cargar
  * la app se restaura con un refresh silencioso apoyado en la cookie httpOnly del backend. */
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
-import { ApiError, callApi, client, refreshSession, setAccessToken } from "./api-client";
+import {
+  ApiError,
+  callApi,
+  client,
+  refreshSession,
+  setAccessToken,
+} from "./api-client";
 import type { components } from "./api-schema";
 
 type UserOut = components["schemas"]["UserOut"];
-type AccountOut = components["schemas"]["AccountOut"];
+type AccountOut =
+  components["schemas"]["app__infrastructure__web__schemas__auth__AccountOut"];
 
 type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
@@ -93,7 +107,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = useCallback(
     async (input: RegisterInput) => {
-      const auth = await callApi(() => client.POST("/api/v1/auth/register", { body: input }));
+      const auth = await callApi(() =>
+        client.POST("/api/v1/auth/register", { body: input }),
+      );
       setAccessToken(auth.access_token);
       await loadMe();
     },
@@ -131,8 +147,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       scheduleLogout();
     }
 
-    const events = ["mousedown", "mousemove", "keydown", "scroll", "touchstart"] as const;
-    for (const event of events) window.addEventListener(event, onActivity, { passive: true });
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keydown",
+      "scroll",
+      "touchstart",
+    ] as const;
+    for (const event of events)
+      window.addEventListener(event, onActivity, { passive: true });
     scheduleLogout();
 
     return () => {
@@ -148,7 +171,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ ...state, login, register, logout, hasPermission, refetchMe: loadMe }}
+      value={{
+        ...state,
+        login,
+        register,
+        logout,
+        hasPermission,
+        refetchMe: loadMe,
+      }}
     >
       {children}
     </AuthContext.Provider>

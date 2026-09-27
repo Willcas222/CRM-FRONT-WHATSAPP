@@ -23,7 +23,9 @@ function useInvalidateInboxes() {
 export function useCreateInbox() {
   const invalidate = useInvalidateInboxes();
   return useMutation({
-    mutationFn: (body: CreateInboxRequest) => callApi(() => client.POST("/api/v1/inboxes", { body })),
+    meta: { success: "Canal creado." },
+    mutationFn: (body: CreateInboxRequest) =>
+      callApi(() => client.POST("/api/v1/inboxes", { body })),
     onSuccess: invalidate,
   });
 }
@@ -31,9 +33,13 @@ export function useCreateInbox() {
 export function useUpdateInbox(inboxId: string) {
   const invalidate = useInvalidateInboxes();
   return useMutation({
+    meta: { success: "Canal actualizado." },
     mutationFn: (body: UpdateInboxRequest) =>
       callApi(() =>
-        client.PATCH("/api/v1/inboxes/{inbox_id}", { params: { path: { inbox_id: inboxId } }, body }),
+        client.PATCH("/api/v1/inboxes/{inbox_id}", {
+          params: { path: { inbox_id: inboxId } },
+          body,
+        }),
       ),
     onSuccess: invalidate,
   });
@@ -43,6 +49,7 @@ export function useUpdateInbox(inboxId: string) {
 export function useActivateInbox() {
   const invalidate = useInvalidateInboxes();
   return useMutation({
+    meta: { success: "Canal activado." },
     mutationFn: (inboxId: string) =>
       callApi(() =>
         client.PATCH("/api/v1/inboxes/{inbox_id}", {
@@ -57,9 +64,12 @@ export function useActivateInbox() {
 export function useDeactivateInbox() {
   const invalidate = useInvalidateInboxes();
   return useMutation({
+    meta: { success: "Canal desactivado." },
     mutationFn: (inboxId: string) =>
       callApi(() =>
-        client.DELETE("/api/v1/inboxes/{inbox_id}", { params: { path: { inbox_id: inboxId } } }),
+        client.DELETE("/api/v1/inboxes/{inbox_id}", {
+          params: { path: { inbox_id: inboxId } },
+        }),
       ),
     onSuccess: invalidate,
   });

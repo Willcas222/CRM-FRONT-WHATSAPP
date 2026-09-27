@@ -14,7 +14,9 @@ export function useContacts(q: string) {
     queryKey: ["contacts", { q }],
     queryFn: () =>
       callApi(() =>
-        client.GET("/api/v1/contacts", { params: { query: { q: q || undefined, limit: 50 } } }),
+        client.GET("/api/v1/contacts", {
+          params: { query: { q: q || undefined, limit: 50 } },
+        }),
       ),
   });
 }
@@ -24,7 +26,9 @@ export function useContact(contactId: string | undefined) {
     queryKey: ["contacts", contactId],
     queryFn: () =>
       callApi(() =>
-        client.GET("/api/v1/contacts/{contact_id}", { params: { path: { contact_id: contactId! } } }),
+        client.GET("/api/v1/contacts/{contact_id}", {
+          params: { path: { contact_id: contactId! } },
+        }),
       ),
     enabled: !!contactId,
   });
@@ -54,7 +58,9 @@ export function useContactsLookup() {
       let cursor: string | null | undefined;
       for (let page = 0; page < 10; page += 1) {
         const result = await callApi(() =>
-          client.GET("/api/v1/contacts", { params: { query: { limit: 100, cursor } } }),
+          client.GET("/api/v1/contacts", {
+            params: { query: { limit: 100, cursor } },
+          }),
         );
         for (const contact of result.items) byId.set(contact.id, contact);
         if (!result.has_more) break;
@@ -69,6 +75,7 @@ export function useContactsLookup() {
 export function useCreateContact() {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: { success: "Contacto creado." },
     mutationFn: (body: CreateContactRequest) =>
       callApi(() => client.POST("/api/v1/contacts", { body })),
     onSuccess: () => {
@@ -80,9 +87,13 @@ export function useCreateContact() {
 export function useUpdateContact(contactId: string) {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: { success: "Contacto actualizado." },
     mutationFn: (body: UpdateContactRequest) =>
       callApi(() =>
-        client.PATCH("/api/v1/contacts/{contact_id}", { params: { path: { contact_id: contactId } }, body }),
+        client.PATCH("/api/v1/contacts/{contact_id}", {
+          params: { path: { contact_id: contactId } },
+          body,
+        }),
       ),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["contacts"] });

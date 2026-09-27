@@ -3,7 +3,8 @@
 import {
   DndContext,
   DragOverlay,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useDraggable,
   useDroppable,
   useSensor,
@@ -14,13 +15,19 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 
-import { Badge, EmptyState, ErrorBanner, FullPageSpinner } from "@/components/ui/misc";
+import {
+  Badge,
+  EmptyState,
+  ErrorBanner,
+  FullPageSpinner,
+} from "@/components/ui/misc";
 import { ApiError } from "@/lib/auth-context";
 import { useContactsLookup } from "@/lib/hooks/contacts";
 import { useMoveLead, usePipelineLeads } from "@/lib/hooks/leads";
 import { useDefaultPipeline } from "@/lib/hooks/pipelines";
 import type { components } from "@/lib/api-schema";
 import { cn } from "@/lib/utils";
+import { PageTitle } from "@/components/help/page-title";
 
 type LeadOut = components["schemas"]["LeadOut"];
 type StageOut = components["schemas"]["StageOut"];
@@ -33,19 +40,30 @@ const STAGE_TONE: Record<StageOut["type"], "neutral" | "green" | "red"> = {
 
 export default function PipelinePage() {
   const { data: pipeline, isLoading: pipelineLoading } = useDefaultPipeline();
-  const { data: leads, isLoading: leadsLoading } = usePipelineLeads(pipeline?.id);
+  const { data: leads, isLoading: leadsLoading } = usePipelineLeads(
+    pipeline?.id,
+  );
   const { data: contactsById } = useContactsLookup();
   const moveLead = useMoveLead();
   const [error, setError] = useState<string | null>(null);
   const [activeLead, setActiveLead] = useState<LeadOut | null>(null);
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 4 } }),
+    // Táctil: hay que mantener pulsado; un deslizamiento normal desplaza el tablero
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 250, tolerance: 8 },
+    }),
+  );
 
   if (pipelineLoading || leadsLoading) return <FullPageSpinner />;
   if (!pipeline) {
     return (
-      <div className="p-6">
-        <EmptyState title="Sin pipeline" description="Crea un pipeline en Configuración." />
+      <div className="p-4 sm:p-6">
+        <EmptyState
+          title="Sin pipeline"
+          description="Crea un pipeline en Configuración."
+        />
       </div>
     );
   }
@@ -79,13 +97,22 @@ export default function PipelinePage() {
   }
 
   return (
-    <div className="flex h-full flex-col p-6">
+    <div className="flex h-full flex-col p-4 sm:p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">{pipeline.name}</h1>
+        <PageTitle
+          topic="pipeline"
+          className="text-xl font-semibold text-zinc-900 dark:text-zinc-100"
+        >
+          {pipeline.name}
+        </PageTitle>
         {error && <ErrorBanner message={error} />}
       </div>
 
-      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
         <div className="flex flex-1 gap-4 overflow-x-auto pb-4">
           {pipeline.stages.map((stage) => (
             <StageColumn
@@ -124,8 +151,10 @@ function StageColumn({
     <div
       ref={setNodeRef}
       className={cn(
-        "flex w-72 shrink-0 flex-col rounded-xl border bg-zinc-100/60 dark:bg-zinc-900/60",
-        isOver ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/30" : "border-transparent",
+        "flex w-[82vw] shrink-0 flex-col rounded-xl border sm:w-72 bg-zinc-100/60 dark:bg-zinc-900/60",
+        isOver
+          ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/30"
+          : "border-transparent",
       )}
     >
       <div className="flex items-center justify-between px-3 py-2.5">
@@ -159,10 +188,11 @@ function DraggableLeadCard({
   contactName: string | null | undefined;
   locked: boolean;
 }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: lead.id,
-    disabled: locked,
-  });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: lead.id,
+      disabled: locked,
+    });
 
   return (
     <div
@@ -178,7 +208,10 @@ function DraggableLeadCard({
     >
       <Link
         href={`/leads/${lead.id}`}
-        className={cn("block", locked ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
+        className={cn(
+          "block",
+          locked ? "cursor-pointer" : "cursor-grab active:cursor-grabbing",
+        )}
       >
         <LeadCardContent lead={lead} contactName={contactName} />
       </Link>
@@ -195,8 +228,12 @@ function LeadCardContent({
 }) {
   return (
     <div className="rounded-lg border border-zinc-200 bg-white p-3 text-sm shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-      <p className="font-medium text-zinc-900 dark:text-zinc-100">{lead.title}</p>
-      <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">{contactName || "—"}</p>
+      <p className="font-medium text-zinc-900 dark:text-zinc-100">
+        {lead.title}
+      </p>
+      <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+        {contactName || "—"}
+      </p>
     </div>
   );
 }

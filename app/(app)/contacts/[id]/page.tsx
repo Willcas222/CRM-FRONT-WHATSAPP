@@ -7,11 +7,22 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { PageTitle } from "@/components/help/page-title";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
-import { Badge, Card, EmptyState, ErrorBanner, FullPageSpinner } from "@/components/ui/misc";
+import {
+  Badge,
+  Card,
+  EmptyState,
+  ErrorBanner,
+  FullPageSpinner,
+} from "@/components/ui/misc";
 import { ApiError } from "@/lib/auth-context";
-import { useContact, useContactHistory, useUpdateContact } from "@/lib/hooks/contacts";
+import {
+  useContact,
+  useContactHistory,
+  useUpdateContact,
+} from "@/lib/hooks/contacts";
 import { formatDateTime } from "@/lib/utils";
 
 const schema = z.object({
@@ -49,16 +60,22 @@ export default function ContactDetailPage() {
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
-    if (contact) reset({ name: contact.name ?? "", email: contact.email ?? "" });
+    if (contact)
+      reset({ name: contact.name ?? "", email: contact.email ?? "" });
   }, [contact, reset]);
 
   async function onSubmit(values: FormValues) {
     setServerError(null);
     try {
-      await updateContact.mutateAsync({ name: values.name || null, email: values.email || null });
+      await updateContact.mutateAsync({
+        name: values.name || null,
+        email: values.email || null,
+      });
     } catch (error) {
       setServerError(
-        error instanceof ApiError ? error.message : "No se pudieron guardar los cambios.",
+        error instanceof ApiError
+          ? error.message
+          : "No se pudieron guardar los cambios.",
       );
     }
   }
@@ -66,18 +83,26 @@ export default function ContactDetailPage() {
   if (isLoading || !contact) return <FullPageSpinner />;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 p-6">
+    <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
       <div>
-        <Link href="/contacts" className="text-sm text-zinc-500 hover:underline dark:text-zinc-400">
+        <Link
+          href="/contacts"
+          className="text-sm text-zinc-500 hover:underline dark:text-zinc-400"
+        >
           ← Contactos
         </Link>
-        <h1 className="mt-1 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+        <PageTitle
+          topic="contact-detail"
+          className="mt-1 text-xl font-semibold text-zinc-900 dark:text-zinc-100"
+        >
           {contact.name || contact.phone}
-        </h1>
+        </PageTitle>
       </div>
 
       <Card className="p-5">
-        <h2 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">Datos</h2>
+        <h2 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          Datos
+        </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {serverError && <ErrorBanner message={serverError} />}
           <div>
@@ -86,11 +111,20 @@ export default function ContactDetailPage() {
           </div>
           <div>
             <Label htmlFor="name">Nombre</Label>
-            <Input id="name" error={errors.name?.message} {...register("name")} />
+            <Input
+              id="name"
+              error={errors.name?.message}
+              {...register("name")}
+            />
           </div>
           <div>
             <Label htmlFor="email">Correo</Label>
-            <Input id="email" type="email" error={errors.email?.message} {...register("email")} />
+            <Input
+              id="email"
+              type="email"
+              error={errors.email?.message}
+              {...register("email")}
+            />
           </div>
           <div className="flex justify-end">
             <Button type="submit" loading={isSubmitting} disabled={!isDirty}>
@@ -103,7 +137,9 @@ export default function ContactDetailPage() {
       {contact.open_lead && (
         <Card className="p-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Lead abierto</h2>
+            <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              Lead abierto
+            </h2>
             <Badge tone="green">{contact.open_lead.status}</Badge>
           </div>
           <Link
@@ -145,7 +181,10 @@ export default function ContactDetailPage() {
         ) : (
           <ul className="space-y-3">
             {history.items.map((event) => (
-              <li key={event.id} className="flex items-center justify-between text-sm">
+              <li
+                key={event.id}
+                className="flex items-center justify-between text-sm"
+              >
                 <span className="text-zinc-700 dark:text-zinc-300">
                   {EVENT_LABELS[event.type] ?? event.type}
                 </span>

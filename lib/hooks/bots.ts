@@ -17,9 +17,16 @@ export function useBots() {
 export function useUpdateBot(botId: string) {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: {
+      success:
+        "Configuración del bot guardada. Se aplica desde el siguiente mensaje.",
+    },
     mutationFn: (body: UpdateBotRequest) =>
       callApi(() =>
-        client.PATCH("/api/v1/bots/{bot_id}", { params: { path: { bot_id: botId } }, body }),
+        client.PATCH("/api/v1/bots/{bot_id}", {
+          params: { path: { bot_id: botId } },
+          body,
+        }),
       ),
     onSuccess: () => void queryClient.invalidateQueries({ queryKey: ["bots"] }),
   });

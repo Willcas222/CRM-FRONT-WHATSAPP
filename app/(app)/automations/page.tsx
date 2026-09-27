@@ -3,10 +3,22 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import { PageTitle } from "@/components/help/page-title";
 import { Button } from "@/components/ui/button";
-import { Badge, Card, EmptyState, ErrorBanner, FullPageSpinner, Spinner } from "@/components/ui/misc";
+import {
+  Badge,
+  Card,
+  EmptyState,
+  ErrorBanner,
+  FullPageSpinner,
+  Spinner,
+} from "@/components/ui/misc";
 import { ApiError } from "@/lib/auth-context";
-import { useAutomations, useDeleteAutomation, useUpdateAutomation } from "@/lib/hooks/automations";
+import {
+  useAutomations,
+  useDeleteAutomation,
+  useUpdateAutomation,
+} from "@/lib/hooks/automations";
 import type { components } from "@/lib/api-schema";
 import { useRequireManage } from "./require-manage";
 
@@ -29,9 +41,14 @@ export default function AutomationsPage() {
   if (!canManage) return <FullPageSpinner />;
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
+    <div className="mx-auto max-w-3xl p-4 sm:p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Automatizaciones</h1>
+        <PageTitle
+          topic="automations"
+          className="text-xl font-semibold text-zinc-900 dark:text-zinc-100"
+        >
+          Automatizaciones
+        </PageTitle>
         <Link href="/automations/new">
           <Button>Nueva automatización</Button>
         </Link>
@@ -56,7 +73,11 @@ export default function AutomationsPage() {
         ) : (
           <ul className="divide-y divide-zinc-100 dark:divide-zinc-800">
             {data.map((automation) => (
-              <AutomationRow key={automation.id} automation={automation} onError={setError} />
+              <AutomationRow
+                key={automation.id}
+                automation={automation}
+                onError={setError}
+              />
             ))}
           </ul>
         )}
@@ -80,12 +101,15 @@ function AutomationRow({
     try {
       await updateAutomation.mutateAsync({ is_active: !automation.is_active });
     } catch (e) {
-      onError(e instanceof ApiError ? e.message : "No se pudo cambiar el estado.");
+      onError(
+        e instanceof ApiError ? e.message : "No se pudo cambiar el estado.",
+      );
     }
   }
 
   async function handleDelete() {
-    if (!window.confirm(`¿Eliminar la automatización «${automation.name}»?`)) return;
+    if (!window.confirm(`¿Eliminar la automatización «${automation.name}»?`))
+      return;
     onError(null);
     try {
       await deleteAutomation.mutateAsync(automation.id);
@@ -97,9 +121,12 @@ function AutomationRow({
   return (
     <li className="flex items-center justify-between px-4 py-3">
       <Link href={`/automations/${automation.id}`} className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">{automation.name}</p>
+        <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">
+          {automation.name}
+        </p>
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          {TRIGGER_LABELS[automation.trigger_type] ?? automation.trigger_type} · {automation.steps.length}{" "}
+          {TRIGGER_LABELS[automation.trigger_type] ?? automation.trigger_type} ·{" "}
+          {automation.steps.length}{" "}
           {automation.steps.length === 1 ? "paso" : "pasos"}
         </p>
       </Link>
@@ -107,10 +134,20 @@ function AutomationRow({
         <Badge tone={automation.is_active ? "green" : "neutral"}>
           {automation.is_active ? "Activa" : "Inactiva"}
         </Badge>
-        <Button size="sm" variant="secondary" onClick={toggleActive} loading={updateAutomation.isPending}>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={toggleActive}
+          loading={updateAutomation.isPending}
+        >
           {automation.is_active ? "Desactivar" : "Activar"}
         </Button>
-        <Button size="sm" variant="ghost" onClick={handleDelete} loading={deleteAutomation.isPending}>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={handleDelete}
+          loading={deleteAutomation.isPending}
+        >
           Eliminar
         </Button>
       </div>

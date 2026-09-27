@@ -6,16 +6,24 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { PageTitle } from "@/components/help/page-title";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
-import { Card, EmptyState, ErrorBanner, FullPageSpinner } from "@/components/ui/misc";
+import {
+  Card,
+  EmptyState,
+  ErrorBanner,
+  FullPageSpinner,
+} from "@/components/ui/misc";
 import { Modal } from "@/components/ui/modal";
 import { ApiError } from "@/lib/auth-context";
 import { useContacts, useCreateContact } from "@/lib/hooks/contacts";
 import { formatDate } from "@/lib/utils";
 
 const schema = z.object({
-  phone: z.string().min(6, "Ingresa un número válido, con indicativo (+57...)."),
+  phone: z
+    .string()
+    .min(6, "Ingresa un número válido, con indicativo (+57...)."),
   name: z.string().optional(),
   email: z.string().email("Correo no válido.").optional().or(z.literal("")),
 });
@@ -28,9 +36,14 @@ export default function ContactsPage() {
   const router = useRouter();
 
   return (
-    <div className="mx-auto max-w-4xl space-y-4 p-6">
+    <div className="mx-auto max-w-4xl space-y-4 p-4 sm:p-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Contactos</h1>
+        <PageTitle
+          topic="contacts"
+          className="text-xl font-semibold text-zinc-900 dark:text-zinc-100"
+        >
+          Contactos
+        </PageTitle>
         <Button onClick={() => setCreateOpen(true)}>Nuevo contacto</Button>
       </div>
 
@@ -50,36 +63,42 @@ export default function ContactsPage() {
             description="Los contactos también se crean solos cuando un cliente escribe por WhatsApp."
           />
         ) : (
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-zinc-100 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-              <tr>
-                <th className="px-4 py-2 font-medium">Nombre</th>
-                <th className="px-4 py-2 font-medium">Teléfono</th>
-                <th className="px-4 py-2 font-medium">Correo</th>
-                <th className="px-4 py-2 font-medium">Creado</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              {data.items.map((contact) => (
-                <tr
-                  key={contact.id}
-                  onClick={() => router.push(`/contacts/${contact.id}`)}
-                  className="cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
-                >
-                  <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
-                    {contact.name || <span className="text-zinc-400">Sin nombre</span>}
-                  </td>
-                  <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">{contact.phone}</td>
-                  <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">
-                    {contact.email || "—"}
-                  </td>
-                  <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400">
-                    {formatDate(contact.created_at)}
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="min-w-[32rem] w-full text-left text-sm">
+              <thead className="border-b border-zinc-100 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                <tr>
+                  <th className="px-4 py-2 font-medium">Nombre</th>
+                  <th className="px-4 py-2 font-medium">Teléfono</th>
+                  <th className="px-4 py-2 font-medium">Correo</th>
+                  <th className="px-4 py-2 font-medium">Creado</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                {data.items.map((contact) => (
+                  <tr
+                    key={contact.id}
+                    onClick={() => router.push(`/contacts/${contact.id}`)}
+                    className="cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
+                  >
+                    <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
+                      {contact.name || (
+                        <span className="text-zinc-400">Sin nombre</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">
+                      {contact.phone}
+                    </td>
+                    <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">
+                      {contact.email || "—"}
+                    </td>
+                    <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400">
+                      {formatDate(contact.created_at)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </Card>
       {data?.has_more && (
@@ -88,12 +107,21 @@ export default function ContactsPage() {
         </p>
       )}
 
-      <CreateContactModal open={createOpen} onClose={() => setCreateOpen(false)} />
+      <CreateContactModal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+      />
     </div>
   );
 }
 
-function CreateContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function CreateContactModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const router = useRouter();
   const createContact = useCreateContact();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -116,7 +144,11 @@ function CreateContactModal({ open, onClose }: { open: boolean; onClose: () => v
       onClose();
       router.push(`/contacts/${contact.id}`);
     } catch (error) {
-      setServerError(error instanceof ApiError ? error.message : "No se pudo crear el contacto.");
+      setServerError(
+        error instanceof ApiError
+          ? error.message
+          : "No se pudo crear el contacto.",
+      );
     }
   }
 
@@ -139,7 +171,12 @@ function CreateContactModal({ open, onClose }: { open: boolean; onClose: () => v
         </div>
         <div>
           <Label htmlFor="email">Correo</Label>
-          <Input id="email" type="email" error={errors.email?.message} {...register("email")} />
+          <Input
+            id="email"
+            type="email"
+            error={errors.email?.message}
+            {...register("email")}
+          />
         </div>
         <div className="flex justify-end gap-2 pt-2">
           <Button type="button" variant="secondary" onClick={onClose}>

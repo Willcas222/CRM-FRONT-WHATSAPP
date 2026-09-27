@@ -2,8 +2,12 @@
 
 import { useParams } from "next/navigation";
 
+import { PageTitle } from "@/components/help/page-title";
 import { Badge, Card, EmptyState, FullPageSpinner } from "@/components/ui/misc";
-import { useAutomation, useAutomationExecutions } from "@/lib/hooks/automations";
+import {
+  useAutomation,
+  useAutomationExecutions,
+} from "@/lib/hooks/automations";
 import { formatDateTime } from "@/lib/utils";
 import { AutomationForm } from "../automation-form";
 import { useRequireManage } from "../require-manage";
@@ -31,8 +35,13 @@ export default function EditAutomationPage() {
   if (!automation) return <EmptyState title="Automatización no encontrada" />;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Editar automatización</h1>
+    <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
+      <PageTitle
+        topic="automations"
+        className="text-xl font-semibold text-zinc-900 dark:text-zinc-100"
+      >
+        Editar automatización
+      </PageTitle>
       <AutomationForm automation={automation} />
       <ExecutionHistory automationId={automation.id} />
     </div>
@@ -44,9 +53,13 @@ function ExecutionHistory({ automationId }: { automationId: string }) {
 
   return (
     <Card className="p-4">
-      <p className="mb-3 text-sm font-medium text-zinc-900 dark:text-zinc-100">Últimas ejecuciones</p>
+      <p className="mb-3 text-sm font-medium text-zinc-900 dark:text-zinc-100">
+        Últimas ejecuciones
+      </p>
       {!data || data.items.length === 0 ? (
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">Todavía no se ha ejecutado.</p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          Todavía no se ha ejecutado.
+        </p>
       ) : (
         <ul className="space-y-2">
           {data.items.map((execution) => (
@@ -55,8 +68,14 @@ function ExecutionHistory({ automationId }: { automationId: string }) {
               className="flex items-center justify-between rounded-lg border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-700"
             >
               <div>
-                <p className="text-zinc-700 dark:text-zinc-300">{formatDateTime(execution.started_at)}</p>
-                {execution.error && <p className="mt-0.5 text-red-600 dark:text-red-400">{execution.error}</p>}
+                <p className="text-zinc-700 dark:text-zinc-300">
+                  {formatDateTime(execution.started_at)}
+                </p>
+                {execution.error && (
+                  <p className="mt-0.5 text-red-600 dark:text-red-400">
+                    {execution.error}
+                  </p>
+                )}
               </div>
               <Badge tone={STATUS_TONES[execution.status] ?? "neutral"}>
                 {STATUS_LABELS[execution.status] ?? execution.status}

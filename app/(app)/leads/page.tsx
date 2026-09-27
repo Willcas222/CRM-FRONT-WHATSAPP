@@ -6,9 +6,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { PageTitle } from "@/components/help/page-title";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Select } from "@/components/ui/input";
-import { Badge, Card, EmptyState, ErrorBanner, FullPageSpinner } from "@/components/ui/misc";
+import {
+  Badge,
+  Card,
+  EmptyState,
+  ErrorBanner,
+  FullPageSpinner,
+} from "@/components/ui/misc";
 import { Modal } from "@/components/ui/modal";
 import { ApiError } from "@/lib/auth-context";
 import { useContacts, useContactsLookup } from "@/lib/hooks/contacts";
@@ -23,7 +30,10 @@ const STATUS_LABELS: Record<string, string> = {
   CLOSED_LOST: "Perdido",
 };
 
-const STATUS_TONES: Record<string, "neutral" | "green" | "amber" | "red" | "blue"> = {
+const STATUS_TONES: Record<
+  string,
+  "neutral" | "green" | "amber" | "red" | "blue"
+> = {
   BOT_ACTIVE: "blue",
   HUMAN_PENDING: "amber",
   HUMAN_ASSIGNED: "neutral",
@@ -39,9 +49,14 @@ export default function LeadsPage() {
   const router = useRouter();
 
   return (
-    <div className="mx-auto max-w-4xl space-y-4 p-6">
+    <div className="mx-auto max-w-4xl space-y-4 p-4 sm:p-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Leads</h1>
+        <PageTitle
+          topic="leads"
+          className="text-xl font-semibold text-zinc-900 dark:text-zinc-100"
+        >
+          Leads
+        </PageTitle>
         <Button onClick={() => setCreateOpen(true)}>Nuevo lead</Button>
       </div>
 
@@ -77,43 +92,45 @@ export default function LeadsPage() {
         ) : !data || data.items.length === 0 ? (
           <EmptyState title="Sin leads todavía" />
         ) : (
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-zinc-100 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-              <tr>
-                <th className="px-4 py-2 font-medium">Título</th>
-                <th className="px-4 py-2 font-medium">Contacto</th>
-                <th className="px-4 py-2 font-medium">Estado</th>
-                <th className="px-4 py-2 font-medium">Creado</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              {data.items.map((lead) => {
-                const contact = contactsById?.get(lead.contact_id);
-                return (
-                  <tr
-                    key={lead.id}
-                    onClick={() => router.push(`/leads/${lead.id}`)}
-                    className="cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
-                  >
-                    <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
-                      {lead.title}
-                    </td>
-                    <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">
-                      {contact?.name || contact?.phone || "—"}
-                    </td>
-                    <td className="px-4 py-2.5">
-                      <Badge tone={STATUS_TONES[lead.status]}>
-                        {STATUS_LABELS[lead.status] ?? lead.status}
-                      </Badge>
-                    </td>
-                    <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400">
-                      {formatDate(lead.created_at)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="min-w-[32rem] w-full text-left text-sm">
+              <thead className="border-b border-zinc-100 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                <tr>
+                  <th className="px-4 py-2 font-medium">Título</th>
+                  <th className="px-4 py-2 font-medium">Contacto</th>
+                  <th className="px-4 py-2 font-medium">Estado</th>
+                  <th className="px-4 py-2 font-medium">Creado</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                {data.items.map((lead) => {
+                  const contact = contactsById?.get(lead.contact_id);
+                  return (
+                    <tr
+                      key={lead.id}
+                      onClick={() => router.push(`/leads/${lead.id}`)}
+                      className="cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
+                    >
+                      <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
+                        {lead.title}
+                      </td>
+                      <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">
+                        {contact?.name || contact?.phone || "—"}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <Badge tone={STATUS_TONES[lead.status]}>
+                          {STATUS_LABELS[lead.status] ?? lead.status}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400">
+                        {formatDate(lead.created_at)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </Card>
       {data?.has_more && (
@@ -133,7 +150,13 @@ const createSchema = z.object({
 });
 type CreateFormValues = z.infer<typeof createSchema>;
 
-function CreateLeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function CreateLeadModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const router = useRouter();
   const createLead = useCreateLead();
   const [contactQuery, setContactQuery] = useState("");
@@ -158,7 +181,9 @@ function CreateLeadModal({ open, onClose }: { open: boolean; onClose: () => void
       onClose();
       router.push(`/leads/${lead.id}`);
     } catch (error) {
-      setServerError(error instanceof ApiError ? error.message : "No se pudo crear el lead.");
+      setServerError(
+        error instanceof ApiError ? error.message : "No se pudo crear el lead.",
+      );
     }
   }
 
@@ -175,7 +200,10 @@ function CreateLeadModal({ open, onClose }: { open: boolean; onClose: () => void
             onChange={(e) => setContactQuery(e.target.value)}
             className="mb-2"
           />
-          <Select error={errors.contact_id?.message} {...register("contact_id")}>
+          <Select
+            error={errors.contact_id?.message}
+            {...register("contact_id")}
+          >
             <option value="">Selecciona…</option>
             {contacts?.items.map((contact) => (
               <option key={contact.id} value={contact.id}>
@@ -186,7 +214,11 @@ function CreateLeadModal({ open, onClose }: { open: boolean; onClose: () => void
         </div>
         <div>
           <Label htmlFor="title">Título (opcional)</Label>
-          <Input id="title" error={errors.title?.message} {...register("title")} />
+          <Input
+            id="title"
+            error={errors.title?.message}
+            {...register("title")}
+          />
         </div>
         <div className="flex justify-end gap-2 pt-2">
           <Button type="button" variant="secondary" onClick={onClose}>

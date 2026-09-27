@@ -31,7 +31,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       <input
         ref={ref}
         className={cn(
-          "block w-full rounded-lg border px-3 py-2 text-sm shadow-sm outline-none transition-colors",
+          "block w-full rounded-xl border px-3 py-2 text-sm shadow-sm outline-none transition-colors",
           "focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500",
           "dark:bg-zinc-900 dark:text-zinc-100",
           error
@@ -41,7 +41,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
         {...props}
       />
-      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && (
+        <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>
+      )}
     </div>
   );
 });
@@ -55,7 +57,7 @@ export const Textarea = forwardRef<
       <textarea
         ref={ref}
         className={cn(
-          "block w-full rounded-lg border px-3 py-2 text-sm shadow-sm outline-none transition-colors",
+          "block w-full rounded-xl border px-3 py-2 text-sm shadow-sm outline-none transition-colors",
           "focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500",
           "dark:bg-zinc-900 dark:text-zinc-100",
           error
@@ -65,7 +67,9 @@ export const Textarea = forwardRef<
         )}
         {...props}
       />
-      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && (
+        <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>
+      )}
     </div>
   );
 });
@@ -79,7 +83,7 @@ export const Select = forwardRef<
       <select
         ref={ref}
         className={cn(
-          "block w-full rounded-lg border bg-white px-3 py-2 text-sm shadow-sm outline-none transition-colors",
+          "block w-full rounded-xl border bg-white px-3 py-2 text-sm shadow-sm outline-none transition-colors",
           "focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500",
           "dark:bg-zinc-900 dark:text-zinc-100",
           error
@@ -91,7 +95,9 @@ export const Select = forwardRef<
       >
         {children}
       </select>
-      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && (
+        <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>
+      )}
     </div>
   );
 });

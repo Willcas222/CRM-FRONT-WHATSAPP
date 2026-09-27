@@ -10,6 +10,7 @@ type UpdateAccountRequest = components["schemas"]["UpdateAccountRequest"];
 export function useUpdateAccount() {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: { success: "Nombre de la organización actualizado." },
     mutationFn: (body: UpdateAccountRequest) =>
       callApi(() => client.PATCH("/api/v1/account", { body })),
     onSuccess: () => {

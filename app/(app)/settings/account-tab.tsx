@@ -11,7 +11,9 @@ import { Card, ErrorBanner } from "@/components/ui/misc";
 import { ApiError, useAuth } from "@/lib/auth-context";
 import { useUpdateAccount } from "@/lib/hooks/account";
 
-const schema = z.object({ name: z.string().min(1, "Ingresa el nombre de la cuenta.") });
+const schema = z.object({
+  name: z.string().min(1, "Ingresa el nombre de la cuenta."),
+});
 type FormValues = z.infer<typeof schema>;
 
 export function AccountTab() {
@@ -39,7 +41,11 @@ export function AccountTab() {
       await refetchMe();
       setSaved(true);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "No se pudieron guardar los cambios.");
+      setError(
+        e instanceof ApiError
+          ? e.message
+          : "No se pudieron guardar los cambios.",
+      );
     }
   }
 
@@ -52,7 +58,9 @@ export function AccountTab() {
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm space-y-4">
           {error && <ErrorBanner message={error} />}
           {saved && (
-            <p className="text-sm text-emerald-700 dark:text-emerald-400">Cambios guardados.</p>
+            <p className="text-sm text-emerald-700 dark:text-emerald-400">
+              Cambios guardados.
+            </p>
           )}
           <div>
             <Label htmlFor="account_name">Nombre</Label>
@@ -77,7 +85,9 @@ export function AccountTab() {
       </Card>
 
       <Card className="p-5">
-        <h2 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">Tu perfil</h2>
+        <h2 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          Tu perfil
+        </h2>
         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
           <dt className="text-zinc-500 dark:text-zinc-400">Nombre</dt>
           <dd className="text-zinc-900 dark:text-zinc-100">{user?.name}</dd>

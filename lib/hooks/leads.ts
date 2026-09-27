@@ -65,7 +65,11 @@ export function useLead(leadId: string | undefined) {
   return useQuery({
     queryKey: ["leads", leadId],
     queryFn: () =>
-      callApi(() => client.GET("/api/v1/leads/{lead_id}", { params: { path: { lead_id: leadId! } } })),
+      callApi(() =>
+        client.GET("/api/v1/leads/{lead_id}", {
+          params: { path: { lead_id: leadId! } },
+        }),
+      ),
     enabled: !!leadId,
   });
 }
@@ -91,7 +95,9 @@ function useInvalidateLeads() {
 export function useCreateLead() {
   const invalidate = useInvalidateLeads();
   return useMutation({
-    mutationFn: (body: CreateLeadRequest) => callApi(() => client.POST("/api/v1/leads", { body })),
+    meta: { success: "Lead creado." },
+    mutationFn: (body: CreateLeadRequest) =>
+      callApi(() => client.POST("/api/v1/leads", { body })),
     onSuccess: invalidate,
   });
 }
@@ -99,9 +105,13 @@ export function useCreateLead() {
 export function useUpdateLead(leadId: string) {
   const invalidate = useInvalidateLeads();
   return useMutation({
+    meta: { success: "Lead actualizado." },
     mutationFn: (body: UpdateLeadRequest) =>
       callApi(() =>
-        client.PATCH("/api/v1/leads/{lead_id}", { params: { path: { lead_id: leadId } }, body }),
+        client.PATCH("/api/v1/leads/{lead_id}", {
+          params: { path: { lead_id: leadId } },
+          body,
+        }),
       ),
     onSuccess: invalidate,
   });
@@ -110,9 +120,13 @@ export function useUpdateLead(leadId: string) {
 export function useMoveLead() {
   const invalidate = useInvalidateLeads();
   return useMutation({
+    meta: { success: "Lead movido de etapa." },
     mutationFn: ({ leadId, ...body }: MoveLeadRequest & { leadId: string }) =>
       callApi(() =>
-        client.POST("/api/v1/leads/{lead_id}/move", { params: { path: { lead_id: leadId } }, body }),
+        client.POST("/api/v1/leads/{lead_id}/move", {
+          params: { path: { lead_id: leadId } },
+          body,
+        }),
       ),
     onSuccess: invalidate,
   });
@@ -121,9 +135,13 @@ export function useMoveLead() {
 export function useCloseLead(leadId: string) {
   const invalidate = useInvalidateLeads();
   return useMutation({
+    meta: { success: "Lead cerrado." },
     mutationFn: (body: CloseLeadRequest) =>
       callApi(() =>
-        client.POST("/api/v1/leads/{lead_id}/close", { params: { path: { lead_id: leadId } }, body }),
+        client.POST("/api/v1/leads/{lead_id}/close", {
+          params: { path: { lead_id: leadId } },
+          body,
+        }),
       ),
     onSuccess: invalidate,
   });
@@ -132,9 +150,13 @@ export function useCloseLead(leadId: string) {
 export function useAssignLead(leadId: string) {
   const invalidate = useInvalidateLeads();
   return useMutation({
+    meta: { success: "Responsable asignado." },
     mutationFn: (body: AssignLeadRequest) =>
       callApi(() =>
-        client.POST("/api/v1/leads/{lead_id}/assign", { params: { path: { lead_id: leadId } }, body }),
+        client.POST("/api/v1/leads/{lead_id}/assign", {
+          params: { path: { lead_id: leadId } },
+          body,
+        }),
       ),
     onSuccess: invalidate,
   });

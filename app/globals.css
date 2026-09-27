@@ -1,26 +1,110 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Sistema visual del CRM.
+
+  En vez de tocar cada pantalla, se redefinen las dos escalas que todas usan:
+  - `emerald` = color de marca (verde azulado tipo WhatsApp, más sobrio que el verde puro).
+  - `zinc`    = neutros con un leve tinte verde, para que fondos, bordes y textos combinen con la marca.
+  Así cualquier clase existente (`bg-emerald-600`, `border-zinc-200`, …) hereda la paleta nueva.
+*/
+@theme {
+  --color-emerald-50: #e9f8f2;
+  --color-emerald-100: #cdeee2;
+  --color-emerald-200: #9fddc7;
+  --color-emerald-300: #66c4a4;
+  --color-emerald-400: #33aa88;
+  --color-emerald-500: #16906f;
+  --color-emerald-600: #0b7a5f;
+  --color-emerald-700: #096350;
+  --color-emerald-800: #0a4f41;
+  --color-emerald-900: #0b4034;
+  --color-emerald-950: #052a21;
+
+  --color-zinc-50: #f5f7f6;
+  --color-zinc-100: #ebefed;
+  --color-zinc-200: #dde3e0;
+  --color-zinc-300: #c5cec9;
+  --color-zinc-400: #98a49e;
+  --color-zinc-500: #6c7973;
+  --color-zinc-600: #53605a;
+  --color-zinc-700: #3f4a45;
+  --color-zinc-800: #26302c;
+  --color-zinc-900: #172019;
+  --color-zinc-950: #0d1512;
+
+  /* Barra lateral: oscura en ambos modos, es el ancla visual de la marca */
+  --color-sidebar: #0f2a24;
+  --color-sidebar-hover: #17382f;
+  --color-sidebar-line: #1f4a3e;
+
+  /* Chat estilo WhatsApp */
+  --color-bubble-in: #ffffff;
+  --color-bubble-in-dark: #202c33;
+  --color-bubble-out: #d9fdd3;
+  --color-bubble-out-dark: #005c4b;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  --background: #f5f7f6;
+  --foreground: #172019;
+  --chat-wall: #efeae2;
+  --chat-dot: rgb(0 0 0 / 0.045);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0d1512;
+    --foreground: #e6ece9;
+    --chat-wall: #0b141a;
+    --chat-dot: rgb(255 255 255 / 0.035);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Fondo del chat: liso con un patrón muy tenue, como WhatsApp */
+.chat-wall {
+  background-color: var(--chat-wall);
+  background-image: radial-gradient(var(--chat-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Scroll discreto */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(120 135 128 / 0.45) transparent;
+}
+
+/* iOS hace zoom al enfocar campos con menos de 16px: en móvil se evita */
+@media (max-width: 1023px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Entrada suave de los avisos flotantes */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="toast-in"] {
+    animation: none !important;
+  }
 }

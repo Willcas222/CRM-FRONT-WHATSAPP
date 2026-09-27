@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/auth-context";
 export default function AppLayout({ children }: { children: ReactNode }) {
   const { status } = useAuth();
   const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") router.replace("/login");
@@ -21,11 +22,13 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen">
-      <Sidebar />
+    <div className="flex h-dvh">
+      <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar />
-        <main className="min-h-0 flex-1 overflow-y-auto bg-zinc-50 dark:bg-zinc-950">{children}</main>
+        <Topbar onMenu={() => setMenuOpen(true)} />
+        <main className="min-h-0 flex-1 overflow-y-auto bg-zinc-50 dark:bg-zinc-950">
+          {children}
+        </main>
       </div>
     </div>
   );

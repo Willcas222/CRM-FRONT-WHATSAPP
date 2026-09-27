@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // No anunciar la tecnología del servidor (X-Powered-By: Next.js): información gratis para un atacante
+  poweredByHeader: false,
   // Imagen de producción mínima (ver frontend/Dockerfile)
   output: "standalone",
 

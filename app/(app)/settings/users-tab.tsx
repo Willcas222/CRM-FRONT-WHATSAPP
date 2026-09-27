@@ -10,12 +10,21 @@ import { Input, Label, Select } from "@/components/ui/input";
 import { Badge, Card, ErrorBanner } from "@/components/ui/misc";
 import { Modal } from "@/components/ui/modal";
 import { ApiError, useAuth } from "@/lib/auth-context";
-import { useCreateUser, useResetUserPassword, useUpdateUser, useUsers } from "@/lib/hooks/users";
+import {
+  useCreateUser,
+  useResetUserPassword,
+  useUpdateUser,
+  useUsers,
+} from "@/lib/hooks/users";
 import type { components } from "@/lib/api-schema";
 
 type Role = components["schemas"]["Role"];
 
-const ROLE_LABELS: Record<Role, string> = { OWNER: "Propietaria", ADMIN: "Administrador", AGENT: "Agente" };
+const ROLE_LABELS: Record<Role, string> = {
+  OWNER: "Propietaria",
+  ADMIN: "Administrador",
+  AGENT: "Agente",
+};
 
 export function UsersTab() {
   const { user: me } = useAuth();
@@ -50,7 +59,11 @@ export function UsersTab() {
         )}
       </Card>
 
-      <CreateUserModal open={createOpen} onClose={() => setCreateOpen(false)} onError={setError} />
+      <CreateUserModal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onError={setError}
+      />
     </div>
   );
 }
@@ -87,7 +100,9 @@ function UserRow({
         status: targetUser.status === "ACTIVE" ? "DISABLED" : "ACTIVE",
       });
     } catch (e) {
-      onError(e instanceof ApiError ? e.message : "No se pudo cambiar el estado.");
+      onError(
+        e instanceof ApiError ? e.message : "No se pudo cambiar el estado.",
+      );
     }
   }
 
@@ -96,10 +111,17 @@ function UserRow({
     if (!password) return;
     onError(null);
     try {
-      await resetPassword.mutateAsync({ userId: targetUser.id, newPassword: password });
+      await resetPassword.mutateAsync({
+        userId: targetUser.id,
+        newPassword: password,
+      });
       setNewPassword(password);
     } catch (e) {
-      onError(e instanceof ApiError ? e.message : "No se pudo restablecer la contraseña.");
+      onError(
+        e instanceof ApiError
+          ? e.message
+          : "No se pudo restablecer la contraseña.",
+      );
     }
   }
 
@@ -108,7 +130,9 @@ function UserRow({
       <td className="px-4 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
         {targetUser.name}
       </td>
-      <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">{targetUser.email}</td>
+      <td className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400">
+        {targetUser.email}
+      </td>
       <td className="px-4 py-2.5">
         <Select
           value={targetUser.role}
@@ -124,7 +148,10 @@ function UserRow({
         </Select>
       </td>
       <td className="px-4 py-2.5">
-        <button onClick={toggleStatus} disabled={locked || updateUser.isPending}>
+        <button
+          onClick={toggleStatus}
+          disabled={locked || updateUser.isPending}
+        >
           <Badge tone={targetUser.status === "ACTIVE" ? "green" : "neutral"}>
             {targetUser.status === "ACTIVE" ? "Activo" : "Desactivado"}
           </Badge>
@@ -177,7 +204,9 @@ function CreateUserModal({
       reset();
       onClose();
     } catch (e) {
-      onError(e instanceof ApiError ? e.message : "No se pudo crear el usuario.");
+      onError(
+        e instanceof ApiError ? e.message : "No se pudo crear el usuario.",
+      );
     }
   }
 
@@ -190,7 +219,12 @@ function CreateUserModal({
         </div>
         <div>
           <Label htmlFor="email">Correo</Label>
-          <Input id="email" type="email" error={errors.email?.message} {...register("email")} />
+          <Input
+            id="email"
+            type="email"
+            error={errors.email?.message}
+            {...register("email")}
+          />
         </div>
         <div>
           <Label htmlFor="password">Contraseña inicial</Label>

@@ -12,7 +12,7 @@ const ROLE_LABELS: Record<string, string> = {
   AGENT: "Agente",
 };
 
-export function Topbar() {
+export function Topbar({ onMenu }: { onMenu: () => void }) {
   const { user, account, logout } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -23,8 +23,30 @@ export function Topbar() {
   }
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between border-b border-zinc-200 bg-white px-6 dark:border-zinc-800 dark:bg-zinc-950">
-      <div>{account && <p className="text-sm text-zinc-500 dark:text-zinc-400">{account.name}</p>}</div>
+    <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-zinc-200 bg-white px-3 sm:px-6 dark:border-zinc-800 dark:bg-zinc-950">
+      <div className="flex min-w-0 items-center gap-2">
+        <button
+          onClick={onMenu}
+          aria-label="Abrir menú"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-zinc-700 hover:bg-zinc-100 lg:hidden dark:text-zinc-200 dark:hover:bg-zinc-900"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+          >
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        {account && (
+          <p className="truncate text-sm font-medium text-zinc-600 dark:text-zinc-300">
+            {account.name}
+          </p>
+        )}
+      </div>
 
       {user && (
         <div className="relative">
@@ -35,12 +57,17 @@ export function Topbar() {
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-xs font-semibold text-white">
               {initials(user.name)}
             </span>
-            <span className="text-zinc-700 dark:text-zinc-300">{user.name}</span>
+            <span className="hidden text-zinc-700 sm:inline dark:text-zinc-300">
+              {user.name}
+            </span>
           </button>
 
           {open && (
             <>
-              <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+              <div
+                className="fixed inset-0 z-10"
+                onClick={() => setOpen(false)}
+              />
               <div className="absolute right-0 z-20 mt-2 w-48 rounded-lg border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
                 <div className="border-b border-zinc-100 px-3 py-2 dark:border-zinc-800">
                   <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">

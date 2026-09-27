@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
+import { useHydrated } from "@/lib/use-hydrated";
 import { Input, Label } from "@/components/ui/input";
 import { ErrorBanner } from "@/components/ui/misc";
 import { ApiError, useAuth } from "@/lib/auth-context";
@@ -25,6 +26,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function RegisterPage() {
+  const hydrated = useHydrated();
   const { status, register: registerAccount } = useAuth();
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -53,18 +55,19 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="flex flex-1 items-center justify-center bg-zinc-50 p-6 dark:bg-black">
+    <main className="flex flex-1 items-center justify-center bg-gradient-to-br from-emerald-800 via-sidebar to-zinc-950 p-6">
       <div className="w-full max-w-sm">
-        <h1 className="text-center text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+        <h1 className="text-center text-3xl font-semibold tracking-tight text-white">
           Crea tu cuenta
         </h1>
-        <p className="mt-1 text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-1 text-center text-sm text-emerald-100/80">
           Serás la propietaria de la cuenta
         </p>
 
         <form
+          method="post"
           onSubmit={handleSubmit(onSubmit)}
-          className="mt-8 space-y-4 rounded-2xl border border-black/10 bg-white p-6 dark:border-white/15 dark:bg-zinc-900"
+          className="mt-8 space-y-4 rounded-2xl border border-white/10 bg-white p-7 shadow-2xl dark:bg-zinc-900"
         >
           {serverError && <ErrorBanner message={serverError} />}
 
@@ -79,7 +82,11 @@ export default function RegisterPage() {
 
           <div>
             <Label htmlFor="name">Tu nombre</Label>
-            <Input id="name" error={errors.name?.message} {...register("name")} />
+            <Input
+              id="name"
+              error={errors.name?.message}
+              {...register("name")}
+            />
           </div>
 
           <div>
@@ -104,14 +111,22 @@ export default function RegisterPage() {
             />
           </div>
 
-          <Button type="submit" loading={isSubmitting} className="w-full">
+          <Button
+            type="submit"
+            loading={isSubmitting}
+            disabled={!hydrated}
+            className="w-full"
+          >
             Crear cuenta
           </Button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-4 text-center text-sm text-emerald-100/80">
           ¿Ya tienes cuenta?{" "}
-          <Link href="/login" className="font-medium text-emerald-700 dark:text-emerald-400">
+          <Link
+            href="/login"
+            className="font-semibold text-white underline underline-offset-2"
+          >
             Inicia sesión
           </Link>
         </p>

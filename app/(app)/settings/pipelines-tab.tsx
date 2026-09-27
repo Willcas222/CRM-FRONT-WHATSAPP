@@ -4,7 +4,12 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/input";
-import { Badge, Card, ErrorBanner, FullPageSpinner } from "@/components/ui/misc";
+import {
+  Badge,
+  Card,
+  ErrorBanner,
+  FullPageSpinner,
+} from "@/components/ui/misc";
 import { ApiError } from "@/lib/auth-context";
 import {
   useAddStage,
@@ -18,7 +23,11 @@ import type { components } from "@/lib/api-schema";
 type StageOut = components["schemas"]["StageOut"];
 type StageType = StageOut["type"];
 
-const TYPE_LABELS: Record<StageType, string> = { OPEN: "Abierta", WON: "Ganada", LOST: "Perdida" };
+const TYPE_LABELS: Record<StageType, string> = {
+  OPEN: "Abierta",
+  WON: "Ganada",
+  LOST: "Perdida",
+};
 
 export function PipelinesTab() {
   const { data, isLoading } = usePipelines();
@@ -58,7 +67,9 @@ function StageList({
   const [newName, setNewName] = useState("");
   const [newType, setNewType] = useState<StageType>("OPEN");
 
-  const stages = [...pipeline.stages].sort((a, b) => a.order_index - b.order_index);
+  const stages = [...pipeline.stages].sort(
+    (a, b) => a.order_index - b.order_index,
+  );
 
   async function move(stageId: string, direction: -1 | 1) {
     const index = stages.findIndex((s) => s.id === stageId);
@@ -79,17 +90,24 @@ function StageList({
     try {
       await updateStage.mutateAsync({ stageId, name });
     } catch (e) {
-      onError(e instanceof ApiError ? e.message : "No se pudo renombrar la etapa.");
+      onError(
+        e instanceof ApiError ? e.message : "No se pudo renombrar la etapa.",
+      );
     }
   }
 
   async function remove(stageId: string) {
-    if (!window.confirm("¿Eliminar esta etapa? Solo se puede si no tiene leads.")) return;
+    if (
+      !window.confirm("¿Eliminar esta etapa? Solo se puede si no tiene leads.")
+    )
+      return;
     onError(null);
     try {
       await deleteStage.mutateAsync(stageId);
     } catch (e) {
-      onError(e instanceof ApiError ? e.message : "No se pudo eliminar la etapa.");
+      onError(
+        e instanceof ApiError ? e.message : "No se pudo eliminar la etapa.",
+      );
     }
   }
 
@@ -129,10 +147,20 @@ function StageList({
           </div>
           <Input
             defaultValue={stage.name}
-            onBlur={(e) => e.target.value !== stage.name && rename(stage.id, e.target.value)}
+            onBlur={(e) =>
+              e.target.value !== stage.name && rename(stage.id, e.target.value)
+            }
             className="max-w-xs"
           />
-          <Badge tone={stage.type === "OPEN" ? "blue" : stage.type === "WON" ? "green" : "red"}>
+          <Badge
+            tone={
+              stage.type === "OPEN"
+                ? "blue"
+                : stage.type === "WON"
+                  ? "green"
+                  : "red"
+            }
+          >
             {TYPE_LABELS[stage.type]}
           </Badge>
           <div className="flex-1" />
@@ -158,7 +186,11 @@ function StageList({
           <option value="WON">Ganada</option>
           <option value="LOST">Perdida</option>
         </Select>
-        <Button variant="secondary" onClick={handleAdd} loading={addStage.isPending}>
+        <Button
+          variant="secondary"
+          onClick={handleAdd}
+          loading={addStage.isPending}
+        >
           Añadir
         </Button>
       </div>

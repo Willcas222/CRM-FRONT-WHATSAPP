@@ -24,7 +24,11 @@ import type { components } from "@/lib/api-schema";
 type BotOut = components["schemas"]["BotOut"];
 
 const FIELD_TYPES = ["text", "email", "phone", "number", "enum"] as const;
-const FIELD_TARGETS = ["lead.metadata", "contact.name", "contact.email"] as const;
+const FIELD_TARGETS = [
+  "lead.metadata",
+  "contact.name",
+  "contact.email",
+] as const;
 
 const TARGET_LABELS: Record<(typeof FIELD_TARGETS)[number], string> = {
   "lead.metadata": "Dato del lead",
@@ -37,7 +41,10 @@ const requiredFieldSchema = z
     key: z
       .string()
       .min(1, "Obligatoria.")
-      .regex(/^[a-z][a-z0-9_]{0,39}$/, "Minúsculas, dígitos y `_`, debe empezar por letra (máx. 40)."),
+      .regex(
+        /^[a-z][a-z0-9_]{0,39}$/,
+        "Minúsculas, dígitos y `_`, debe empezar por letra (máx. 40).",
+      ),
     label: z.string().min(1, "Obligatoria."),
     type: z.enum(FIELD_TYPES),
     target: z.enum(FIELD_TARGETS),
@@ -46,13 +53,25 @@ const requiredFieldSchema = z
   })
   .superRefine((field, ctx) => {
     if (field.target === "contact.name" && field.type !== "text") {
-      ctx.addIssue({ code: "custom", path: ["type"], message: "`Nombre del contacto` solo admite texto." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["type"],
+        message: "`Nombre del contacto` solo admite texto.",
+      });
     }
     if (field.target === "contact.email" && field.type !== "email") {
-      ctx.addIssue({ code: "custom", path: ["type"], message: "`Email del contacto` solo admite email." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["type"],
+        message: "`Email del contacto` solo admite email.",
+      });
     }
     if (field.type === "enum" && !field.options?.trim()) {
-      ctx.addIssue({ code: "custom", path: ["options"], message: "Un campo de lista necesita opciones (separadas por coma)." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["options"],
+        message: "Un campo de lista necesita opciones (separadas por coma).",
+      });
     }
   });
 
@@ -61,8 +80,10 @@ const botFormSchema = z
     is_active: z.boolean(),
     system_prompt: z.string().max(4000, "Máximo 4000 caracteres."),
     welcome_message: z.string().max(1000, "Máximo 1000 caracteres.").optional(),
-    non_text_message: z.string().max(1000, "Máximo 1000 caracteres.").optional(),
-    ai_model: z.string().optional(),
+    non_text_message: z
+      .string()
+      .max(1000, "Máximo 1000 caracteres.")
+      .optional(),
     required_fields: z.array(requiredFieldSchema).max(20, "Máximo 20 campos."),
     handoff_on_qualified: z.boolean(),
     handoff_max_bot_turns: z.coerce.number().int().min(1).max(100),
@@ -70,17 +91,33 @@ const botFormSchema = z
     handoff_message: z.string().max(1000, "Máximo 1000 caracteres.").optional(),
   })
   .superRefine((values, ctx) => {
-    const names = values.required_fields.filter((f) => f.target === "contact.name").length;
-    const emails = values.required_fields.filter((f) => f.target === "contact.email").length;
+    const names = values.required_fields.filter(
+      (f) => f.target === "contact.name",
+    ).length;
+    const emails = values.required_fields.filter(
+      (f) => f.target === "contact.email",
+    ).length;
     if (names > 1) {
-      ctx.addIssue({ code: "custom", path: ["required_fields"], message: "Solo un campo puede apuntar al nombre del contacto." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["required_fields"],
+        message: "Solo un campo puede apuntar al nombre del contacto.",
+      });
     }
     if (emails > 1) {
-      ctx.addIssue({ code: "custom", path: ["required_fields"], message: "Solo un campo puede apuntar al email del contacto." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["required_fields"],
+        message: "Solo un campo puede apuntar al email del contacto.",
+      });
     }
     const keys = values.required_fields.map((f) => f.key);
     if (new Set(keys).size !== keys.length) {
-      ctx.addIssue({ code: "custom", path: ["required_fields"], message: "Las claves de los campos deben ser únicas." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["required_fields"],
+        message: "Las claves de los campos deben ser únicas.",
+      });
     }
   });
 
@@ -94,7 +131,6 @@ function fromBot(bot: BotOut): BotFormValues {
     system_prompt: bot.system_prompt,
     welcome_message: bot.welcome_message ?? "",
     non_text_message: bot.non_text_message ?? "",
-    ai_model: bot.ai_model ?? "",
     required_fields: rawFields.map((f) => ({
       key: typeof f.key === "string" ? f.key : "",
       label: typeof f.label === "string" ? f.label : "",
@@ -105,12 +141,22 @@ function fromBot(bot: BotOut): BotFormValues {
         ? (f.target as (typeof FIELD_TARGETS)[number])
         : "lead.metadata",
       required: f.required !== false,
-      options: Array.isArray(f.options) ? (f.options as string[]).join(", ") : "",
+      options: Array.isArray(f.options)
+        ? (f.options as string[]).join(", ")
+        : "",
     })),
     handoff_on_qualified: rawHandoff.on_qualified !== false,
-    handoff_max_bot_turns: typeof rawHandoff.max_bot_turns === "number" ? rawHandoff.max_bot_turns : 12,
-    handoff_keywords: Array.isArray(rawHandoff.keywords) ? (rawHandoff.keywords as string[]).join(", ") : "",
-    handoff_message: typeof rawHandoff.handoff_message === "string" ? rawHandoff.handoff_message : "",
+    handoff_max_bot_turns:
+      typeof rawHandoff.max_bot_turns === "number"
+        ? rawHandoff.max_bot_turns
+        : 12,
+    handoff_keywords: Array.isArray(rawHandoff.keywords)
+      ? (rawHandoff.keywords as string[]).join(", ")
+      : "",
+    handoff_message:
+      typeof rawHandoff.handoff_message === "string"
+        ? rawHandoff.handoff_message
+        : "",
   };
 }
 
@@ -127,7 +173,6 @@ function toRequest(values: BotFormValues): UpdateBotRequest {
     system_prompt: values.system_prompt,
     welcome_message: values.welcome_message?.trim() || null,
     non_text_message: values.non_text_message?.trim() || null,
-    ai_model: values.ai_model?.trim() || null,
     required_fields: values.required_fields.map((f) => ({
       key: f.key,
       label: f.label,
@@ -163,7 +208,8 @@ export function BotTab() {
           </div>
         ) : !bots || bots.items.length === 0 ? (
           <p className="p-5 text-sm text-zinc-500 dark:text-zinc-400">
-            No hay bots todavía: crea un canal de WhatsApp en la pestaña «Canales» primero.
+            No hay bots todavía: crea un canal de WhatsApp en la pestaña
+            «Canales» primero.
           </p>
         ) : (
           <ul className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -181,7 +227,9 @@ export function BotTab() {
                     <Badge tone={bot.is_active ? "green" : "neutral"}>
                       {bot.is_active ? "Activo" : "Inactivo"}
                     </Badge>
-                    <span className="text-xs text-zinc-400">{openId === bot.id ? "Ocultar" : "Configurar"}</span>
+                    <span className="text-xs text-zinc-400">
+                      {openId === bot.id ? "Ocultar" : "Configurar"}
+                    </span>
                   </div>
                 </button>
                 {openId === bot.id && (
@@ -214,7 +262,10 @@ function BotForm({ bot }: { bot: BotOut }) {
     resolver: zodResolver(botFormSchema) as Resolver<BotFormValues>,
     defaultValues: fromBot(bot),
   });
-  const { fields, append, remove } = useFieldArray({ control, name: "required_fields" });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "required_fields",
+  });
 
   async function onSubmit(values: BotFormValues) {
     setError(null);
@@ -226,7 +277,11 @@ function BotForm({ bot }: { bot: BotOut }) {
       reset(fromBot(updated));
       setSaved(true);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "No se pudo guardar la configuración del bot.");
+      setError(
+        e instanceof ApiError
+          ? e.message
+          : "No se pudo guardar la configuración del bot.",
+      );
     }
   }
 
@@ -234,24 +289,34 @@ function BotForm({ bot }: { bot: BotOut }) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {error && <ErrorBanner message={error} />}
       {saved && !isDirty && (
-        <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">Guardado.</p>
+        <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+          Guardado.
+        </p>
       )}
 
       <div className="flex items-center justify-between rounded-lg border border-zinc-200 px-3 py-2.5 dark:border-zinc-700">
         <div>
-          <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">Bot activo</p>
+          <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+            Bot activo
+          </p>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Responde automáticamente los mensajes entrantes de este canal.
           </p>
         </div>
         <label className="relative inline-flex shrink-0 cursor-pointer items-center">
-          <input type="checkbox" className="peer sr-only" {...register("is_active")} />
+          <input
+            type="checkbox"
+            className="peer sr-only"
+            {...register("is_active")}
+          />
           <div className="relative h-6 w-11 rounded-full bg-zinc-300 transition-colors after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-emerald-600 peer-checked:after:translate-x-5 dark:bg-zinc-700" />
         </label>
       </div>
 
       <div>
-        <Label htmlFor={`${bot.id}-system_prompt`}>Instrucciones del bot (system prompt)</Label>
+        <Label htmlFor={`${bot.id}-system_prompt`}>
+          Instrucciones del bot (system prompt)
+        </Label>
         <Textarea
           id={`${bot.id}-system_prompt`}
           rows={5}
@@ -261,7 +326,9 @@ function BotForm({ bot }: { bot: BotOut }) {
       </div>
 
       <div>
-        <Label htmlFor={`${bot.id}-welcome_message`}>Mensaje de bienvenida (opcional)</Label>
+        <Label htmlFor={`${bot.id}-welcome_message`}>
+          Mensaje de bienvenida (opcional)
+        </Label>
         <Textarea
           id={`${bot.id}-welcome_message`}
           rows={2}
@@ -272,23 +339,15 @@ function BotForm({ bot }: { bot: BotOut }) {
       </div>
 
       <div>
-        <Label htmlFor={`${bot.id}-non_text_message`}>Mensaje para contenido no soportado (opcional)</Label>
+        <Label htmlFor={`${bot.id}-non_text_message`}>
+          Mensaje para contenido no soportado (opcional)
+        </Label>
         <Textarea
           id={`${bot.id}-non_text_message`}
           rows={2}
           placeholder="Por ahora solo puedo leer mensajes de texto. ¿Puedes escribirme tu consulta?"
           error={errors.non_text_message?.message}
           {...register("non_text_message")}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor={`${bot.id}-ai_model`}>Modelo de IA (opcional)</Label>
-        <Input
-          id={`${bot.id}-ai_model`}
-          placeholder="Vacío = modelo por defecto"
-          error={errors.ai_model?.message}
-          {...register("ai_model")}
         />
       </div>
 
@@ -300,7 +359,14 @@ function BotForm({ bot }: { bot: BotOut }) {
             size="sm"
             variant="secondary"
             onClick={() =>
-              append({ key: "", label: "", type: "text", target: "lead.metadata", required: true, options: "" })
+              append({
+                key: "",
+                label: "",
+                type: "text",
+                target: "lead.metadata",
+                required: true,
+                options: "",
+              })
             }
           >
             Añadir campo
@@ -312,7 +378,9 @@ function BotForm({ bot }: { bot: BotOut }) {
           </p>
         )}
         {fields.length === 0 ? (
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">Sin campos configurados.</p>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            Sin campos configurados.
+          </p>
         ) : (
           <div className="space-y-3">
             {fields.map((field, index) => (
@@ -330,13 +398,17 @@ function BotForm({ bot }: { bot: BotOut }) {
       </div>
 
       <div className="space-y-3 rounded-lg border border-zinc-200 p-3 dark:border-zinc-700">
-        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">Reglas de traspaso a una persona</p>
+        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+          Reglas de traspaso a una persona
+        </p>
         <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
           <input type="checkbox" {...register("handoff_on_qualified")} />
           Pasar a una persona automáticamente cuando el lead quede calificado
         </label>
         <div>
-          <Label htmlFor={`${bot.id}-max_turns`}>Máximo de turnos del bot antes de pasar a una persona</Label>
+          <Label htmlFor={`${bot.id}-max_turns`}>
+            Máximo de turnos del bot antes de pasar a una persona
+          </Label>
           <Input
             id={`${bot.id}-max_turns`}
             type="number"
@@ -347,11 +419,19 @@ function BotForm({ bot }: { bot: BotOut }) {
           />
         </div>
         <div>
-          <Label htmlFor={`${bot.id}-keywords`}>Palabras clave que piden un agente (separadas por coma)</Label>
-          <Input id={`${bot.id}-keywords`} placeholder="asesor, humano, persona" {...register("handoff_keywords")} />
+          <Label htmlFor={`${bot.id}-keywords`}>
+            Palabras clave que piden un agente (separadas por coma)
+          </Label>
+          <Input
+            id={`${bot.id}-keywords`}
+            placeholder="asesor, humano, persona"
+            {...register("handoff_keywords")}
+          />
         </div>
         <div>
-          <Label htmlFor={`${bot.id}-handoff_message`}>Mensaje al pasar a una persona (opcional)</Label>
+          <Label htmlFor={`${bot.id}-handoff_message`}>
+            Mensaje al pasar a una persona (opcional)
+          </Label>
           <Textarea
             id={`${bot.id}-handoff_message`}
             rows={2}
@@ -390,11 +470,17 @@ function RequiredFieldRow({
     <div className="grid grid-cols-2 gap-2 rounded-lg border border-zinc-200 p-3 dark:border-zinc-700 sm:grid-cols-6">
       <div className="col-span-2 sm:col-span-1">
         <Label className="text-xs">Clave</Label>
-        <Input error={fieldErrors?.key?.message} {...register(`required_fields.${index}.key`)} />
+        <Input
+          error={fieldErrors?.key?.message}
+          {...register(`required_fields.${index}.key`)}
+        />
       </div>
       <div className="col-span-2 sm:col-span-1">
         <Label className="text-xs">Etiqueta</Label>
-        <Input error={fieldErrors?.label?.message} {...register(`required_fields.${index}.label`)} />
+        <Input
+          error={fieldErrors?.label?.message}
+          {...register(`required_fields.${index}.label`)}
+        />
       </div>
       <div className="col-span-1">
         <Label className="text-xs">Destino</Label>
@@ -408,7 +494,10 @@ function RequiredFieldRow({
       </div>
       <div className="col-span-1">
         <Label className="text-xs">Tipo</Label>
-        <Select error={fieldErrors?.type?.message} {...register(`required_fields.${index}.type`)}>
+        <Select
+          error={fieldErrors?.type?.message}
+          {...register(`required_fields.${index}.type`)}
+        >
           {FIELD_TYPES.map((t) => (
             <option key={t} value={t}>
               {t}
@@ -419,12 +508,18 @@ function RequiredFieldRow({
       {type === "enum" && (
         <div className="col-span-2 sm:col-span-1">
           <Label className="text-xs">Opciones (coma)</Label>
-          <Input error={fieldErrors?.options?.message} {...register(`required_fields.${index}.options`)} />
+          <Input
+            error={fieldErrors?.options?.message}
+            {...register(`required_fields.${index}.options`)}
+          />
         </div>
       )}
       <div className="col-span-2 flex items-end justify-between gap-2 sm:col-span-1">
         <label className="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400">
-          <input type="checkbox" {...register(`required_fields.${index}.required`)} />
+          <input
+            type="checkbox"
+            {...register(`required_fields.${index}.required`)}
+          />
           Obligatorio
         </label>
         <Button type="button" size="sm" variant="ghost" onClick={onRemove}>

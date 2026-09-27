@@ -4,9 +4,16 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
+import { PageTitle } from "@/components/help/page-title";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/input";
-import { Badge, Card, EmptyState, ErrorBanner, FullPageSpinner } from "@/components/ui/misc";
+import {
+  Badge,
+  Card,
+  EmptyState,
+  ErrorBanner,
+  FullPageSpinner,
+} from "@/components/ui/misc";
 import { ApiError } from "@/lib/auth-context";
 import { useContact } from "@/lib/hooks/contacts";
 import {
@@ -74,7 +81,9 @@ export default function LeadDetailPage() {
     try {
       await closeLead.mutateAsync({ outcome });
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "No se pudo cerrar el lead.");
+      setError(
+        e instanceof ApiError ? e.message : "No se pudo cerrar el lead.",
+      );
     }
   }
 
@@ -83,19 +92,33 @@ export default function LeadDetailPage() {
     try {
       await assignLead.mutateAsync({ agent_id: agentId || null });
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "No se pudo asignar el lead.");
+      setError(
+        e instanceof ApiError ? e.message : "No se pudo asignar el lead.",
+      );
     }
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 p-6">
+    <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
       <div>
-        <Link href="/leads" className="text-sm text-zinc-500 hover:underline dark:text-zinc-400">
+        <Link
+          href="/leads"
+          className="text-sm text-zinc-500 hover:underline dark:text-zinc-400"
+        >
           ← Leads
         </Link>
         <div className="mt-1 flex items-center gap-3">
-          <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">{lead.title}</h1>
-          <Badge tone={isOpen ? "blue" : lead.status === "CLOSED_WON" ? "green" : "red"}>
+          <PageTitle
+            topic="lead-detail"
+            className="text-xl font-semibold text-zinc-900 dark:text-zinc-100"
+          >
+            {lead.title}
+          </PageTitle>
+          <Badge
+            tone={
+              isOpen ? "blue" : lead.status === "CLOSED_WON" ? "green" : "red"
+            }
+          >
             {STATUS_LABELS[lead.status] ?? lead.status}
           </Badge>
         </div>
@@ -112,13 +135,17 @@ export default function LeadDetailPage() {
       {error && <ErrorBanner message={error} />}
 
       <Card className="p-5">
-        <h2 className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-100">Etapa</h2>
+        <h2 className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          Etapa
+        </h2>
         {pipeline ? (
           <div className="flex flex-wrap gap-2">
             {pipeline.stages.map((stage) => (
               <button
                 key={stage.id}
-                disabled={!isOpen || stage.id === lead.stage_id || moveLead.isPending}
+                disabled={
+                  !isOpen || stage.id === lead.stage_id || moveLead.isPending
+                }
                 onClick={() => handleMove(stage.id)}
                 className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                   stage.id === lead.stage_id
@@ -136,10 +163,18 @@ export default function LeadDetailPage() {
 
         {isOpen && (
           <div className="mt-4 flex gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800">
-            <Button variant="secondary" size="sm" onClick={() => handleClose("WON")}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleClose("WON")}
+            >
               Marcar como ganado
             </Button>
-            <Button variant="danger" size="sm" onClick={() => handleClose("LOST")}>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => handleClose("LOST")}
+            >
               Marcar como perdido
             </Button>
           </div>
@@ -165,13 +200,18 @@ export default function LeadDetailPage() {
       </Card>
 
       <Card className="p-5">
-        <h2 className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-100">Historial</h2>
+        <h2 className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          Historial
+        </h2>
         {!events || events.items.length === 0 ? (
           <EmptyState title="Sin actividad todavía" />
         ) : (
           <ul className="space-y-3">
             {events.items.map((event) => (
-              <li key={event.id} className="flex items-center justify-between text-sm">
+              <li
+                key={event.id}
+                className="flex items-center justify-between text-sm"
+              >
                 <span className="text-zinc-700 dark:text-zinc-300">
                   {EVENT_LABELS[event.type] ?? event.type}
                 </span>

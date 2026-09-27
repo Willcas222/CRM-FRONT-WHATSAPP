@@ -44,6 +44,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/metrics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Metrics
+         * @description Métricas en formato Prometheus. Sin `METRICS_TOKEN` configurado el endpoint no existe.
+         */
+        get: operations["metrics_metrics_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/webhooks/whatsapp": {
         parameters: {
             query?: never;
@@ -93,6 +113,46 @@ export interface paths {
         put?: never;
         /** Login */
         post: operations["login_api_v1_auth_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/forgot-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Forgot Password
+         * @description Pide el enlace para elegir otra contraseña. Responde igual exista o no el correo.
+         */
+        post: operations["forgot_password_api_v1_auth_forgot_password_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reset Password
+         * @description Con el enlace del correo elige otra contraseña; cierra las sesiones abiertas.
+         */
+        post: operations["reset_password_api_v1_auth_reset_password_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -609,6 +669,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/conversations/{conversation_id}/ai-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Ai Summary
+         * @description Resumen redactado por la IA, a pedido. Cuenta en el consumo de IA de la organización.
+         */
+        post: operations["ai_summary_api_v1_conversations__conversation_id__ai_summary_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/conversations/{conversation_id}/messages": {
         parameters: {
             query?: never;
@@ -827,22 +907,849 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/superadmin/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Login
+         * @description Con doble factor la contraseña sola no abre sesión: responde `MFA_REQUIRED` (o
+         *     `MFA_ENROLLMENT_REQUIRED` si la plataforma lo exige y aún no se activó) con un token de 5
+         *     minutos que solo sirve para el segundo paso.
+         */
+        post: operations["login_api_v1_superadmin_auth_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/auth/mfa/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Verify Mfa
+         * @description Segundo paso: el código de la app autenticadora (o uno de recuperación).
+         */
+        post: operations["verify_mfa_api_v1_superadmin_auth_mfa_verify_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/auth/mfa/enroll/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Start Enrollment
+         * @description Doble factor obligatorio y aún no activado: el secreto para escanear con la app.
+         */
+        post: operations["start_enrollment_api_v1_superadmin_auth_mfa_enroll_start_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/auth/mfa/enroll/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Confirm Enrollment
+         * @description Confirma con un código de la app: activa el doble factor y abre la sesión. Los códigos de
+         *     recuperación se muestran esta única vez.
+         */
+        post: operations["confirm_enrollment_api_v1_superadmin_auth_mfa_enroll_confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/auth/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh */
+        post: operations["refresh_api_v1_superadmin_auth_refresh_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Logout */
+        post: operations["logout_api_v1_superadmin_auth_logout_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Me */
+        get: operations["me_api_v1_superadmin_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/me/mfa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Mfa Status */
+        get: operations["mfa_status_api_v1_superadmin_me_mfa_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/me/mfa/setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Begin Setup */
+        post: operations["begin_setup_api_v1_superadmin_me_mfa_setup_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/me/mfa/enable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enable */
+        post: operations["enable_api_v1_superadmin_me_mfa_enable_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/me/mfa/disable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Disable */
+        post: operations["disable_api_v1_superadmin_me_mfa_disable_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/me/mfa/recovery-codes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Regenerate Recovery Codes */
+        post: operations["regenerate_recovery_codes_api_v1_superadmin_me_mfa_recovery_codes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/team": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Team */
+        get: operations["list_team_api_v1_superadmin_team_get"];
+        put?: never;
+        /** Create Team User */
+        post: operations["create_team_user_api_v1_superadmin_team_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/team/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Team User */
+        patch: operations["update_team_user_api_v1_superadmin_team__user_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/team/{user_id}/mfa/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reset Team Mfa */
+        post: operations["reset_team_mfa_api_v1_superadmin_team__user_id__mfa_reset_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/accounts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Accounts */
+        get: operations["list_accounts_api_v1_superadmin_accounts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/accounts/{account_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Account */
+        get: operations["get_account_api_v1_superadmin_accounts__account_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/accounts/{account_id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change Status */
+        patch: operations["change_status_api_v1_superadmin_accounts__account_id__status_patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/accounts/{account_id}/plan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Assign Plan */
+        patch: operations["assign_plan_api_v1_superadmin_accounts__account_id__plan_patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/accounts/{account_id}/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Account Limits */
+        get: operations["get_account_limits_api_v1_superadmin_accounts__account_id__limits_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Account Limits */
+        patch: operations["update_account_limits_api_v1_superadmin_accounts__account_id__limits_patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Plans */
+        get: operations["list_plans_api_v1_superadmin_plans_get"];
+        put?: never;
+        /** Create Plan */
+        post: operations["create_plan_api_v1_superadmin_plans_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/plans/{plan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Plan */
+        get: operations["get_plan_api_v1_superadmin_plans__plan_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Plan */
+        patch: operations["update_plan_api_v1_superadmin_plans__plan_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/ai/models": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Ai Models */
+        get: operations["list_ai_models_api_v1_superadmin_ai_models_get"];
+        put?: never;
+        /** Create Ai Model */
+        post: operations["create_ai_model_api_v1_superadmin_ai_models_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/ai/models/{model_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Ai Model */
+        get: operations["get_ai_model_api_v1_superadmin_ai_models__model_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Ai Model */
+        patch: operations["update_ai_model_api_v1_superadmin_ai_models__model_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/audit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Audit Events */
+        get: operations["list_audit_events_api_v1_superadmin_audit_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/audit/{event_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Audit Event */
+        get: operations["get_audit_event_api_v1_superadmin_audit__event_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/analytics/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Overview */
+        get: operations["get_overview_api_v1_superadmin_analytics_overview_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/analytics/ai-consumption": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Ai Consumption */
+        get: operations["get_ai_consumption_api_v1_superadmin_analytics_ai_consumption_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/analytics/whatsapp-usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Whatsapp Usage */
+        get: operations["get_whatsapp_usage_api_v1_superadmin_analytics_whatsapp_usage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/analytics/costs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Costs */
+        get: operations["get_costs_api_v1_superadmin_analytics_costs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/global-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Global Config */
+        get: operations["get_global_config_api_v1_superadmin_global_config_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Global Config */
+        patch: operations["update_global_config_api_v1_superadmin_global_config_patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/feature-flags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Feature Flags */
+        get: operations["list_feature_flags_api_v1_superadmin_feature_flags_get"];
+        put?: never;
+        /** Create Feature Flag */
+        post: operations["create_feature_flag_api_v1_superadmin_feature_flags_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/feature-flags/effective/{account_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Effective Feature Flags */
+        get: operations["effective_feature_flags_api_v1_superadmin_feature_flags_effective__account_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/feature-flags/{flag_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Feature Flag */
+        patch: operations["update_feature_flag_api_v1_superadmin_feature_flags__flag_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/superadmin/prompts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Prompts */
+        get: operations["list_prompts_api_v1_superadmin_prompts_get"];
+        put?: never;
+        /** Create Prompt Version */
+        post: operations["create_prompt_version_api_v1_superadmin_prompts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/prompts/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Prompt History */
+        get: operations["prompt_history_api_v1_superadmin_prompts__name__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/prompts/{name}/versions/{version}/activate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Activate Prompt Version */
+        post: operations["activate_prompt_version_api_v1_superadmin_prompts__name__versions__version__activate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/prompts/{name}/versions/{version}/deactivate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Deactivate Prompt Version */
+        post: operations["deactivate_prompt_version_api_v1_superadmin_prompts__name__versions__version__deactivate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/maintenance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Maintenance */
+        get: operations["get_maintenance_api_v1_superadmin_maintenance_get"];
+        /** Set Maintenance */
+        put: operations["set_maintenance_api_v1_superadmin_maintenance_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/system-health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** System Health */
+        get: operations["system_health_api_v1_superadmin_system_health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/alerts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Alerts */
+        get: operations["list_alerts_api_v1_superadmin_alerts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/alerts/evaluate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Evaluate Alerts
+         * @description Corre YA la evaluación que el scheduler hace cada 5 minutos.
+         */
+        post: operations["evaluate_alerts_api_v1_superadmin_alerts_evaluate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/alerts/{alert_id}/acknowledge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Acknowledge Alert */
+        post: operations["acknowledge_alert_api_v1_superadmin_alerts__alert_id__acknowledge_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/superadmin/alerts/{alert_id}/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resolve Alert */
+        post: operations["resolve_alert_api_v1_superadmin_alerts__alert_id__resolve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** AccountOut */
-        AccountOut: {
+        /** AIConsumptionOut */
+        AIConsumptionOut: {
+            /**
+             * Since
+             * Format: date-time
+             */
+            since: string;
+            /**
+             * Until
+             * Format: date-time
+             */
+            until: string;
+            /** Sessions Total */
+            sessions_total: number;
+            /** Input Tokens */
+            input_tokens: number;
+            /** Output Tokens */
+            output_tokens: number;
+            /** Total Tokens */
+            total_tokens: number;
+            /** Estimated Cost Usd */
+            estimated_cost_usd: string;
+            /** Avg Latency Ms */
+            avg_latency_ms: number;
+            /** By Model */
+            by_model: components["schemas"]["AIModelBreakdownOut"][];
+        };
+        /** AIModelBreakdownOut */
+        AIModelBreakdownOut: {
+            /** Model */
+            model: string;
+            /** Sessions */
+            sessions: number;
+            /** Input Tokens */
+            input_tokens: number;
+            /** Output Tokens */
+            output_tokens: number;
+            /** Total Tokens */
+            total_tokens: number;
+            /** Estimated Cost Usd */
+            estimated_cost_usd: string;
+        };
+        /** AIModelOut */
+        AIModelOut: {
             /**
              * Id
              * Format: uuid
              */
             id: string;
-            /** Name */
-            name: string;
-            status: components["schemas"]["AccountStatus"];
-            /** Settings */
-            settings: {
+            /** Provider */
+            provider: string;
+            /** Model Name */
+            model_name: string;
+            /** Display Name */
+            display_name: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Input Price Per Token */
+            input_price_per_token: string;
+            /** Output Price Per Token */
+            output_price_per_token: string;
+            /** Capabilities */
+            capabilities: {
                 [key: string]: unknown;
             };
             /**
@@ -850,12 +1757,52 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** AccountLimitsOut */
+        AccountLimitsOut: {
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Limits Override */
+            limits_override: {
+                [key: string]: unknown;
+            };
+            /** Allowed Ai Models */
+            allowed_ai_models: string[] | null;
+            /** Default Ai Model */
+            default_ai_model: string | null;
+            /** Fallback Ai Model */
+            fallback_ai_model: string | null;
+            /** Emergency Override */
+            emergency_override: {
+                [key: string]: unknown;
+            };
+            /** Updated At */
+            updated_at: string | null;
+        };
+        /** AccountPage */
+        AccountPage: {
+            /** Items */
+            items: components["schemas"]["app__infrastructure__web__schemas__superadmin_accounts__AccountOut"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+            /** Has More */
+            has_more: boolean;
         };
         /**
          * AccountStatus
+         * @description Estado de una organización. Hasta la Fase SA-2 solo `ACTIVE` permite operar: cualquier
+         *     otro valor se trata como bloqueado (falla cerrado): ampliar el vocabulario no abre nada.
          * @enum {string}
          */
-        AccountStatus: "ACTIVE" | "SUSPENDED";
+        AccountStatus: "ACTIVE" | "INACTIVE" | "SUSPENDED" | "FROZEN" | "PAUSED_BY_LIMIT" | "PAYMENT_FAILED" | "PENDING_SETUP" | "DELETED";
         /**
          * ActorType
          * @description Quién originó un evento del historial comercial (lead_events).
@@ -881,6 +1828,67 @@ export interface components {
             /** Name */
             name: string | null;
         };
+        /**
+         * AiSummaryOut
+         * @description Resumen redactado por la IA. No se guarda: cada petición genera uno nuevo.
+         */
+        AiSummaryOut: {
+            /** Summary */
+            summary: string;
+            /** Model */
+            model: string;
+            /** Messages Considered */
+            messages_considered: number;
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+        };
+        /** AlertOut */
+        AlertOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Alert Type */
+            alert_type: string;
+            /** Severity */
+            severity: string;
+            /** Message */
+            message: string;
+            /** Status */
+            status: string;
+            /** Account Id */
+            account_id: string | null;
+            /** Data */
+            data: {
+                [key: string]: unknown;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Acknowledged At */
+            acknowledged_at: string | null;
+            /** Resolved At */
+            resolved_at: string | null;
+        };
+        /** AlertPage */
+        AlertPage: {
+            /** Items */
+            items: components["schemas"]["AlertOut"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+            /** Has More */
+            has_more: boolean;
+            /** Open By Severity */
+            open_by_severity: {
+                [key: string]: number;
+            };
+        };
         /** AssignConversationRequest */
         AssignConversationRequest: {
             /**
@@ -893,6 +1901,61 @@ export interface components {
         AssignLeadRequest: {
             /** Agent Id */
             agent_id: string | null;
+        };
+        /** AssignPlanRequest */
+        AssignPlanRequest: {
+            /** Plan Id */
+            plan_id: string | null;
+            /** Reason */
+            reason: string;
+        };
+        /** AuditEventOut */
+        AuditEventOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Action */
+            action: string;
+            /** Actor Type */
+            actor_type: string;
+            /** Actor Id */
+            actor_id: string | null;
+            /** Account Id */
+            account_id: string | null;
+            /** Entity Type */
+            entity_type: string | null;
+            /** Entity Id */
+            entity_id: string | null;
+            /** Previous State */
+            previous_state: {
+                [key: string]: unknown;
+            } | null;
+            /** New State */
+            new_state: {
+                [key: string]: unknown;
+            } | null;
+            /** Reason */
+            reason: string | null;
+            /** Data */
+            data: {
+                [key: string]: unknown;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** AuditEventPage */
+        AuditEventPage: {
+            /** Items */
+            items: components["schemas"]["AuditEventOut"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+            /** Has More */
+            has_more: boolean;
         };
         /** AuthResponse */
         AuthResponse: {
@@ -907,7 +1970,7 @@ export interface components {
             /** Expires In */
             expires_in: number;
             user: components["schemas"]["UserOut"];
-            account: components["schemas"]["AccountOut"];
+            account: components["schemas"]["app__infrastructure__web__schemas__auth__AccountOut"];
         };
         /** AutomationExecutionOut */
         AutomationExecutionOut: {
@@ -1031,8 +2094,6 @@ export interface components {
             handoff_rules: {
                 [key: string]: unknown;
             };
-            /** Ai Model */
-            ai_model: string | null;
             /** Non Text Message */
             non_text_message: string | null;
             /**
@@ -1045,6 +2106,12 @@ export interface components {
              * Format: date-time
              */
             updated_at: string;
+        };
+        /** ChangeAccountStatusRequest */
+        ChangeAccountStatusRequest: {
+            status: components["schemas"]["AccountStatus"];
+            /** Reason */
+            reason: string;
         };
         /** ChangePasswordRequest */
         ChangePasswordRequest: {
@@ -1063,6 +2130,16 @@ export interface components {
             /** Reason */
             reason?: string | null;
         };
+        /** ComponentHealthOut */
+        ComponentHealthOut: {
+            /** Name */
+            name: string;
+            status: components["schemas"]["HealthStatus"];
+            /** Detail */
+            detail: string | null;
+            /** Latency Ms */
+            latency_ms: number | null;
+        };
         /** ConditionOut */
         ConditionOut: {
             /** Field */
@@ -1071,6 +2148,24 @@ export interface components {
             op: string;
             /** Value */
             value?: unknown;
+        };
+        /** ConfigItemOut */
+        ConfigItemOut: {
+            /** Key */
+            key: string;
+            /** Description */
+            description: string;
+            /** Value */
+            value: unknown;
+            /** Updated At */
+            updated_at: string | null;
+        };
+        /** ConfirmPasswordResetRequest */
+        ConfirmPasswordResetRequest: {
+            /** Token */
+            token: string;
+            /** New Password */
+            new_password: string;
         };
         /** ContactDetailOut */
         ContactDetailOut: {
@@ -1190,6 +2285,10 @@ export interface components {
             /** Window Expires At */
             window_expires_at: string | null;
             last_message: components["schemas"]["LastMessageOut"] | null;
+            /** Data Done */
+            data_done: number;
+            /** Data Total */
+            data_total: number;
             /**
              * Created At
              * Format: date-time
@@ -1237,6 +2336,10 @@ export interface components {
             /** Window Expires At */
             window_expires_at: string | null;
             last_message: components["schemas"]["LastMessageOut"] | null;
+            /** Data Done */
+            data_done: number;
+            /** Data Total */
+            data_total: number;
             /**
              * Created At
              * Format: date-time
@@ -1279,6 +2382,44 @@ export interface components {
          * @enum {string}
          */
         ConversationStatus: "BOT_ACTIVE" | "HUMAN_PENDING" | "HUMAN_ASSIGNED";
+        /** CostsOut */
+        CostsOut: {
+            /**
+             * Since
+             * Format: date-time
+             */
+            since: string;
+            /**
+             * Until
+             * Format: date-time
+             */
+            until: string;
+            /** Ai Estimated Cost Usd */
+            ai_estimated_cost_usd: string;
+            /** Whatsapp Estimated Cost Usd */
+            whatsapp_estimated_cost_usd: string;
+            /** Total Estimated Cost Usd */
+            total_estimated_cost_usd: string;
+        };
+        /** CreateAIModelRequest */
+        CreateAIModelRequest: {
+            /** Reason */
+            reason: string;
+            /** Provider */
+            provider: string;
+            /** Model Name */
+            model_name: string;
+            /** Display Name */
+            display_name: string;
+            /** Input Price Per Token */
+            input_price_per_token: number | string;
+            /** Output Price Per Token */
+            output_price_per_token: number | string;
+            /** Capabilities */
+            capabilities?: {
+                [key: string]: unknown;
+            };
+        };
         /**
          * CreateAutomationRequest
          * @description Cuerpo libre: `_parse_common` (automation_rules.py) valida cada campo. `is_active` empieza
@@ -1331,6 +2472,20 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
+        /** CreateFeatureFlagRequest */
+        CreateFeatureFlagRequest: {
+            /** Key */
+            key: string;
+            /**
+             * Default Enabled
+             * @default false
+             */
+            default_enabled: boolean;
+            /** Description */
+            description?: string | null;
+            /** Reason */
+            reason: string;
+        };
         /** CreateInboxRequest */
         CreateInboxRequest: {
             /** Name */
@@ -1374,6 +2529,48 @@ export interface components {
             /** Stages */
             stages?: components["schemas"]["StageIn"][] | null;
         };
+        /** CreatePlanRequest */
+        CreatePlanRequest: {
+            /** Reason */
+            reason: string;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** Monthly Price Usd */
+            monthly_price_usd: number | string;
+            /** Description */
+            description?: string | null;
+            /** Limits */
+            limits?: {
+                [key: string]: unknown;
+            };
+            /** Features */
+            features?: {
+                [key: string]: unknown;
+            };
+        };
+        /** CreatePromptVersionRequest */
+        CreatePromptVersionRequest: {
+            /** Name */
+            name: string;
+            /** Content */
+            content: string;
+            /** Reason */
+            reason: string;
+        };
+        /** CreateTeamUserRequest */
+        CreateTeamUserRequest: {
+            /** Email */
+            email: string;
+            /** Name */
+            name: string;
+            role: components["schemas"]["PlatformRole"];
+            /** Password */
+            password: string;
+            /** Reason */
+            reason: string;
+        };
         /** CreateUserRequest */
         CreateUserRequest: {
             /** Name */
@@ -1389,11 +2586,85 @@ export interface components {
          * @enum {string}
          */
         Direction: "INBOUND" | "OUTBOUND";
+        /** EffectiveFlagOut */
+        EffectiveFlagOut: {
+            /** Key */
+            key: string;
+            /** Description */
+            description: string | null;
+            /** Enabled */
+            enabled: boolean;
+            source: components["schemas"]["FlagSource"];
+            /** Enforced */
+            enforced: boolean;
+        };
+        /** EvaluationOut */
+        EvaluationOut: {
+            /** Created */
+            created: number;
+            /** Updated */
+            updated: number;
+            /** Resolved */
+            resolved: number;
+            /** Accounts Evaluated */
+            accounts_evaluated: number;
+            /** Accounts Skipped */
+            accounts_skipped: number;
+        };
         /**
          * ExecutionStatus
          * @enum {string}
          */
         ExecutionStatus: "RUNNING" | "SUCCEEDED" | "FAILED" | "SKIPPED";
+        /** FeatureFlagOut */
+        FeatureFlagOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Key */
+            key: string;
+            /** Description */
+            description: string | null;
+            /** Default Enabled */
+            default_enabled: boolean;
+            /** Plan Overrides */
+            plan_overrides: {
+                [key: string]: boolean;
+            };
+            /** Account Overrides */
+            account_overrides: {
+                [key: string]: boolean;
+            };
+            /** Enforced */
+            enforced: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /**
+         * FlagSource
+         * @enum {string}
+         */
+        FlagSource: "GLOBAL" | "PLAN" | "ACCOUNT";
+        /** ForgotPasswordRequest */
+        ForgotPasswordRequest: {
+            /** Email */
+            email: string;
+        };
+        /** GlobalConfigOut */
+        GlobalConfigOut: {
+            /** Items */
+            items: components["schemas"]["ConfigItemOut"][];
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -1406,6 +2677,11 @@ export interface components {
             /** Agent Id */
             agent_id?: string | null;
         };
+        /**
+         * HealthStatus
+         * @enum {string}
+         */
+        HealthStatus: "HEALTHY" | "DEGRADED" | "DOWN" | "UNKNOWN";
         /**
          * InboxChannel
          * @enum {string}
@@ -1596,6 +2872,35 @@ export interface components {
             /** Password */
             password: string;
         };
+        /** MaintenanceOut */
+        MaintenanceOut: {
+            /** Enabled */
+            enabled: boolean;
+            /** Services */
+            services: {
+                [key: string]: boolean;
+            };
+            /** Starts At */
+            starts_at: string | null;
+            /** Ends At */
+            ends_at: string | null;
+            /** Message */
+            message: string | null;
+            /** Available Services */
+            available_services: string[];
+            status: components["schemas"]["MaintenanceStatusOut"];
+        };
+        /** MaintenanceStatusOut */
+        MaintenanceStatusOut: {
+            /** Active Now */
+            active_now: boolean;
+            /** Is Global */
+            is_global: boolean;
+            /** Services */
+            services: string[];
+            /** Retry After Seconds */
+            retry_after_seconds: number | null;
+        };
         /** MarkAllReadResponse */
         MarkAllReadResponse: {
             /** Marked */
@@ -1604,7 +2909,7 @@ export interface components {
         /** MeResponse */
         MeResponse: {
             user: components["schemas"]["UserOut"];
-            account: components["schemas"]["AccountOut"];
+            account: components["schemas"]["app__infrastructure__web__schemas__auth__AccountOut"];
             /** Permissions */
             permissions: string[];
         };
@@ -1656,6 +2961,73 @@ export interface components {
          * @enum {string}
          */
         MessageType: "TEXT" | "IMAGE" | "AUDIO" | "VIDEO" | "DOCUMENT" | "LOCATION" | "STICKER" | "REACTION" | "TEMPLATE" | "UNSUPPORTED";
+        /** MfaChallengeRequest */
+        MfaChallengeRequest: {
+            /** Challenge Token */
+            challenge_token: string;
+        };
+        /** MfaCodeRequest */
+        MfaCodeRequest: {
+            /** Code */
+            code: string;
+        };
+        /** MfaDisableRequest */
+        MfaDisableRequest: {
+            /** Password */
+            password: string;
+            /** Code */
+            code: string;
+        };
+        /** MfaEnrollRequest */
+        MfaEnrollRequest: {
+            /** Challenge Token */
+            challenge_token: string;
+            /** Code */
+            code: string;
+        };
+        /** MfaEnrollResponse */
+        MfaEnrollResponse: {
+            /** Access Token */
+            access_token: string;
+            /**
+             * Token Type
+             * @default bearer
+             * @constant
+             */
+            token_type: "bearer";
+            /** Expires In */
+            expires_in: number;
+            user: components["schemas"]["PlatformUserOut"];
+            /** Recovery Codes */
+            recovery_codes: string[];
+        };
+        /** MfaSetupResponse */
+        MfaSetupResponse: {
+            /** Secret */
+            secret: string;
+            /** Uri */
+            uri: string;
+            /** Account */
+            account: string;
+        };
+        /** MfaStatusResponse */
+        MfaStatusResponse: {
+            /** Enabled */
+            enabled: boolean;
+            /** Enabled At */
+            enabled_at: string | null;
+            /** Recovery Codes Left */
+            recovery_codes_left: number;
+            /** Required */
+            required: boolean;
+        };
+        /** MfaVerifyRequest */
+        MfaVerifyRequest: {
+            /** Challenge Token */
+            challenge_token: string;
+            /** Code */
+            code: string;
+        };
         /** MoveLeadRequest */
         MoveLeadRequest: {
             /**
@@ -1705,6 +3077,49 @@ export interface components {
          * @enum {string}
          */
         NotificationType: "HANDOFF_PENDING" | "CONVERSATION_ASSIGNED" | "TASK_ASSIGNED";
+        /** OverviewOut */
+        OverviewOut: {
+            /** Accounts Total */
+            accounts_total: number;
+            /** Accounts By Status */
+            accounts_by_status: {
+                [key: string]: number;
+            };
+            /** Users Total */
+            users_total: number;
+            /** Conversations Total */
+            conversations_total: number;
+            period: components["schemas"]["PeriodUsageOut"];
+            /** Accounts Near Limit */
+            accounts_near_limit: number;
+        };
+        /** PeriodUsageOut */
+        PeriodUsageOut: {
+            /**
+             * Since
+             * Format: date-time
+             */
+            since: string;
+            /**
+             * Until
+             * Format: date-time
+             */
+            until: string;
+            /** Whatsapp Inbound */
+            whatsapp_inbound: number;
+            /** Whatsapp Outbound */
+            whatsapp_outbound: number;
+            /** Ai Sessions */
+            ai_sessions: number;
+            /** Ai Input Tokens */
+            ai_input_tokens: number;
+            /** Ai Output Tokens */
+            ai_output_tokens: number;
+            /** Ai Estimated Cost Usd */
+            ai_estimated_cost_usd: string;
+            /** Whatsapp Estimated Cost Usd */
+            whatsapp_estimated_cost_usd: string;
+        };
         /** PipelineListResponse */
         PipelineListResponse: {
             /** Items */
@@ -1729,6 +3144,170 @@ export interface components {
             /** Stages */
             stages: components["schemas"]["StageOut"][];
         };
+        /** PlanOut */
+        PlanOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string | null;
+            /** Monthly Price Usd */
+            monthly_price_usd: string;
+            /** Limits */
+            limits: {
+                [key: string]: unknown;
+            };
+            /** Features */
+            features: {
+                [key: string]: unknown;
+            };
+            /** Is Active */
+            is_active: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** PlatformAuthResponse */
+        PlatformAuthResponse: {
+            /** Access Token */
+            access_token: string;
+            /**
+             * Token Type
+             * @default bearer
+             * @constant
+             */
+            token_type: "bearer";
+            /** Expires In */
+            expires_in: number;
+            user: components["schemas"]["PlatformUserOut"];
+        };
+        /** PlatformLoginRequest */
+        PlatformLoginRequest: {
+            /** Email */
+            email: string;
+            /** Password */
+            password: string;
+        };
+        /**
+         * PlatformLoginResponse
+         * @description `status="OK"`: sesión lista (con `access_token`). Los otros dos: falta el segundo paso y
+         *     solo viene `challenge_token`, un token de 5 minutos que NO sirve como sesión.
+         */
+        PlatformLoginResponse: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "OK" | "MFA_REQUIRED" | "MFA_ENROLLMENT_REQUIRED";
+            /** Access Token */
+            access_token?: string | null;
+            /**
+             * Token Type
+             * @default bearer
+             * @constant
+             */
+            token_type: "bearer";
+            /** Expires In */
+            expires_in?: number | null;
+            user?: components["schemas"]["PlatformUserOut"] | null;
+            /** Challenge Token */
+            challenge_token?: string | null;
+            /** Challenge Expires In */
+            challenge_expires_in?: number | null;
+        };
+        /** PlatformMeResponse */
+        PlatformMeResponse: {
+            user: components["schemas"]["PlatformUserOut"];
+        };
+        /**
+         * PlatformRole
+         * @description Rol de plataforma. Distinto de `Role` (roles de una organización): no se mezclan.
+         * @enum {string}
+         */
+        PlatformRole: "SUPERADMIN" | "VIEWER";
+        /** PlatformUserOut */
+        PlatformUserOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Email */
+            email: string;
+            /** Name */
+            name: string;
+            role: components["schemas"]["PlatformRole"];
+            status: components["schemas"]["UserStatus"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Last Login At */
+            last_login_at?: string | null;
+            /**
+             * Mfa Enabled
+             * @default false
+             */
+            mfa_enabled: boolean;
+        };
+        /** PromptSummaryOut */
+        PromptSummaryOut: {
+            /** Name */
+            name: string;
+            /** Versions Count */
+            versions_count: number;
+            /** Latest Version */
+            latest_version: number;
+            /** Active Version */
+            active_version: number | null;
+        };
+        /** PromptVersionOut */
+        PromptVersionOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Version */
+            version: number;
+            /** Content */
+            content: string;
+            /** Is Active */
+            is_active: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string | null;
+        };
+        /** ReasonRequest */
+        ReasonRequest: {
+            /** Reason */
+            reason: string;
+        };
+        /** RecoveryCodesResponse */
+        RecoveryCodesResponse: {
+            /** Recovery Codes */
+            recovery_codes: string[];
+        };
         /** RegisterRequest */
         RegisterRequest: {
             /** Account Name */
@@ -1744,6 +3323,11 @@ export interface components {
         ReorderStagesRequest: {
             /** Stage Ids */
             stage_ids: string[];
+        };
+        /** ResetMfaRequest */
+        ResetMfaRequest: {
+            /** Reason */
+            reason: string;
         };
         /** ResetPasswordRequest */
         ResetPasswordRequest: {
@@ -1809,11 +3393,58 @@ export interface components {
          * @enum {string}
          */
         SubjectType: "LEAD" | "CONTACT";
+        /** SystemHealthOut */
+        SystemHealthOut: {
+            overall: components["schemas"]["HealthStatus"];
+            /**
+             * Checked At
+             * Format: date-time
+             */
+            checked_at: string;
+            /** Components */
+            components: components["schemas"]["ComponentHealthOut"][];
+        };
         /**
          * TriggerType
          * @enum {string}
          */
         TriggerType: "NEW_CONTACT" | "NEW_LEAD" | "MESSAGE_RECEIVED" | "STAGE_CHANGED" | "LEAD_QUALIFIED" | "TIME_ELAPSED";
+        /** UpdateAIModelRequest */
+        UpdateAIModelRequest: {
+            /** Reason */
+            reason: string;
+            /** Display Name */
+            display_name?: string | null;
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Input Price Per Token */
+            input_price_per_token?: number | string | null;
+            /** Output Price Per Token */
+            output_price_per_token?: number | string | null;
+            /** Capabilities */
+            capabilities?: {
+                [key: string]: unknown;
+            } | null;
+        };
+        /** UpdateAccountLimitsRequest */
+        UpdateAccountLimitsRequest: {
+            /** Reason */
+            reason: string;
+            /** Limits Override */
+            limits_override?: {
+                [key: string]: unknown;
+            } | null;
+            /** Allowed Ai Models */
+            allowed_ai_models?: string[] | null;
+            /** Default Ai Model */
+            default_ai_model?: string | null;
+            /** Fallback Ai Model */
+            fallback_ai_model?: string | null;
+            /** Emergency Override */
+            emergency_override?: {
+                [key: string]: unknown;
+            } | null;
+        };
         /** UpdateAccountRequest */
         UpdateAccountRequest: {
             /** Name */
@@ -1846,8 +3477,6 @@ export interface components {
             handoff_rules?: {
                 [key: string]: unknown;
             } | null;
-            /** Ai Model */
-            ai_model?: string | null;
             /** Non Text Message */
             non_text_message?: string | null;
         };
@@ -1864,6 +3493,32 @@ export interface components {
             metadata?: {
                 [key: string]: unknown;
             } | null;
+        };
+        /** UpdateFeatureFlagRequest */
+        UpdateFeatureFlagRequest: {
+            /** Reason */
+            reason: string;
+            /** Description */
+            description?: string | null;
+            /** Default Enabled */
+            default_enabled?: boolean | null;
+            /** Plan Overrides */
+            plan_overrides?: {
+                [key: string]: boolean | null;
+            } | null;
+            /** Account Overrides */
+            account_overrides?: {
+                [key: string]: boolean | null;
+            } | null;
+        };
+        /** UpdateGlobalConfigRequest */
+        UpdateGlobalConfigRequest: {
+            /** Values */
+            values: {
+                [key: string]: unknown;
+            };
+            /** Reason */
+            reason: string;
         };
         /** UpdateInboxRequest */
         UpdateInboxRequest: {
@@ -1887,6 +3542,29 @@ export interface components {
             /** Source */
             source?: ("MANUAL" | "API") | null;
         };
+        /**
+         * UpdateMaintenanceRequest
+         * @description Configuración COMPLETA (reemplaza a la anterior). Todo apagado = sin mantenimiento.
+         */
+        UpdateMaintenanceRequest: {
+            /** Reason */
+            reason: string;
+            /**
+             * Enabled
+             * @default false
+             */
+            enabled: boolean;
+            /** Services */
+            services?: {
+                [key: string]: boolean;
+            };
+            /** Starts At */
+            starts_at?: string | null;
+            /** Ends At */
+            ends_at?: string | null;
+            /** Message */
+            message?: string | null;
+        };
         /** UpdatePipelineRequest */
         UpdatePipelineRequest: {
             /** Name */
@@ -1894,11 +3572,39 @@ export interface components {
             /** Is Default */
             is_default?: boolean | null;
         };
+        /** UpdatePlanRequest */
+        UpdatePlanRequest: {
+            /** Reason */
+            reason: string;
+            /** Name */
+            name?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Monthly Price Usd */
+            monthly_price_usd?: number | string | null;
+            /** Limits */
+            limits?: {
+                [key: string]: unknown;
+            } | null;
+            /** Features */
+            features?: {
+                [key: string]: unknown;
+            } | null;
+            /** Is Active */
+            is_active?: boolean | null;
+        };
         /** UpdateStageRequest */
         UpdateStageRequest: {
             /** Name */
             name?: string | null;
             type?: components["schemas"]["StageType"] | null;
+        };
+        /** UpdateTeamUserRequest */
+        UpdateTeamUserRequest: {
+            role?: components["schemas"]["PlatformRole"] | null;
+            status?: components["schemas"]["UserStatus"] | null;
+            /** Reason */
+            reason: string;
         };
         /** UpdateUserRequest */
         UpdateUserRequest: {
@@ -1951,6 +3657,78 @@ export interface components {
             /** Context */
             ctx?: Record<string, never>;
         };
+        /** WhatsAppTypeBreakdownOut */
+        WhatsAppTypeBreakdownOut: {
+            /** Direction */
+            direction: string;
+            /** Message Type */
+            message_type: string;
+            /** Count */
+            count: number;
+        };
+        /** WhatsAppUsageOut */
+        WhatsAppUsageOut: {
+            /**
+             * Since
+             * Format: date-time
+             */
+            since: string;
+            /**
+             * Until
+             * Format: date-time
+             */
+            until: string;
+            /** Inbound Total */
+            inbound_total: number;
+            /** Outbound Total */
+            outbound_total: number;
+            /** Estimated Cost Usd */
+            estimated_cost_usd: string;
+            /** By Type */
+            by_type: components["schemas"]["WhatsAppTypeBreakdownOut"][];
+        };
+        /** AccountOut */
+        app__infrastructure__web__schemas__auth__AccountOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            status: components["schemas"]["AccountStatus"];
+            /** Settings */
+            settings: {
+                [key: string]: unknown;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** AccountOut */
+        app__infrastructure__web__schemas__superadmin_accounts__AccountOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            status: components["schemas"]["AccountStatus"];
+            /** Status Reason */
+            status_reason: string | null;
+            /** Status Changed At */
+            status_changed_at: string | null;
+            /** Plan Id */
+            plan_id: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -1998,6 +3776,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    metrics_metrics_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/plain": string;
                 };
             };
         };
@@ -2109,6 +3907,72 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["AuthResponse"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    forgot_password_api_v1_auth_forgot_password_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ForgotPasswordRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reset_password_api_v1_auth_reset_password_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfirmPasswordResetRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {
@@ -2249,7 +4113,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AccountOut"];
+                    "application/json": components["schemas"]["app__infrastructure__web__schemas__auth__AccountOut"];
                 };
             };
         };
@@ -2273,7 +4137,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AccountOut"];
+                    "application/json": components["schemas"]["app__infrastructure__web__schemas__auth__AccountOut"];
                 };
             };
             /** @description Validation Error */
@@ -3415,6 +5279,8 @@ export interface operations {
                 inbox_id?: string | null;
                 /** @description Nombre, teléfono o email del contacto */
                 q?: string | null;
+                /** @description `complete`: ya tiene todos los datos obligatorios; `missing`: falta alguno */
+                data?: ("complete" | "missing") | null;
                 /** @description Máximo de elementos por página */
                 limit?: number;
                 /** @description Cursor opaco de la página anterior */
@@ -3464,6 +5330,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConversationDetailOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    ai_summary_api_v1_conversations__conversation_id__ai_summary_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AiSummaryOut"];
                 };
             };
             /** @description Validation Error */
@@ -4005,6 +5902,1653 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AutomationExecutionPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    login_api_v1_superadmin_auth_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlatformLoginRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformLoginResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_mfa_api_v1_superadmin_auth_mfa_verify_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MfaVerifyRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformAuthResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_enrollment_api_v1_superadmin_auth_mfa_enroll_start_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MfaChallengeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MfaSetupResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    confirm_enrollment_api_v1_superadmin_auth_mfa_enroll_confirm_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MfaEnrollRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MfaEnrollResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    refresh_api_v1_superadmin_auth_refresh_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                platform_refresh_token?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformAuthResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    logout_api_v1_superadmin_auth_logout_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                platform_refresh_token?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    me_api_v1_superadmin_me_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformMeResponse"];
+                };
+            };
+        };
+    };
+    mfa_status_api_v1_superadmin_me_mfa_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MfaStatusResponse"];
+                };
+            };
+        };
+    };
+    begin_setup_api_v1_superadmin_me_mfa_setup_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MfaSetupResponse"];
+                };
+            };
+        };
+    };
+    enable_api_v1_superadmin_me_mfa_enable_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MfaCodeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecoveryCodesResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    disable_api_v1_superadmin_me_mfa_disable_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MfaDisableRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    regenerate_recovery_codes_api_v1_superadmin_me_mfa_recovery_codes_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MfaCodeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecoveryCodesResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_team_api_v1_superadmin_team_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformUserOut"][];
+                };
+            };
+        };
+    };
+    create_team_user_api_v1_superadmin_team_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTeamUserRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformUserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_team_user_api_v1_superadmin_team__user_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateTeamUserRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformUserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reset_team_mfa_api_v1_superadmin_team__user_id__mfa_reset_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResetMfaRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformUserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_accounts_api_v1_superadmin_accounts_get: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["AccountStatus"] | null;
+                /** @description Coincide con el nombre */
+                search?: string | null;
+                /** @description Máximo de elementos por página */
+                limit?: number;
+                /** @description Cursor opaco de la página anterior */
+                cursor?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_account_api_v1_superadmin_accounts__account_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["app__infrastructure__web__schemas__superadmin_accounts__AccountOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    change_status_api_v1_superadmin_accounts__account_id__status_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeAccountStatusRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["app__infrastructure__web__schemas__superadmin_accounts__AccountOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    assign_plan_api_v1_superadmin_accounts__account_id__plan_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignPlanRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["app__infrastructure__web__schemas__superadmin_accounts__AccountOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_account_limits_api_v1_superadmin_accounts__account_id__limits_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountLimitsOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_account_limits_api_v1_superadmin_accounts__account_id__limits_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateAccountLimitsRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountLimitsOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_plans_api_v1_superadmin_plans_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanOut"][];
+                };
+            };
+        };
+    };
+    create_plan_api_v1_superadmin_plans_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePlanRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_plan_api_v1_superadmin_plans__plan_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_plan_api_v1_superadmin_plans__plan_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdatePlanRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_ai_models_api_v1_superadmin_ai_models_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AIModelOut"][];
+                };
+            };
+        };
+    };
+    create_ai_model_api_v1_superadmin_ai_models_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateAIModelRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AIModelOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_ai_model_api_v1_superadmin_ai_models__model_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                model_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AIModelOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_ai_model_api_v1_superadmin_ai_models__model_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                model_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateAIModelRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AIModelOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_audit_events_api_v1_superadmin_audit_get: {
+        parameters: {
+            query?: {
+                actor_id?: string | null;
+                account_id?: string | null;
+                /** @description Coincide exacto con la acción */
+                action?: string | null;
+                entity_type?: string | null;
+                /** @description Máximo de elementos por página */
+                limit?: number;
+                /** @description Cursor opaco de la página anterior */
+                cursor?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditEventPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_audit_event_api_v1_superadmin_audit__event_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                event_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditEventOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_overview_api_v1_superadmin_analytics_overview_get: {
+        parameters: {
+            query?: {
+                /** @description Inicio de la ventana. Por defecto, 30 días */
+                since?: string | null;
+                /** @description Fin de la ventana. Por defecto, ahora */
+                until?: string | null;
+                /** @description Acota a una sola cuenta */
+                account_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OverviewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_ai_consumption_api_v1_superadmin_analytics_ai_consumption_get: {
+        parameters: {
+            query?: {
+                /** @description Inicio de la ventana. Por defecto, 30 días */
+                since?: string | null;
+                /** @description Fin de la ventana. Por defecto, ahora */
+                until?: string | null;
+                /** @description Acota a una sola cuenta */
+                account_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AIConsumptionOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_whatsapp_usage_api_v1_superadmin_analytics_whatsapp_usage_get: {
+        parameters: {
+            query?: {
+                /** @description Inicio de la ventana. Por defecto, 30 días */
+                since?: string | null;
+                /** @description Fin de la ventana. Por defecto, ahora */
+                until?: string | null;
+                /** @description Acota a una sola cuenta */
+                account_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhatsAppUsageOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_costs_api_v1_superadmin_analytics_costs_get: {
+        parameters: {
+            query?: {
+                /** @description Inicio de la ventana. Por defecto, 30 días */
+                since?: string | null;
+                /** @description Fin de la ventana. Por defecto, ahora */
+                until?: string | null;
+                /** @description Acota a una sola cuenta */
+                account_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CostsOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_global_config_api_v1_superadmin_global_config_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GlobalConfigOut"];
+                };
+            };
+        };
+    };
+    update_global_config_api_v1_superadmin_global_config_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateGlobalConfigRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GlobalConfigOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_feature_flags_api_v1_superadmin_feature_flags_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeatureFlagOut"][];
+                };
+            };
+        };
+    };
+    create_feature_flag_api_v1_superadmin_feature_flags_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateFeatureFlagRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeatureFlagOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    effective_feature_flags_api_v1_superadmin_feature_flags_effective__account_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                account_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EffectiveFlagOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_feature_flag_api_v1_superadmin_feature_flags__flag_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                flag_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateFeatureFlagRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeatureFlagOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_prompts_api_v1_superadmin_prompts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromptSummaryOut"][];
+                };
+            };
+        };
+    };
+    create_prompt_version_api_v1_superadmin_prompts_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePromptVersionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromptVersionOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    prompt_history_api_v1_superadmin_prompts__name__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromptVersionOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    activate_prompt_version_api_v1_superadmin_prompts__name__versions__version__activate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+                version: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReasonRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromptVersionOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    deactivate_prompt_version_api_v1_superadmin_prompts__name__versions__version__deactivate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+                version: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReasonRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromptVersionOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_maintenance_api_v1_superadmin_maintenance_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaintenanceOut"];
+                };
+            };
+        };
+    };
+    set_maintenance_api_v1_superadmin_maintenance_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateMaintenanceRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaintenanceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    system_health_api_v1_superadmin_system_health_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SystemHealthOut"];
+                };
+            };
+        };
+    };
+    list_alerts_api_v1_superadmin_alerts_get: {
+        parameters: {
+            query?: {
+                status?: ("OPEN" | "ACKNOWLEDGED" | "RESOLVED") | null;
+                severity?: ("INFO" | "WARNING" | "CRITICAL") | null;
+                account_id?: string | null;
+                only_open?: boolean;
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AlertPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    evaluate_alerts_api_v1_superadmin_alerts_evaluate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvaluationOut"];
+                };
+            };
+        };
+    };
+    acknowledge_alert_api_v1_superadmin_alerts__alert_id__acknowledge_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                alert_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AlertOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resolve_alert_api_v1_superadmin_alerts__alert_id__resolve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                alert_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AlertOut"];
                 };
             };
             /** @description Validation Error */

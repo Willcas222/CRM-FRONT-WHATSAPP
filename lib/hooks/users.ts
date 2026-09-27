@@ -30,7 +30,9 @@ function useInvalidateUsers() {
 export function useCreateUser() {
   const invalidate = useInvalidateUsers();
   return useMutation({
-    mutationFn: (body: CreateUserRequest) => callApi(() => client.POST("/api/v1/users", { body })),
+    meta: { success: "Usuario creado." },
+    mutationFn: (body: CreateUserRequest) =>
+      callApi(() => client.POST("/api/v1/users", { body })),
     onSuccess: invalidate,
   });
 }
@@ -38,9 +40,13 @@ export function useCreateUser() {
 export function useUpdateUser(userId: string) {
   const invalidate = useInvalidateUsers();
   return useMutation({
+    meta: { success: "Usuario actualizado." },
     mutationFn: (body: UpdateUserRequest) =>
       callApi(() =>
-        client.PATCH("/api/v1/users/{user_id}", { params: { path: { user_id: userId } }, body }),
+        client.PATCH("/api/v1/users/{user_id}", {
+          params: { path: { user_id: userId } },
+          body,
+        }),
       ),
     onSuccess: invalidate,
   });
@@ -48,7 +54,14 @@ export function useUpdateUser(userId: string) {
 
 export function useResetUserPassword() {
   return useMutation({
-    mutationFn: ({ userId, newPassword }: { userId: string; newPassword: string }) =>
+    meta: { success: "Contraseña restablecida." },
+    mutationFn: ({
+      userId,
+      newPassword,
+    }: {
+      userId: string;
+      newPassword: string;
+    }) =>
       callApi(() =>
         client.POST("/api/v1/users/{user_id}/password", {
           params: { path: { user_id: userId } },
