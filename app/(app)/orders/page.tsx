@@ -29,16 +29,16 @@ import {
 } from "@/lib/hooks/restaurant";
 import { ORDER_STATUS_LABEL, ORDER_STATUS_TONE, ORDER_STATUSES } from "@/lib/restaurant-labels";
 import { formatDateTime } from "@/lib/utils";
-import { useRequireRestaurantVertical } from "../menu/require-menu";
+import { useRequireOrdersVertical } from "./require-orders";
 
 export default function OrdersPage() {
-  const isRestaurant = useRequireRestaurantVertical();
+  const canSeeOrders = useRequireOrdersVertical();
   const [status, setStatus] = useState<OrderStatus | "">("");
   const [createOpen, setCreateOpen] = useState(false);
   const { data, isLoading } = useOrders({ status: status || undefined });
   const contactsById = useContactsLookup().data;
 
-  if (!isRestaurant) return <FullPageSpinner />;
+  if (!canSeeOrders) return <FullPageSpinner />;
 
   return (
     <div className="mx-auto max-w-4xl p-4 sm:p-6">

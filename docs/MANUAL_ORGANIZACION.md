@@ -27,6 +27,7 @@ También encuentras esta misma información dentro de la aplicación: en el men�
 - [Campaña](#campaña)
 - [Solicitudes ciudadanas](#solicitudes-ciudadanas)
 - [Menú](#menú)
+- [Catálogo](#catálogo)
 - [Pedidos](#pedidos)
 - [Glosario](#glosario)
 - [Preguntas frecuentes](#preguntas-frecuentes)
@@ -641,11 +642,38 @@ Aquí armas el catálogo que el bot usa para responder qué hay para pedir y cu�
 
 **Relacionado:** [Pedidos](#pedidos) · [Configuración · Bot](#configuración--bot)
 
+### Catálogo
+
+*Pantalla: `/catalog`*
+
+> Solo aparece si tu organización es de tipo «Comercio/Tienda»: categorías, artículos, variantes (talla, color…) y modificadores (personalización).
+
+Es la misma sección que «Menú» (mismo funcionamiento, otro nombre): aquí armas el catálogo que el bot usa para responder qué hay disponible y cuánto cuesta, y que tu equipo usa para registrar pedidos a mano. Un artículo pertenece a una categoría y tiene un precio base; puede tener variantes (que reemplazan ese precio, como una talla o un color) y modificadores (personalización opcional u obligatoria, con un mínimo y un máximo de opciones a elegir). El precio final de un pedido siempre lo calcula el sistema a partir de este catálogo, nunca lo escribe el bot ni el cliente.
+
+**En resumen, aquí puedes:**
+
+- El bot solo ofrece artículos «Disponibles»: nunca inventa artículos ni precios.
+- Una variante reemplaza el precio base (por ejemplo, una talla); un modificador se suma (por ejemplo, un grabado).
+- Un artículo no se borra: se marca «No disponible» para retirarlo del catálogo.
+
+#### Cómo armar el catálogo
+
+1. Crea una categoría (por ejemplo «Ropa»).
+2. Crea un artículo dentro de esa categoría, con su precio.
+3. Entra al artículo para agregarle variantes (talla, color) o modificadores (personalización) si los necesita.
+
+#### Cómo sacarle el mejor provecho
+
+- Si un artículo se agota, márcalo «No disponible» en vez de borrarlo: así conservas el historial de los pedidos que ya lo tenían.
+- Un modificador con mínimo 1 es obligatorio: el bot no deja pedir el artículo sin elegir una opción.
+
+**Relacionado:** [Pedidos](#pedidos) · [Configuración · Bot](#configuración--bot)
+
 ### Pedidos
 
 *Pantalla: `/orders`*
 
-> Solo aparece si tu organización es de tipo «Restaurante»: los pedidos que registra el bot o tu equipo, con su estado, pagos y domicilio.
+> Solo aparece si tu organización es de tipo «Restaurante» o «Comercio/Tienda»: los pedidos que registra el bot o tu equipo, con su estado, pagos y domicilio.
 
 Cuando un cliente confirma qué quiere pedir, el bot lo registra aquí automáticamente. A diferencia de una queja o una solicitud, un pedido no necesita que una persona tome la conversación: es un flujo de autoservicio normal, y tu equipo hace seguimiento de la cocina o el mostrador desde esta lista, no desde la Bandeja. También puedes registrar un pedido a mano, por ejemplo si el cliente llamó por teléfono.
 

@@ -34,16 +34,16 @@ import {
   PAYMENT_METHODS,
 } from "@/lib/restaurant-labels";
 import { formatDateTime } from "@/lib/utils";
-import { useRequireRestaurantVertical } from "../../menu/require-menu";
+import { useRequireOrdersVertical } from "../require-orders";
 
 export default function OrderDetailPage() {
-  const isRestaurant = useRequireRestaurantVertical();
+  const canSeeOrders = useRequireOrdersVertical();
   const { id } = useParams<{ id: string }>();
   const order = useOrder(id);
   const history = useOrderHistory(id);
   const contact = useContact(order.data?.contact_id);
 
-  if (!isRestaurant || order.isLoading) return <FullPageSpinner />;
+  if (!canSeeOrders || order.isLoading) return <FullPageSpinner />;
   if (order.error || !order.data) {
     return (
       <div className="mx-auto max-w-2xl p-4 sm:p-6">

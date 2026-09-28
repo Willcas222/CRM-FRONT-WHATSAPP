@@ -52,12 +52,21 @@ const NAV = [
     requiresManage: false,
     requiresVertical: "RESTAURANT",
   },
+  // Vertical Comercio/Tienda (Fase 13): reutiliza el mismo motor de catálogo y pedidos que
+  // Restaurante (ARCHITECTURE.md 11.8), con su propia pantalla "Catálogo".
+  {
+    href: "/catalog",
+    label: "Catálogo",
+    icon: IconMenu,
+    requiresManage: false,
+    requiresVertical: "RETAIL",
+  },
   {
     href: "/orders",
     label: "Pedidos",
     icon: IconBag,
     requiresManage: false,
-    requiresVertical: "RESTAURANT",
+    requiresVertical: ["RESTAURANT", "RETAIL"],
   },
   {
     href: "/settings",
@@ -78,12 +87,14 @@ export function Sidebar({
   const pathname = usePathname();
   const { user, account } = useAuth();
   const canManage = user?.role === "OWNER" || user?.role === "ADMIN";
-  const items = NAV.filter(
-    (item) =>
-      (!item.requiresManage || canManage) &&
-      (!("requiresVertical" in item) ||
-        account?.vertical === item.requiresVertical),
-  );
+  const items = NAV.filter((item) => {
+    if (item.requiresManage && !canManage) return false;
+    if (!("requiresVertical" in item)) return true;
+    const allowed = item.requiresVertical;
+    return Array.isArray(allowed)
+      ? (allowed as readonly string[]).includes(account?.vertical ?? "")
+      : account?.vertical === allowed;
+  });
 
   return (
     <>
