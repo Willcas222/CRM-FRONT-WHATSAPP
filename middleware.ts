@@ -18,6 +18,10 @@ import type { NextRequest } from "next/server";
  * `style-src` sí lleva `unsafe-inline`: los nonces no cubren el atributo `style` (las barras de
  * progreso de la Ficha del cliente lo usan), y por especificación CSP un nonce no sirve para eso.
  * El riesgo de una inyección de CSS es mucho menor que el de una de JavaScript.
+ *
+ * `img-src`/`media-src` admiten `*.digitaloceanspaces.com`: ahí vive el multimedia de WhatsApp que
+ * descarga el backend (fotos, audios, videos). Sin esto el navegador los bloquea aunque la URL sea
+ * válida: es la misma CSP la que lo impide, no un problema del backend ni del componente.
  */
 export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
@@ -25,7 +29,8 @@ export function middleware(request: NextRequest) {
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
     style-src 'self' 'unsafe-inline';
-    img-src 'self' data: blob:;
+    img-src 'self' data: blob: https://*.digitaloceanspaces.com;
+    media-src 'self' blob: https://*.digitaloceanspaces.com;
     font-src 'self';
     connect-src 'self';
     object-src 'none';

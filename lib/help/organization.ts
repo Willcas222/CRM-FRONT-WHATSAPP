@@ -757,6 +757,68 @@ export const ORGANIZATION_GUIDE: HelpGuide = {
       ],
       related: ["menu", "inbox"],
     },
+    {
+      id: "guidance",
+      title: "Servicios",
+      route: "/guidance",
+      summary:
+        "Solo aparece si tu organización es de tipo «Orientación y Servicios Espirituales»: el catálogo de lecturas, limpiezas o acompañamientos que ofreces.",
+      points: [
+        "El bot solo ofrece servicios «Activos»: nunca inventa uno que no esté en el catálogo.",
+        "Si retiras un servicio, desactívalo en vez de borrarlo: así conservas el historial de las consultas que ya lo tenían.",
+      ],
+      purpose:
+        "Aquí defines qué orienta tu equipo (por ejemplo «Lectura de tarot» o «Limpieza energética»), con una descripción y la duración estimada. El bot consulta este catálogo para responder a las personas y registrar su interés con el nombre correcto.",
+      howTo: [
+        {
+          title: "Cómo agregar un servicio",
+          steps: [
+            "Pulsa «Nuevo servicio».",
+            "Escribe un nombre claro y, si quieres, una descripción y la duración estimada.",
+            "Guarda: ya queda disponible para el bot y para registrar consultas a mano.",
+          ],
+        },
+      ],
+      tips: [
+        "Una descripción corta ayuda al bot a explicarlo mejor a quien pregunte.",
+      ],
+      related: ["consultations", "settings-bot"],
+    },
+    {
+      id: "consultations",
+      title: "Consultas",
+      route: "/consultations",
+      summary:
+        "Solo aparece si tu organización es de tipo «Orientación y Servicios Espirituales»: las consultas que registra el bot o tu equipo, con su estado, guía asignado y agenda.",
+      points: [
+        "Registrar el interés de una persona NO pasa la conversación a alguien del equipo: tu equipo agenda desde aquí, como un pedido.",
+        "Solo una crisis real hace que el bot pase la conversación a una persona.",
+      ],
+      purpose:
+        "Cuando alguien muestra interés en recibir orientación, el bot lo registra aquí, aunque falten datos. Tu equipo revisa el contexto que compartió, asigna un guía y agenda la fecha desde esta pantalla.",
+      howTo: [
+        {
+          title: "Cómo registrar una consulta a mano",
+          steps: [
+            "Pulsa «Nueva consulta» y busca el contacto.",
+            "Elige un servicio si ya se sabe cuál, y agrega el contexto si lo hay.",
+            "Registra: queda en estado «Nueva».",
+          ],
+        },
+        {
+          title: "Cómo agendar una consulta",
+          steps: [
+            "Ábrela desde la lista.",
+            "Asigna un guía y fija el servicio, la fecha y las notas.",
+            "Cambia el estado a «Agendada» cuando quede confirmada.",
+          ],
+        },
+      ],
+      tips: [
+        "Filtra por «Nueva» para ver primero lo que falta agendar.",
+      ],
+      related: ["guidance", "inbox"],
+    },
   ],
   glossary: [
     {

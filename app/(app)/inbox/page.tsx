@@ -597,6 +597,55 @@ function Ticks({ status }: { status: Message["status"] }) {
 const COLLAPSE_CHARS = 700;
 const COLLAPSE_LINES = 12;
 
+function mediaUrlOf(message: Message): string | null {
+  const media = message.metadata?.media;
+  if (!media || typeof media !== "object") return null;
+  const url = (media as Record<string, unknown>).url;
+  return typeof url === "string" ? url : null;
+}
+
+function MediaContent({ message }: { message: Message }) {
+  const url = mediaUrlOf(message);
+  if (!url) return null;
+
+  if (message.message_type === "IMAGE") {
+    return (
+      <a href={url} target="_blank" rel="noopener noreferrer" className="mb-1 block">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={url}
+          alt={message.content || "Imagen"}
+          className="max-h-72 w-full rounded-lg object-cover"
+        />
+      </a>
+    );
+  }
+  if (message.message_type === "VIDEO") {
+    return (
+      <video controls className="mb-1 max-h-72 w-full rounded-lg">
+        <source src={url} />
+      </video>
+    );
+  }
+  if (message.message_type === "AUDIO") {
+    return (
+      <audio controls className="mb-1 w-full">
+        <source src={url} />
+      </audio>
+    );
+  }
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mb-1 flex items-center gap-2 rounded-lg bg-black/5 px-3 py-2 text-sm font-medium text-emerald-700 hover:underline dark:bg-white/10 dark:text-emerald-300"
+    >
+      📄 Ver documento
+    </a>
+  );
+}
+
 function Bubble({
   message,
   startsGroup,
@@ -638,18 +687,18 @@ function Bubble({
             {sender}
           </p>
         )}
+        <MediaContent message={message} />
         <p
           className={cn(
             "whitespace-pre-wrap break-words",
             collapsible && !expanded && "line-clamp-12",
+            !message.content && !mediaUrlOf(message) && "italic text-zinc-500 dark:text-zinc-300",
           )}
         >
-          {message.content ?? (
-            <span className="italic text-zinc-500 dark:text-zinc-300">
-              {MESSAGE_TYPE_LABELS[message.message_type] ??
-                message.message_type}
-            </span>
-          )}
+          {message.content ??
+            (mediaUrlOf(message)
+              ? null
+              : (MESSAGE_TYPE_LABELS[message.message_type] ?? message.message_type))}
         </p>
         {collapsible && (
           <button

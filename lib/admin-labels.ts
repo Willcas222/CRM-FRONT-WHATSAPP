@@ -50,6 +50,7 @@ export const VERTICALS: Vertical[] = [
   "RETAIL",
   "SERVICES",
   "POLITICAL_CAMPAIGN",
+  "SPIRITUAL_GUIDANCE",
 ];
 
 /** Configuraciones ESTÁNDAR por tipo de negocio (CRM_VERTICAL_PROJECT_ANALYSIS.md): la misma
@@ -60,4 +61,5 @@ export const VERTICAL_LABEL: Record<Vertical, string> = {
   RETAIL: "Comercio",
   SERVICES: "Servicios",
   POLITICAL_CAMPAIGN: "Campaña política",
+  SPIRITUAL_GUIDANCE: "Orientación y Servicios Espirituales",
 };

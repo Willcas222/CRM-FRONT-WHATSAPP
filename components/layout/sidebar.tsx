@@ -68,6 +68,21 @@ const NAV = [
     requiresManage: false,
     requiresVertical: ["RESTAURANT", "RETAIL"],
   },
+  // Vertical Orientación y Servicios Espirituales (Fase 14): solo visible para ese tipo de negocio.
+  {
+    href: "/guidance",
+    label: "Servicios",
+    icon: IconSparkle,
+    requiresManage: false,
+    requiresVertical: "SPIRITUAL_GUIDANCE",
+  },
+  {
+    href: "/consultations",
+    label: "Consultas",
+    icon: IconInbox,
+    requiresManage: false,
+    requiresVertical: "SPIRITUAL_GUIDANCE",
+  },
   {
     href: "/settings",
     label: "Configuración",
@@ -276,6 +291,15 @@ function IconBag({ className }: { className?: string }): ReactNode {
     <svg {...iconProps(className)}>
       <path d="M6 8h12l1 12.5a1.5 1.5 0 0 1-1.5 1.5H6.5A1.5 1.5 0 0 1 5 20.5Z" />
       <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+    </svg>
+  );
+}
+
+function IconSparkle({ className }: { className?: string }): ReactNode {
+  return (
+    <svg {...iconProps(className)}>
+      <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+      <path d="M12 8.5c0 1.9-1.6 3.5-3.5 3.5 1.9 0 3.5 1.6 3.5 3.5 0-1.9 1.6-3.5 3.5-3.5-1.9 0-3.5-1.6-3.5-3.5Z" />
     </svg>
   );
 }

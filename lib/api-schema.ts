@@ -1348,6 +1348,145 @@ export interface paths {
         patch: operations["set_order_delivery_api_v1_orders__order_id__delivery_patch"];
         trace?: never;
     };
+    "/api/v1/guidance/services": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Guidance Services */
+        get: operations["list_guidance_services_api_v1_guidance_services_get"];
+        put?: never;
+        /** Create Guidance Service */
+        post: operations["create_guidance_service_api_v1_guidance_services_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/guidance/services/{service_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Guidance Service */
+        get: operations["get_guidance_service_api_v1_guidance_services__service_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Guidance Service */
+        patch: operations["update_guidance_service_api_v1_guidance_services__service_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/consultations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Consultations */
+        get: operations["list_consultations_api_v1_consultations_get"];
+        put?: never;
+        /** Request Consultation */
+        post: operations["request_consultation_api_v1_consultations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/consultations/{consultation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Consultation */
+        get: operations["get_consultation_api_v1_consultations__consultation_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/consultations/{consultation_id}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Consultation History */
+        get: operations["get_consultation_history_api_v1_consultations__consultation_id__history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/consultations/{consultation_id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Change Consultation Status */
+        post: operations["change_consultation_status_api_v1_consultations__consultation_id__status_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/consultations/{consultation_id}/details": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Set Consultation Details */
+        patch: operations["set_consultation_details_api_v1_consultations__consultation_id__details_patch"];
+        trace?: never;
+    };
+    "/api/v1/consultations/{consultation_id}/guide": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Assign Guide */
+        patch: operations["assign_guide_api_v1_consultations__consultation_id__guide_patch"];
+        trace?: never;
+    };
     "/api/v1/superadmin/auth/login": {
         parameters: {
             query?: never;
@@ -2355,6 +2494,11 @@ export interface components {
              */
             agent_id: string;
         };
+        /** AssignGuideRequest */
+        AssignGuideRequest: {
+            /** Guide Id */
+            guide_id?: string | null;
+        };
         /** AssignLeadRequest */
         AssignLeadRequest: {
             /** Agent Id */
@@ -2660,6 +2804,12 @@ export interface components {
             /** Reason */
             reason?: string | null;
         };
+        /** ChangeConsultationStatusRequest */
+        ChangeConsultationStatusRequest: {
+            status: components["schemas"]["ConsultationStatus"];
+            /** Reason */
+            reason?: string | null;
+        };
         /** ChangeOrderStatusRequest */
         ChangeOrderStatusRequest: {
             status: components["schemas"]["OrderStatus"];
@@ -2768,6 +2918,73 @@ export interface components {
             token: string;
             /** New Password */
             new_password: string;
+        };
+        /** ConsultationListResponse */
+        ConsultationListResponse: {
+            /** Items */
+            items: components["schemas"]["ConsultationOut"][];
+        };
+        /** ConsultationOut */
+        ConsultationOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Contact Id
+             * Format: uuid
+             */
+            contact_id: string;
+            /** Conversation Id */
+            conversation_id: string | null;
+            /** Service Id */
+            service_id: string | null;
+            status: components["schemas"]["ConsultationStatus"];
+            /** Emotional Context */
+            emotional_context: string | null;
+            /** Assigned Guide Id */
+            assigned_guide_id: string | null;
+            /** Scheduled At */
+            scheduled_at: string | null;
+            /** Notes */
+            notes: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /**
+         * ConsultationStatus
+         * @description Ciclo de vida de una consulta (vertical Orientación y Servicios Espirituales).
+         * @enum {string}
+         */
+        ConsultationStatus: "DRAFT" | "SCHEDULED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+        /** ConsultationStatusHistoryListResponse */
+        ConsultationStatusHistoryListResponse: {
+            /** Items */
+            items: components["schemas"]["ConsultationStatusHistoryOut"][];
+        };
+        /** ConsultationStatusHistoryOut */
+        ConsultationStatusHistoryOut: {
+            previous_status: components["schemas"]["ConsultationStatus"] | null;
+            new_status: components["schemas"]["ConsultationStatus"];
+            actor_type: components["schemas"]["ActorType"];
+            /** Actor Id */
+            actor_id: string | null;
+            /** Reason */
+            reason: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
         };
         /** ContactDetailOut */
         ContactDetailOut: {
@@ -3130,6 +3347,15 @@ export interface components {
             /** Reason */
             reason: string;
         };
+        /** CreateGuidanceServiceRequest */
+        CreateGuidanceServiceRequest: {
+            /** Name */
+            name: string;
+            /** Description */
+            description?: string | null;
+            /** Estimated Duration Minutes */
+            estimated_duration_minutes?: number | null;
+        };
         /** CreateInboxRequest */
         CreateInboxRequest: {
             /** Name */
@@ -3417,6 +3643,37 @@ export interface components {
         GlobalConfigOut: {
             /** Items */
             items: components["schemas"]["ConfigItemOut"][];
+        };
+        /** GuidanceServiceListResponse */
+        GuidanceServiceListResponse: {
+            /** Items */
+            items: components["schemas"]["GuidanceServiceOut"][];
+        };
+        /** GuidanceServiceOut */
+        GuidanceServiceOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string | null;
+            /** Estimated Duration Minutes */
+            estimated_duration_minutes: number | null;
+            /** Is Active */
+            is_active: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -3883,7 +4140,7 @@ export interface components {
          *     Un módulo nuevo es un valor nuevo aquí.
          * @enum {string}
          */
-        ModuleKey: "MENU" | "ORDERS" | "DELIVERY" | "PROMOTIONS" | "CATALOG" | "INVENTORY" | "QUOTES" | "SERVICES" | "APPOINTMENTS" | "CASES" | "PROPOSALS" | "EVENTS" | "CITIZEN_REQUESTS";
+        ModuleKey: "MENU" | "ORDERS" | "DELIVERY" | "PROMOTIONS" | "CATALOG" | "INVENTORY" | "QUOTES" | "SERVICES" | "APPOINTMENTS" | "CASES" | "PROPOSALS" | "EVENTS" | "CITIZEN_REQUESTS" | "GUIDANCE_SERVICES" | "CONSULTATIONS";
         /** MoveLeadRequest */
         MoveLeadRequest: {
             /**
@@ -4411,6 +4668,18 @@ export interface components {
             /** Stage Ids */
             stage_ids: string[];
         };
+        /** RequestConsultationRequest */
+        RequestConsultationRequest: {
+            /**
+             * Contact Id
+             * Format: uuid
+             */
+            contact_id: string;
+            /** Service Id */
+            service_id?: string | null;
+            /** Emotional Context */
+            emotional_context?: string | null;
+        };
         /** RequestStatusHistoryListResponse */
         RequestStatusHistoryListResponse: {
             /** Items */
@@ -4476,6 +4745,15 @@ export interface components {
          * @enum {string}
          */
         SenderType: "CUSTOMER" | "BOT" | "AGENT" | "SYSTEM";
+        /** SetConsultationDetailsRequest */
+        SetConsultationDetailsRequest: {
+            /** Service Id */
+            service_id?: string | null;
+            /** Scheduled At */
+            scheduled_at?: string | null;
+            /** Notes */
+            notes?: string | null;
+        };
         /** SetOrderDeliveryRequest */
         SetOrderDeliveryRequest: {
             /** Address */
@@ -4673,6 +4951,17 @@ export interface components {
             /** Reason */
             reason: string;
         };
+        /** UpdateGuidanceServiceRequest */
+        UpdateGuidanceServiceRequest: {
+            /** Name */
+            name?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Estimated Duration Minutes */
+            estimated_duration_minutes?: number | null;
+            /** Is Active */
+            is_active?: boolean | null;
+        };
         /** UpdateInboxRequest */
         UpdateInboxRequest: {
             /** Name */
@@ -4863,7 +5152,7 @@ export interface components {
          *     módulo, así que el comportamiento no cambia para nadie hasta que alguien elija otro vertical.
          * @enum {string}
          */
-        Vertical: "GENERIC" | "RESTAURANT" | "RETAIL" | "SERVICES" | "POLITICAL_CAMPAIGN";
+        Vertical: "GENERIC" | "RESTAURANT" | "RETAIL" | "SERVICES" | "POLITICAL_CAMPAIGN" | "SPIRITUAL_GUIDANCE";
         /** WhatsAppTypeBreakdownOut */
         WhatsAppTypeBreakdownOut: {
             /** Direction */
@@ -8407,6 +8696,356 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["OrderOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_guidance_services_api_v1_guidance_services_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GuidanceServiceListResponse"];
+                };
+            };
+        };
+    };
+    create_guidance_service_api_v1_guidance_services_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateGuidanceServiceRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GuidanceServiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_guidance_service_api_v1_guidance_services__service_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                service_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GuidanceServiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_guidance_service_api_v1_guidance_services__service_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                service_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateGuidanceServiceRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GuidanceServiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_consultations_api_v1_consultations_get: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["ConsultationStatus"] | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConsultationListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_consultation_api_v1_consultations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RequestConsultationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConsultationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_consultation_api_v1_consultations__consultation_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                consultation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConsultationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_consultation_history_api_v1_consultations__consultation_id__history_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                consultation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConsultationStatusHistoryListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    change_consultation_status_api_v1_consultations__consultation_id__status_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                consultation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeConsultationStatusRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConsultationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_consultation_details_api_v1_consultations__consultation_id__details_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                consultation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetConsultationDetailsRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConsultationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    assign_guide_api_v1_consultations__consultation_id__guide_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                consultation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignGuideRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConsultationOut"];
                 };
             };
             /** @description Validation Error */
