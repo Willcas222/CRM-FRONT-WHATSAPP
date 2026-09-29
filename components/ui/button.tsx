@@ -6,8 +6,11 @@ type Variant = "primary" | "secondary" | "danger" | "ghost";
 type Size = "sm" | "md";
 
 const VARIANT_CLASSES: Record<Variant, string> = {
+  // `text-[var(--color-button-text)]` en vez de `text-white`: la personalización de marca
+  // (Fase 15) sobrescribe esa variable; `bg-emerald-*` ya se sobrescribe solo (son variables de
+  // `@theme` en globals.css), por eso el fondo sigue con la clase normal.
   primary:
-    "bg-emerald-600 text-white hover:bg-emerald-700 disabled:bg-emerald-300",
+    "bg-emerald-600 text-[var(--color-button-text)] hover:bg-emerald-700 disabled:bg-emerald-300",
   secondary:
     "bg-white text-zinc-800 border border-zinc-300 hover:bg-zinc-50 disabled:text-zinc-400 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800",
   danger: "bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300",

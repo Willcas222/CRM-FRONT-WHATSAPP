@@ -907,6 +907,78 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/branding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Branding */
+        get: operations["get_branding_api_v1_branding_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Branding
+         * @description Solo cambian los campos enviados (mismo patrón que `PATCH /bots/{id}`).
+         */
+        patch: operations["update_branding_api_v1_branding_patch"];
+        trace?: never;
+    };
+    "/api/v1/branding/logo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload Logo */
+        post: operations["upload_logo_api_v1_branding_logo_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/branding/favicon": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload Favicon */
+        post: operations["upload_favicon_api_v1_branding_favicon_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/branding/chat-background": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload Chat Background */
+        post: operations["upload_chat_background_api_v1_branding_chat_background_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/campaign/profile": {
         parameters: {
             query?: never;
@@ -2663,6 +2735,21 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        /** Body_upload_chat_background_api_v1_branding_chat_background_post */
+        Body_upload_chat_background_api_v1_branding_chat_background_post: {
+            /** File */
+            file: string;
+        };
+        /** Body_upload_favicon_api_v1_branding_favicon_post */
+        Body_upload_favicon_api_v1_branding_favicon_post: {
+            /** File */
+            file: string;
+        };
+        /** Body_upload_logo_api_v1_branding_logo_post */
+        Body_upload_logo_api_v1_branding_logo_post: {
+            /** File */
+            file: string;
+        };
         /** BotListResponse */
         BotListResponse: {
             /** Items */
@@ -2703,6 +2790,42 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** BrandingOut */
+        BrandingOut: {
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Usar Personalizacion */
+            usar_personalizacion: boolean;
+            /** Logo Url */
+            logo_url: string | null;
+            /** Favicon Url */
+            favicon_url: string | null;
+            /** Color Primario */
+            color_primario: string | null;
+            /** Color Secundario */
+            color_secundario: string | null;
+            /** Color Acento Botones */
+            color_acento_botones: string | null;
+            /** Color Texto Botones */
+            color_texto_botones: string | null;
+            /** Color Fondo Sidebar */
+            color_fondo_sidebar: string | null;
+            /** Color Fondo Chat */
+            color_fondo_chat: string | null;
+            chat_bg_tipo: components["schemas"]["ChatBackgroundType"];
+            /** Chat Bg Imagen Url */
+            chat_bg_imagen_url: string | null;
+            /** Chat Bg Opacidad */
+            chat_bg_opacidad: number;
             /**
              * Updated At
              * Format: date-time
@@ -2823,6 +2946,12 @@ export interface components {
             /** New Password */
             new_password: string;
         };
+        /**
+         * ChatBackgroundType
+         * @description Fondo del área de chat en la personalización de marca (`AccountBranding`).
+         * @enum {string}
+         */
+        ChatBackgroundType: "COLOR" | "PATRON" | "IMAGEN";
         /** CitizenRequestListResponse */
         CitizenRequestListResponse: {
             /** Items */
@@ -4881,6 +5010,26 @@ export interface components {
             } | null;
             /** Non Text Message */
             non_text_message?: string | null;
+        };
+        /** UpdateBrandingRequest */
+        UpdateBrandingRequest: {
+            /** Usar Personalizacion */
+            usar_personalizacion?: boolean | null;
+            /** Color Primario */
+            color_primario?: string | null;
+            /** Color Secundario */
+            color_secundario?: string | null;
+            /** Color Acento Botones */
+            color_acento_botones?: string | null;
+            /** Color Texto Botones */
+            color_texto_botones?: string | null;
+            /** Color Fondo Sidebar */
+            color_fondo_sidebar?: string | null;
+            /** Color Fondo Chat */
+            color_fondo_chat?: string | null;
+            chat_bg_tipo?: components["schemas"]["ChatBackgroundType"] | null;
+            /** Chat Bg Opacidad */
+            chat_bg_opacidad?: number | null;
         };
         /** UpdateCampaignEventRequest */
         UpdateCampaignEventRequest: {
@@ -7402,6 +7551,158 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AutomationExecutionPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_branding_api_v1_branding_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandingOut"];
+                };
+            };
+        };
+    };
+    update_branding_api_v1_branding_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateBrandingRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandingOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upload_logo_api_v1_branding_logo_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_logo_api_v1_branding_logo_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandingOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upload_favicon_api_v1_branding_favicon_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_favicon_api_v1_branding_favicon_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandingOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upload_chat_background_api_v1_branding_chat_background_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_chat_background_api_v1_branding_chat_background_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandingOut"];
                 };
             };
             /** @description Validation Error */

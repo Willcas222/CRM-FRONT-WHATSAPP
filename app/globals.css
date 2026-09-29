@@ -33,10 +33,13 @@
   --color-zinc-900: #172019;
   --color-zinc-950: #0d1512;
 
-  /* Barra lateral: oscura en ambos modos, es el ancla visual de la marca */
+  /* Barra lateral: oscura en ambos modos, es el ancla visual de la marca. `hover`/`line` se
+     derivan de `--color-sidebar` con `color-mix()` (no son valores fijos): así la personalización
+     de marca (Fase 15) solo necesita sobrescribir UNA variable en tiempo de ejecución y el resto
+     de tonos de la barra lateral se ajustan solos, sin JavaScript adicional. */
   --color-sidebar: #0f2a24;
-  --color-sidebar-hover: #17382f;
-  --color-sidebar-line: #1f4a3e;
+  --color-sidebar-hover: color-mix(in srgb, var(--color-sidebar) 80%, white);
+  --color-sidebar-line: color-mix(in srgb, var(--color-sidebar) 80%, white);
 
   /* Chat estilo WhatsApp */
   --color-bubble-in: #ffffff;
@@ -53,6 +56,9 @@
   --foreground: #172019;
   --chat-wall: #efeae2;
   --chat-dot: rgb(0 0 0 / 0.045);
+  /* Texto sobre el botón principal (Personalización de marca, Fase 15): separado de
+     `--color-emerald-*` porque hoy `text-white` no depende de ninguna variable. */
+  --color-button-text: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -70,11 +76,14 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Fondo del chat: liso con un patrón muy tenue, como WhatsApp */
+/* Fondo del chat: liso con un patrón muy tenue, como WhatsApp por defecto.
+   Personalización de marca (Fase 15): `--chat-wall-image`/`--chat-wall-bg-size` los fija
+   `branding-injector.tsx` en tiempo de ejecución (COLOR quita el patrón con `none`, PATRON deja
+   el valor por defecto de abajo, IMAGEN pone la imagen de la cuenta) — este archivo nunca cambia. */
 .chat-wall {
   background-color: var(--chat-wall);
-  background-image: radial-gradient(var(--chat-dot) 1px, transparent 1px);
-  background-size: 22px 22px;
+  background-image: var(--chat-wall-image, radial-gradient(var(--chat-dot) 1px, transparent 1px));
+  background-size: var(--chat-wall-bg-size, 22px 22px);
 }
 
 /* Scroll discreto */

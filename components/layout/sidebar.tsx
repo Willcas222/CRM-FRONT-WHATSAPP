@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { useAuth } from "@/lib/auth-context";
+import { useBranding } from "@/lib/hooks/branding";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -101,6 +102,8 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const { user, account } = useAuth();
+  const { data: branding } = useBranding();
+  const logoUrl = branding?.usar_personalizacion ? branding.logo_url : null;
   const canManage = user?.role === "OWNER" || user?.role === "ADMIN";
   const items = NAV.filter((item) => {
     if (item.requiresManage && !canManage) return false;
@@ -131,9 +134,18 @@ export function Sidebar({
         )}
       >
         <div className="flex h-16 items-center gap-2.5 px-5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-white shadow-sm">
-            <IconChat className="h-4.5 w-4.5" />
-          </span>
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element -- URL externa (Spaces), no del proyecto
+            <img
+              src={logoUrl}
+              alt="Logo de la organización"
+              className="h-8 w-8 shrink-0 rounded-lg object-contain"
+            />
+          ) : (
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-white shadow-sm">
+              <IconChat className="h-4.5 w-4.5" />
+            </span>
+          )}
           <span className="text-[15px] font-semibold tracking-tight text-white">
             CRM WhatsApp AI
           </span>

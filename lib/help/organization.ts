@@ -579,6 +579,47 @@ export const ORGANIZATION_GUIDE: HelpGuide = {
       related: ["customer-summary", "settings-channels", "inbox"],
     },
     {
+      id: "settings-branding",
+      title: "Configuración · Personalización y Marca",
+      route: "/settings",
+      summary:
+        "Pon el logo, los colores y el fondo del chat de tu organización en el CRM.",
+      points: [
+        "Sube tu logo y el ícono de la pestaña (favicon).",
+        "Elige los colores de marca, de los botones y de la barra lateral.",
+        "Personaliza el fondo del área de chat: color, patrón o imagen.",
+        "Un interruptor activa o desactiva toda la personalización de una vez.",
+      ],
+      purpose:
+        "Por defecto el CRM usa el diseño estándar de la plataforma. Aquí cada organización puede poner su propia " +
+        "identidad visual: logo, favicon y una paleta de colores propia. El interruptor «Usar personalización» es el que " +
+        "decide cuál se ve: apagado, siempre se ve el diseño estándar (nada de lo que subiste o guardaste se pierde); " +
+        "encendido, se ve lo que definiste, y cualquier color que no hayas definido cae también al estándar. El logo y " +
+        "el favicon solo se cambian subiendo un archivo (PNG, SVG o WEBP, máximo 2 MB); los colores se cambian con el " +
+        "selector y se guardan con «Guardar cambios».",
+      howTo: [
+        {
+          title: "Cómo personalizar tu marca",
+          steps: [
+            "Ve a Configuración → Personalización y Marca.",
+            "Activa «Usar personalización».",
+            "Sube tu logo y tu favicon arrastrándolos o haciendo clic en cada casilla.",
+            "Elige los colores con el selector; la vista previa se actualiza al instante.",
+            "Elige el fondo del chat (color, patrón o imagen) y ajusta la opacidad si usas imagen.",
+            "Pulsa «Guardar cambios».",
+          ],
+        },
+      ],
+      tips: [
+        "La vista previa de la derecha muestra cómo va a quedar antes de guardar.",
+        "«Restablecer al diseño estándar» apaga la personalización sin borrar lo que ya guardaste: puedes volver a activarla después.",
+      ],
+      cautions: [
+        "Elige colores con buen contraste entre el texto y el fondo del botón; un color muy claro sobre fondo claro es difícil de leer.",
+      ],
+      related: ["settings-bot"],
+    },
+    {
       id: "campaign",
       title: "Campaña",
       route: "/campaign",

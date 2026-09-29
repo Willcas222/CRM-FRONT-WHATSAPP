@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/auth-context";
 import { cn } from "@/lib/utils";
 import { AccountTab } from "./account-tab";
 import { BotTab } from "./bot-tab";
+import { BrandingTab } from "./branding-tab";
 import { InboxesTab } from "./inboxes-tab";
 import { PipelinesTab } from "./pipelines-tab";
 import { UsersTab } from "./users-tab";
@@ -17,6 +18,7 @@ const TABS = [
   { id: "inboxes", label: "Canales", requiresManage: true },
   { id: "pipelines", label: "Pipeline", requiresManage: true },
   { id: "bot", label: "Bot", requiresManage: true },
+  { id: "branding", label: "Personalización y Marca", requiresManage: true },
 ] as const;
 
 const SETTINGS_TOPICS = {
@@ -25,6 +27,7 @@ const SETTINGS_TOPICS = {
   inboxes: "settings-channels",
   pipelines: "settings-pipeline",
   bot: "settings-bot",
+  branding: "settings-branding",
 } as const;
 
 export default function SettingsPage() {
@@ -65,6 +68,7 @@ export default function SettingsPage() {
       {tab === "inboxes" && canManage && <InboxesTab />}
       {tab === "pipelines" && canManage && <PipelinesTab />}
       {tab === "bot" && canManage && <BotTab />}
+      {tab === "branding" && canManage && <BrandingTab />}
     </div>
   );
 }

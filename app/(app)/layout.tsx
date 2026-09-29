@@ -7,6 +7,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { FullPageSpinner } from "@/components/ui/misc";
 import { useAuth } from "@/lib/auth-context";
+import { BrandingInjector } from "@/lib/branding-injector";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const { status } = useAuth();
@@ -23,6 +24,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex h-dvh">
+      <BrandingInjector />
       <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar onMenu={() => setMenuOpen(true)} />
