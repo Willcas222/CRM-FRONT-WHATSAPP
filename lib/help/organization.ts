@@ -595,7 +595,7 @@ export const ORGANIZATION_GUIDE: HelpGuide = {
         "identidad visual: logo, favicon y una paleta de colores propia. El interruptor «Usar personalización» es el que " +
         "decide cuál se ve: apagado, siempre se ve el diseño estándar (nada de lo que subiste o guardaste se pierde); " +
         "encendido, se ve lo que definiste, y cualquier color que no hayas definido cae también al estándar. El logo y " +
-        "el favicon solo se cambian subiendo un archivo (PNG, SVG o WEBP, máximo 2 MB); los colores se cambian con el " +
+        "el favicon solo se cambian subiendo un archivo (PNG, SVG o WEBP, máximo 5 MB); los colores se cambian con el " +
         "selector y se guardan con «Guardar cambios».",
       howTo: [
         {
