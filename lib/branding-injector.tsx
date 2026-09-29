@@ -24,6 +24,8 @@ const OVERRIDABLE_PROPERTIES = [
   "--color-emerald-700",
   "--color-sidebar",
   "--color-button-text",
+  "--color-bubble-out",
+  "--color-bubble-out-dark",
   "--chat-wall",
   "--chat-wall-image",
   "--chat-wall-bg-size",
@@ -65,6 +67,10 @@ export function BrandingInjector() {
     root.setProperty("--color-emerald-700", data.color_acento_botones);
     root.setProperty("--color-sidebar", data.color_fondo_sidebar);
     root.setProperty("--color-button-text", data.color_texto_botones);
+    // La burbuja saliente del inbox (mensajes del bot/agente) usa el mismo acento que los botones,
+    // igual que ya se ve en la vista previa de "Personalización y Marca".
+    root.setProperty("--color-bubble-out", data.color_acento_botones);
+    root.setProperty("--color-bubble-out-dark", data.color_acento_botones);
     root.setProperty("--chat-wall", data.color_fondo_chat);
 
     if (data.chat_bg_tipo === "IMAGEN" && data.chat_bg_imagen_url) {
