@@ -13,7 +13,7 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import {
   Badge,
@@ -47,6 +47,18 @@ export default function PipelinePage() {
   const moveLead = useMoveLead();
   const [error, setError] = useState<string | null>(null);
   const [activeLead, setActiveLead] = useState<LeadOut | null>(null);
+  const [activeStageIndex, setActiveStageIndex] = useState(0);
+  const boardRef = useRef<HTMLDivElement>(null);
+
+  // Solo importa en móvil (una columna a la vez): qué tan cerca del inicio del scroll
+  // está cada columna decide cuál punto se resalta.
+  function handleBoardScroll() {
+    const board = boardRef.current;
+    if (!board || board.children.length === 0) return;
+    const columnWidth = (board.children[0] as HTMLElement).offsetWidth + 16; // 16 = gap-4
+    const index = Math.round(board.scrollLeft / columnWidth);
+    setActiveStageIndex(index);
+  }
 
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 4 } }),
@@ -108,12 +120,32 @@ export default function PipelinePage() {
         {error && <ErrorBanner message={error} />}
       </div>
 
+      {pipeline.stages.length > 1 && (
+        <div className="mb-2 flex justify-center gap-1.5 sm:hidden">
+          {pipeline.stages.map((stage, i) => (
+            <span
+              key={stage.id}
+              className={cn(
+                "h-1.5 rounded-full transition-all",
+                i === activeStageIndex
+                  ? "w-4 bg-emerald-600"
+                  : "w-1.5 bg-zinc-300 dark:bg-zinc-700",
+              )}
+            />
+          ))}
+        </div>
+      )}
+
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex flex-1 gap-4 overflow-x-auto pb-4">
+        <div
+          ref={boardRef}
+          onScroll={handleBoardScroll}
+          className="flex flex-1 snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4 sm:snap-none"
+        >
           {pipeline.stages.map((stage) => (
             <StageColumn
               key={stage.id}
@@ -151,7 +183,7 @@ function StageColumn({
     <div
       ref={setNodeRef}
       className={cn(
-        "flex w-[82vw] shrink-0 flex-col rounded-xl border sm:w-72 bg-zinc-100/60 dark:bg-zinc-900/60",
+        "flex w-[82vw] shrink-0 snap-start flex-col rounded-xl border sm:w-72 bg-zinc-100/60 dark:bg-zinc-900/60",
         isOver
           ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/30"
           : "border-transparent",
